@@ -60,6 +60,7 @@ highway=* & disused=yes [0x07 road_class=0 road_speed=1 resolution 22]
 # Ways sorted roughly by descending order of class
 highway=motorway {add oneway = yes; add bicycle = no; add foot = no } [0x01 road_class=4 road_speed=5 resolution 14]
 highway=motorway_link {add oneway = yes; add bicycle = no; add foot = no } [0x09 road_class=3 road_speed=2 resolution 16]
+(oneway=yes | oneway=true) & highway=trunk [0x123 road_class=3 road_speed=4 resolution 16 continue]
 highway=trunk  {add bicycle = no; add foot = no} [0x02 road_class=3 road_speed=4 resolution 16]
 highway=trunk_link {add bicycle = no; add foot = no} [0x08 road_class=3 road_speed=2 resolution 18]
 highway=* & motorroad=yes {add bicycle = no; add foot = no} [0x02 road_class=4 road_speed=4 resolution 16]
