@@ -5,7 +5,7 @@ README
 
 Routable Garmin Map for OSM Philippines
 
-Downloads here (choose one):
+Download maps here (choose one):
  - http://esambale.wikispaces.com/osmphil_garmin
  - https://github.com/maning/osmphgps/wiki/Download
 
@@ -150,12 +150,9 @@ Known bugs:
 - More than 30,000 kilometers of roads
 - POIs, provincial boundaries
 
-License:
+Map License:
 Creative Commons Attribution-ShareAlike 2.0 license.
 
-Webpage:
-http://esambale.wikispaces.com/osmphil_garmin
-
 Disclaimer
-Use at your own risk. Me and the Openstreetmap community is not liable for
-any accidents while using this map
+Use at your own risk. Me and the Openstreetmap community are not liable for
+any accidents while using this map.
