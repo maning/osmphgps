@@ -16,8 +16,6 @@
 
 #set parameters and paths
 download_dir=~/Downloads/osm/routable_garmin/data/
-style_file=~/Downloads/osm/routable_garmin/svn/styles/osm-ph
-
 
 #===========
 echo ${download_dir}
@@ -73,8 +71,8 @@ rm -rf OSM_PHIL.gmapi
 mv mkgmap.log.0 /home/maning/Downloads/osm/routable_garmin/data/latest/mkgmap.log.0.txt
 date > latest/log.txt
 
-#Miscellaneous
-#add sawtooth script
+# Miscellaneous
+# sawtooth script
 cd ~/Downloads/osm/sawtooth
 ./sawtooth.sh
 
