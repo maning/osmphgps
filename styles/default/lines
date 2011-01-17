@@ -8,6 +8,9 @@
 # Debugging 
 highway=motorway_link & oneway!=yes & oneway!=no { echo "motorway_link lacks oneway" }
 
+# Bridge 'with no name tag' on major roads, shall be an annoying'Bridge-FIXME' (particularly those long-span bridges), instead of replacing with road name
+bridge=yes & name!=* & (highway=motorway | highway=trunk | highway=primary | highway=secondary ) {add name='Bridge-FIXME'} {echo "noname bridges"}
+
 #-------------------------------------------------------------------
 
 aeroway=runway [0x27 resolution 20]
