@@ -16,6 +16,7 @@
 #{add prov_name='${is_in:state}'; add prov_name='${addr:state}'; add prov_name='${addr:province}';
 # add is_in='${prov_name},,Philippines'; set is_in='${prov_name},,Philippines';
 # delete is_in:state; delete addr:state; delete addr:province;}
+place=* {add is_in:country=Philippines; delete is_in:country=disputed territory}
 
 # Transportation
 aeroway=aerodrome [0x2f04 resolution 20]
