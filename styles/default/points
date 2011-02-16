@@ -16,10 +16,11 @@
 #{add prov_name='${is_in:state}'; add prov_name='${addr:state}'; add prov_name='${addr:province}';
 # add is_in='${prov_name},,Philippines'; set is_in='${prov_name},,Philippines';
 # delete is_in:state; delete addr:state; delete addr:province;}
-*=* {delete is_in:country=disputed territory}
-place=* {add is_in:country=Philippines}
-#place=* {delete is_in:country=disputed territory}
 
+# all is_in:country to Philippines 
+is_in:country='disputed territory' {set is_in:country=Philippines}
+is_in:country='Indonesia' {set is_in:country=Philippines}
+place=* {add is_in:country=Philippines}
 
 # Transportation
 aeroway=aerodrome [0x2f04 resolution 20]
@@ -200,7 +201,7 @@ natural=wood [0x6618 resolution 21]
 # add is_in tags if there is one
 place=city {name '${name}, ${is_in:state}' | '${name}'} [0x0400 resolution 16]
 place=town {name '${name}, ${is_in:state}' | '${name}'} [0x0800 resolution 18]
-place=village {name '${name}, ${is_in:town} | '${name}, ${is_in:city}' | '${name}'} [0x0c00 resolution 21]
+place=village {name '${name}, ${is_in:town}' | '${name}, ${is_in:city}' | '${name}'} [0x0c00 resolution 21]
 place=purok [0x0d00 resolution 23]
 place=hamlet [0x0d00 resolution 23]
 place=locality [0x0d00 resolution 23]

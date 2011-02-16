@@ -1,5 +1,4 @@
 # pre=process tags
-*=* {delete is_in:country=disputed territory}
 place=* {add is_in:country=Philippines}
 
 aeroway=airport [0x07 resolution 18]

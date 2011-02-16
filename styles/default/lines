@@ -7,8 +7,6 @@
 # -------------------------------------------------------------------
 
 #pre-process tags
-*=* {delete is_in:country=disputed territory}
-place=* {add is_in:country=Philippines}
 
 # Debugging 
 highway=motorway_link & oneway!=yes & oneway!=no { echo "motorway_link lacks oneway" }
