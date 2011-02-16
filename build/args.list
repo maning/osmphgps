@@ -13,7 +13,7 @@ family-name=OSM_PHIL
 overview-mapname=40000001
 series-name=OSM_PHIL
 description=OSM_PHIL
-style-file=/home/maning/Downloads/osm/routable_garmin/svn/styles/osm-ph
+style-file=/home/maning/Downloads/osm/routable_garmin/git/osmphgps/styles/default
 generate-sea=polygons,extend-sea-sectors,close-gaps=1000
 index
 adjust-turn-headings
@@ -23,3 +23,4 @@ check-roundabout-flares
 report-dead-ends
 ignore-maxspeeds
 link-pois-to-ways
+location-autofill=0
