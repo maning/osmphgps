@@ -5,6 +5,11 @@
 # Each line is a rule, of the generalised format:
 #  OSM_tag(s)_to_match  [Garmin_type_code resolution]
 # -------------------------------------------------------------------
+
+#pre-process tags
+*=* {delete is_in:country=disputed territory}
+place=* {add is_in:country=Philippines}
+
 # Debugging 
 highway=motorway_link & oneway!=yes & oneway!=no { echo "motorway_link lacks oneway" }
 

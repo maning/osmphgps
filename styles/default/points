@@ -16,7 +16,10 @@
 #{add prov_name='${is_in:state}'; add prov_name='${addr:state}'; add prov_name='${addr:province}';
 # add is_in='${prov_name},,Philippines'; set is_in='${prov_name},,Philippines';
 # delete is_in:state; delete addr:state; delete addr:province;}
-place=* {add is_in:country=Philippines; delete is_in:country=disputed territory}
+*=* {delete is_in:country=disputed territory}
+place=* {add is_in:country=Philippines}
+#place=* {delete is_in:country=disputed territory}
+
 
 # Transportation
 aeroway=aerodrome [0x2f04 resolution 20]
@@ -26,7 +29,7 @@ aeroway=terminal [0x2f04 resolution 20]
 # -------------------------------------------------------------------
 
 amenity=atm { name '${operator}: ${name}' | '${name}' | '${operator}' } [0x2f06 resolution 23]
-amenity=bank { name '${name} (${operator})' | '${name}' | '${operator}' } [0x2f06 resolution 23]
+amenity=bank { name '${name} (${operator}) - ${branch}' | '${name}  - ${branch}' | '${operator}  - ${branch}' } [0x2f06 resolution 23]
 amenity=bar [0x2d02 resolution 23]
 amenity=bicycle_parking [0x2f0b resolution 22 default_name 'bikepark']
 amenity=biergarten [0x2d02 resolution 23]
@@ -62,7 +65,6 @@ amenity=fast_food [0x2a07 resolution 23]
 amenity=ferry_terminal [0x2f08 resolution 21 default_name 'Ferry']
 amenity=fire_station [0x3008 resolution 21]
 amenity=food_court [0x2a13 resolution 23]
-amenity=fuel [0x2f01 resolution 21]
 amenity=fuel { name '${operator}: ${name}' | '${name}' | '${operator}' } [0x2f01 resolution 21 ]
 amenity=funeral [0x2f11 resolution 23]
 amenity=funeral_services [0x2f11 resolution 23]
