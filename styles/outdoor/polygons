@@ -1,0 +1,108 @@
+# pre=process tags
+place=* {add is_in:country=Philippines}
+
+aeroway=airport [0x07 resolution 18]
+aeroway=aerodrome [0x07 resolution 18]
+aeroway=helipad [0x0e resolution 20]
+aeroway=terminal [0x13 resolution 20]
+aeroway=apron [0x0e resolution 20]
+
+amenity=kindergarten [0x0a resolution 20]
+amenity=cafe | amenity=fast_food | amenity=restaurant | amenity=food_court [0x08 resolution 20]
+amenity=college [0x0a resolution 20]
+amenity=grave_yard [0x1a resolution 18]
+amenity=hospital [0x0b resolution 18]
+parking=underground | parking=multi-storey [0x06 resolution 21]
+amenity=parking | parking=surface [0x05 resolution 21]
+amenity=prison [0x04 resolution 20]
+amenity=school [0x0a resolution 20]
+amenity=supermarket [0x08 resolution 21]
+amenity=university [0x0a resolution 20]
+amenity=place_of_worship [0x1a resolution 21]
+
+landuse=allotments [0x4e resolution 20]
+landuse=basin [0x3f resolution 18]
+landuse=cemetary [0x1a resolution 18]
+landuse=cemetery [0x1a resolution 18]
+landuse=commercial [0x08 resolution 18]
+landuse=construction [0x0c resolution 18]
+landuse=farm [0x4e resolution 18]
+landuse=farmyard [0x4e resolution 18]
+landuse=forest [0x50 resolution 18]
+landuse=greenfield [0x17 resolution 18]
+landuse=industrial [0x0c resolution 18]
+landuse=meadow [0x17 resolution 18]
+landuse=military [0x04 resolution 18]
+landuse=quarry | landuse=surface_mining | landuse=mining [0x0c resolution 18]
+landuse=recreation_ground [0x19 resolution 18]
+landuse=reservoir [0x3f resolution 18]
+landuse=residential [0x10 resolution 23-18]
+landuse=retail [0x08 resolution 20]
+landuse=village_green [0x17 resolution 20]
+landuse=vineyard [0x4e resolution 20]
+landuse=wood [0x50 resolution 18]
+
+leisure=common [0x17 resolution 20]
+leisure=garden [0x17 resolution 20]
+leisure=golf_course [0x18 resolution 20]
+leisure=ice_rink [0x19 resolution 21]
+leisure=marina [0x09 resolution 20]
+leisure=nature_reserve [0x16 resolution 18]
+leisure=park [0x17 resolution 20]
+leisure=pitch { name '${name} (${sport})' | '${name}' } [0x19 resolution 20]
+leisure=playground [0x17 resolution 20]
+leisure=recreation_ground [0x19 resolution 18]
+leisure=sports_center | leisure=sports_centre { name '${name} (${sport})' | '${name}' } [0x19 resolution 20]
+leisure=stadium { name '${name} (${sport})' | '${name}' } [0x19 resolution 19]
+leisure=track { name '${name} (${sport})' | '${name}' } [0x19 resolution 18]
+leisure=water_park [0x09 resolution 18]
+
+military=airfield [0x04 resolution 18]
+military=barracks [0x04 resolution 18]
+military=danger_area [0x04 resolution 18]
+military=range [0x04 resolution 18]
+
+natural=land [0x27 resolution 10]
+natural=glacier [0x4d resolution 16]
+natural=marsh [0x51 resolution 20]
+natural=mud [0x51 resolution 20]
+natural=scrub [0x4f resolution 20]
+natural=sea [0x32 resolution 10]
+natural=water [0x3c resolution 18]
+natural=wood [0x50 resolution 18]
+natural=beach [0x53 resolution 18]
+
+tourism=attraction & ( building=* | barrier=wall )  [0x13 resolution 20]
+tourism=attraction [0x25 resolution 20]
+
+wetland=mangrove [0x50 resolution 18]
+
+# squares and plazas
+highway=pedestrian & area=yes [0x17 resolution 20]
+# other highways that have area=yes set must be parking lots
+highway=* & area=yes [0x05 resolution 21]
+
+waterway=riverbank [0x46 resolution 20]
+
+# adding housenumbers in buildings
+addr:housenumber=* & name=* {name '${name} (${addr:housenumber})'}
+addr:housenumber=* & addr:housename=* {name '${addr:housename} ${addr:housenumber}'}
+addr:housename=* & name!=* {name '${addr:housename}'}
+addr:housenumber=* {name '${addr:housenumber}'}
+
+# generic polygons 
+place=* [0x10 resolution 23-18]
+shop=* [0x08 resolution 20]
+amenity=fuel [0x08 resolution 20]
+building=* | man_made=* | amenity=* | tourism=* [0x13 resolution 24]
+
+# boundary=national_park [0x16 resolution 20]
+
+
+# For topographic polygons
+#elev_level=300 [0x2a resolution 10]
+#elev_level=5000 [0x2c resolution 10]
+#elev_level=1000 [0x2e resolution 10]
+#elev_level=1500 [0x30 resolution 10]
+#elev_level=2000 [0x34 resolution 10]
+#elev_level=peak [0x36 resolution 10]

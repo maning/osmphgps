@@ -1,0 +1,15 @@
+
+#
+# You can have rules for relations.  Usually you will set tags on the
+# elements that make up the relation.
+#
+# eg. type=route route=bus { apply { set route=bus; add rn='${route_no}' ; }}
+#
+
+# boundary
+#boundary=administrative & admin_level<3 [0x1e resolution 14]
+#boundary=administrative & admin_level<5 [0x1d resolution 16]
+#boundary=administrative & admin_level<7 [0x1d resolution 20]
+#boundary=administrative                 [0x1c resolution 22]
+#boundary=political                      [0x1c resolution 22]
+#boundary=national                       [0x1e resolution 14]

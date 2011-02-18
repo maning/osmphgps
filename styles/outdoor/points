@@ -1,0 +1,418 @@
+# -------------------------------------------------------------------
+# This is the OSM-PH mkgmap style file for converting OSM nodes
+# into Garmin POIs.
+# Any line prefaced with # is a comment and will not be applied.
+# Each line is a rule, of the generalised format:
+#  OSM_tag(s)_to_match  [Garmin_type_code resolution]
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+
+# Convert 'is_in:city' or 'is_in:town' (if existing) to addr:city to become searchable in mkgmap1625
+#addr:city!=* & is_in:city=* {add addr:city='${is_in:city}'; delete is_in:city}
+#addr:city!=* & is_in:town=* {add addr:city='${is_in:town}'; delete is_in:town}
+
+# Temporary HACK for none search-able 'state' tags
+#is_in:state=* | addr:state=* | addr:province=* 
+#{add prov_name='${is_in:state}'; add prov_name='${addr:state}'; add prov_name='${addr:province}';
+# add is_in='${prov_name},,Philippines'; set is_in='${prov_name},,Philippines';
+# delete is_in:state; delete addr:state; delete addr:province;}
+
+# all is_in:country to Philippines 
+is_in:country='disputed territory' {set is_in:country=Philippines}
+is_in:country='Indonesia' {set is_in:country=Philippines}
+place=* {add is_in:country=Philippines}
+
+# Transportation
+aeroway=aerodrome [0x2f04 resolution 20]
+aeroway=airport [0x2f04 resolution 20]
+aeroway=helipad [0x5904 resolution 20]
+aeroway=terminal [0x2f04 resolution 20]
+# -------------------------------------------------------------------
+
+amenity=atm { name '${operator}: ${name}' | '${name}' | '${operator}' } [0x2f06 resolution 23]
+amenity=bank { name '${name} (${operator}) - ${branch}' | '${name}  - ${branch}' | '${operator}  - ${branch}' } [0x2f06 resolution 23]
+amenity=bar [0x2d02 resolution 23]
+amenity=bicycle_parking [0x2f0b resolution 22 default_name 'bikepark']
+amenity=biergarten [0x2d02 resolution 23]
+amenity=bureau_de_change [0x2f11 resolution 23]
+amenity=bus_station [0x2f08 resolution 21]
+amenity=cafe [0x2a0e resolution 23]
+amenity=car_rental [0x2f02 resolution 22]
+amenity=car_wash [0x2f0e resolution 23]
+amenity=casino [0x2d04 resolution 23]
+amenity=cinema [0x2d03 resolution 22]
+amenity=clinic [0x3002 resolution 21]
+amenity=coffee_shop [0x2a0e resolution 23]
+amenity=college [0x2c05 resolution 21]
+amenity=community_centre [0x2c09 resolution 23]
+amenity=concert_hall [0x2c09 resolution 23]
+amenity=conference_centre [0x2c09 resolution 23]
+amenity=convention_center [0x2c09 resolution 23]
+amenity=community_centre [0x3005 resolution 23]
+amenity=community_center [0x3005 resolution 23]
+amenity=courthouse [0x3004 resolution 21]
+amenity=dentist [0x3002 resolution 21]
+amenity=doctors [0x3002 resolution 21]
+amenity=drinking_water [0x5000 resolution 24 default_name 'Water']
+amenity=embassy & country=* { name '${country} ${name|def:}' } [0x3003 resolution 21]
+amenity=embassy & country!=* [0x3003 resolution 21 default_name 'Embassy']
+
+amenity=emergency_phone [0x2f12 resolution 23]
+amenity=event_venue [0x2c09 resolution 23]
+amenity=fast_food & cuisine=grill [0x2a03 resolution 23]
+amenity=fast_food & cuisine=pizza [0x2a0a resolution 23]
+amenity=fast_food & cuisine='pizza;kebab' [0x2a0a resolution 23]
+amenity=fast_food [0x2a07 resolution 23]
+amenity=ferry_terminal [0x2f08 resolution 21 default_name 'Ferry']
+amenity=fire_station [0x3008 resolution 21]
+amenity=food_court [0x2a13 resolution 23]
+amenity=fuel { name '${operator}: ${name}' | '${name}' | '${operator}' } [0x2f01 resolution 21 ]
+amenity=funeral [0x2f11 resolution 23]
+amenity=funeral_services [0x2f11 resolution 23]
+amenity=fx_station [0x2f08 resolution 21 default_name 'FX station']
+amenity=grave_yard [0x6403 resolution 21]
+amenity=hospital [0x3002 resolution 21]
+amenity=iceplant [0x2f11 resolution 23]
+amenity=jeepney_station [0x2f08 resolution 21 default_name 'PUJ station']
+amenity=kindergarten [0x2c05 resolution 23]
+amenity=library [0x2c03 resolution 23]
+amenity=mall [0x2e04 resolution 21]
+amenity=market [0x2e04 resolution 21]
+amenity=marketplace [0x2e04 resolution 21]
+amenity=nightclub [0x2d02 resolution 23]
+amenity=parking [0x2f0b resolution 22 default_name='carpark']
+amenity=pharmacy [0x2e05 resolution 23]
+amenity=place_of_worship [0x2c0b resolution 21]
+amenity=place_of_worship & religion=muslim [0x6404 resolution 21 default_name 'Mosque']
+amenity=police [0x3001 resolution 21]
+amenity=post_office [0x2f05 resolution 21]
+amenity=preschool [0x2c05 resolution 23]
+amenity=prison [0x3000 resolution 21]
+amenity=pub [0x2d02 resolution 23]
+amenity=public_building [0x3000 resolution 21]
+amenity=public_market [0x2e04 resolution 21]
+amenity=recycling [0x2f15 resolution 23]
+amenity=rescue [0x2f14 resolution 23]
+amenity=restaurant & cuisine=* [0x2a00 resolution 23]
+amenity=restaurant & cuisine=american [0x2a01 resolution 23]
+amenity=restaurant & cuisine=asian [0x2a02 resolution 23]
+amenity=restaurant & cuisine=bagel [0x2a0d resolution 23]
+amenity=restaurant & cuisine=barbecue [0x2a03 resolution 23]
+amenity=restaurant & cuisine='cafe/diner' [0x2a0e resolution 23]
+amenity=restaurant & cuisine=chinese [0x2a04 resolution 23]
+amenity=restaurant & cuisine=deli [0x2a05 resolution 23]
+amenity=restaurant & cuisine=french [0x2a0f resolution 23]
+amenity=restaurant & cuisine=german [0x2a10 resolution 23]
+amenity=restaurant & cuisine=grill [0x2a03 resolution 23]
+amenity=restaurant & cuisine=international [0x2a06 resolution 23]
+amenity=restaurant & cuisine=italian [0x2a08 resolution 23]
+amenity=restaurant & cuisine=japanese [0x2a02 resolution 23]
+amenity=restaurant & cuisine=korean [0x2a02 resolution 23]
+amenity=restaurant & cuisine=mexican [0x2a09 resolution 23]
+amenity=restaurant & cuisine=pizza [0x2a0a resolution 23]
+amenity=restaurant & cuisine='pizza;kebab' [0x2a0a resolution 23]
+amenity=restaurant & cuisine=sea_food [0x2a0b resolution 23]
+amenity=restaurant & cuisine=spanish [0x2a09 resolution 23]
+amenity=restaurant & cuisine=speciality [0x2a12 resolution 23]
+amenity=restaurant & cuisine=steak [0x2a0c resolution 23]
+amenity=restaurant & cuisine=thai [0x2a02 resolution 23]
+amenity=restaurant [0x2a00 resolution 23]
+amenity=retail [0x2e0a resolution 23]
+amenity=school [0x2c05 resolution 22]
+amenity=slaughterhouse [0x2f11 resolution 23]
+amenity=supermarket [0x2e02 resolution 22]
+amenity=swimming_pool [0x2d09 resolution 23]
+amenity=telephone [0x5100 resolution 23 default_name 'Telephone']
+amenity=theatre [0x2d01 resolution 22]
+amenity=toilets [0x2f0c resolution 23 default_name 'Toilets' ]
+amenity=town_hall [0x3003 resolution 21]
+amenity=townhall [0x3003 resolution 21]
+amenity=tricycle_station [0x2f18 resolution 21 default_name 'Tricycle station']
+amenity=university [0x2c05 resolution 22]
+amenity=veterinary [0x3002 resolution 23]
+amenity=wrecker_service [0x2f0a  resolution 23]
+amenity=zoo [0x2c07 resolution 22]
+
+# -------------------------------------------------------------------
+
+# -------------------------------------------------------------------
+
+highway=bus_stop [0x2f08 resolution 21]
+highway=gate [0x660f resolution 23]
+#highway=motorway_junction [0x2000 resolution 16]
+#highway=motorway_junction { name '${ref} ${name}' | '${ref}' | '${name}' } 
+highway=services [0x210f resolution 16]
+highway=services { name '${ref} ${name}' | '${ref}' | '${name}' }
+highway=toll_booth [0x2500 resolution 23 default_name 'Toll']
+highway=traffic_signals [0x180f resolution 23]
+
+# -------------------------------------------------------------------
+
+historic=archaeological_site [0x2c02 resolution 21]
+historic=memorial [0x2c10 resolution 21]
+historic=monument [0x2c11 resolution 21]
+historic=museum | tourism=museum [0x2c02 resolution 21]
+historic=ruins | historic=archaeological_site [0x2c12 resolution 21]
+historic=wreck [0x1c01 resolution 21]
+# -------------------------------------------------------------------
+
+leisure=beach_resort [0x2b04 resolution 21]
+leisure=casino [0x2d04 resolution 23]
+leisure=concert_hall [0x2c09 resolution 23]
+leisure=fishing [0x4100 resolution 22]
+leisure=golf_course [0x2d05 resolution 22]
+leisure=ice_rink [0x2d08 resolution 23]
+leisure=marina [0x4300 resolution 23]
+leisure=park [0x2c06 resolution 22]
+leisure=pitch [0x2c08 resolution 23]
+leisure=playground [0x2c0d resolution 22]
+leisure=sports_center | leisure=sports_centre [0x2d0a resolution 21]
+leisure=stadium [0x2c08 resolution 21]
+leisure=track [0x2c08 resolution 22]
+leisure=water_park [0x2b04 resolution 22]
+# -------------------------------------------------------------------
+
+man_made=arch [0x6601 resolution 21]
+man_made=building [0x6402 resolution 23]
+man_made=lighthouse [0x1707 resolution 21]
+man_made=pier [0x4300 resolution 21]
+man_made=tower [0x6411 resolution 21]
+man_made=tunnel [0x6413 resolution 21]
+man_made=windmill [0x6411 resolution 21]
+# -------------------------------------------------------------------
+
+natural=bay [0x6503 resolution 21]
+natural=beach [0x6604 resolution 21]
+natural=cave [0x6619 resolution 21 default_name 'cave']
+natural=cave_entrance [0x6619 resolution 21 default_name 'cave']
+natural=channel [0x6506 resolution 21] 
+natural=cliff [0x6607 resolution 21]
+natural=falls [0x6508 resolution 21] 
+natural=peak [0x6616 resolution 21]
+natural=spring [0x6511 resolution 21]
+natural=stream [0x6512 resolution 21]
+natural=volcano [0x6616 resolution 21]
+natural=waterfall [0x6508 resolution 21]
+natural=wetland [0x6513 resolution 21]
+natural=wood [0x6618 resolution 21] 
+
+# -------------------------------------------------------------------
+
+# add is_in tags if there is one
+place=city {name '${name}, ${is_in:state}' | '${name}'} [0x0400 resolution 16]
+place=town {name '${name}, ${is_in:state}' | '${name}'} [0x0800 resolution 18]
+place=village {name '${name}, ${is_in:town}' | '${name}, ${is_in:city}' | '${name}'} [0x0c00 resolution 21]
+place=purok [0x0d00 resolution 23]
+place=hamlet [0x0d00 resolution 23]
+place=locality [0x0d00 resolution 23]
+place=subdivision [0x0d00 resolution 23]
+place=suburb [0x0d00 resolution 23]
+
+
+# Highlight Essential Islands for quick visual reference :
+place=island & 
+( name="Boracay" | name="Panay Island" | name="Guimaras Island"
+| name="Marinduque"
+| name="Verde Island"
+| name="Maricaban Island"
+| name="Lubang Island"
+| name="Corregidor Island"
+| name="Talim Island"
+| name="Mindoro"
+| name="Tablas Island" | name="Romblon Island" | name="Banton Island" | name="Sibuyan Island" | name="Carabao Island"
+| name="Bohol" | name="Panglao Island" | name="Lapinig Island"
+| name="Masbate Island" | name="Burias Island" | name="Ticao Island"
+| name="Cebu" | name="Mactan Island" | name="Malapascua Island" | name="Bantayan Island"
+| name="Pacijan Island" | name="Poro Island" | name="Ponson Island"
+| name="Leyte" | name="Biliran Island"
+| name="Samar" | name="Homonhon Island" | name="Tagapula Island" | name="Almagro Island"
+| name="Negros"
+| name="Panaon Island"
+| name="Camiguin Island"
+| name="Siquijor Island"
+| name="Palawan" | name="Busuanga Island" | name="Coron Island" | name="Linapacan Island" | name="Culion Island" 
+| name="Balabac Island" | name="Dumaran Island" | name="Bugsuc Island" | name="Pandanan Island"
+| name="Pamalican Island" | name="Cuyo Island"
+| name="Caluya Island" | name="Semirara Island" | name="Sibay Island"
+| name="Siargao Island" | name="Dinagat Island" | name="Bucas Islands"
+| name="Sarangani Island" | name="Balut Island"
+| name="Talikud Island"
+| name="Basilan Island" | name="Banton Island" | name="Jolo Island" | name="Tongkil Island" | name="Pangutaran Island"
+| name="Tawi Tawi Island" | name="Cagayan Sulu Island" | name="Samal Island" | name="Turtle Islands"
+| name="Polillo Island" | name="Patnanongan Island" | name="Jomalig Island" | name="Cabalete Island"
+| name="Babuyan Island" | name="Batan Island" | name="Calayan Island" | name="Fuga Island" | name="Itbayat Island"
+| name="Palaui Island"
+| name="Fortune Island"
+| name="Capones Island" | name="Potipot Island"
+| name="Santiago Island"
+| name="Cabarruyan Island"
+| name="Higatangan Island"
+| name="Catanduanes Island" | name="Rapu Rapu Island" | name="Cagraray Island" | name="San Miquel Island"
+| name="Lahuy Island" | name="Quinasalag Island"
+| name="Hundred Islands"
+)[0x650c resolution 16]
+
+# all other islands
+place=island [0x650c resolution 20]
+
+#test for residential polygons names
+landuse=residential [0x0d00 resolution 23]
+landuse=retail [0x2e04 resolution 21]
+# -------------------------------------------------------------------
+
+railway=halt [0x2f17 resolution 21]
+railway=station [0x2f17 resolution 21]
+railway=tram_stop [0x2f17 resolution 21]
+
+# -------------------------------------------------------------------
+
+shop=antique [0x2e0a resolution 23]
+shop=antiques [0x2e0a resolution 23]
+shop=bakers [0x2e02 resolution 23]
+shop=bakery [0x2e02 resolution 23]
+shop=beverages [0x2e0a resolution 23]
+shop=bicycle [0x2e0a resolution 23]
+shop=books [0x2e0a resolution 23]
+shop=butcher [0x2e00 resolution 23]
+shop=car [0x2f07 resolution 22]
+shop=car_dealer [0x2f07 resolution 22]
+shop=car_repair [0x2f03 resolution 23]
+shop=chemist [0x2e05 resolution 23]
+shop=clothes [0x2e07 resolution 23]
+shop=computer [0x2e0b resolution 23]
+shop=convenience [0x2e02 resolution 23]
+shop=department_store [0x2e01 resolution 21]
+shop=doityourself [0x2e09 resolution 23]
+shop=electronics [0x2e0a resolution 23]
+shop=fashion [0x2e07 resolution 23]
+shop=florist [0x2e0a resolution 23]
+shop=garden [0x2e08 resolution 23]
+shop=garden_center [0x2e08 resolution 23]
+shop=garden_centre [0x2e08 resolution 23]
+shop=general [0x2e03 resolution 23]
+shop=grocery [0x2e02 resolution 23]
+shop=hairdresser [0x2f10 resolution 20]
+shop=hardware [0x2e09 resolution 23]
+shop=home_furnishing [0x2e09 resolution 23]
+shop=laundry [0x2e0a resolution 23]
+shop=mall [0x2e04 resolution 21]
+shop=organic [0x2e0a resolution 23]
+shop=outdoor [0x2e0a resolution 23]
+shop=pasalubong [0x2e0a resolution 23]
+shop=photo [0x2e0a resolution 23]
+shop=printing [0x2e0a resolution 23]
+shop=repair_service [0x2f13 resolution 21]
+shop=scuba [0x2e0a resolution 23]
+shop=shopping_centre [0x2e04 resolution 21]
+shop=stationery [0x2e0a resolution 23]
+shop=tailor [0x2e0a resolution 23]
+shop=tires [0x2f03 resolution 23]
+shop=tyres [0x2f03 resolution 23]
+shop=vulcanizing [0x2f03 resolution 23]
+shop=wine [0x2e0a resolution 23]
+# -------------------------------------------------------------------
+
+sport=10pin [0x2d07 resolution 23]
+sport=9pin [0x2d07 resolution 23]
+sport=airport [0x2d0b resolution 21]
+sport=bowling [0x2d07 resolution 23]
+sport=diving [0x2d09 resolution 23]
+sport=golf [0x2d05 resolution 21]
+sport=multi [0x2d0a resolution 21]
+sport=skating [0x2d08 resolution 23]
+sport=skiing [0x2d06 resolution 23]
+sport=swimming [0x2d09 resolution 23]
+
+# -------------------------------------------------------------------
+
+tourism=alpine_hut [0x2b0f resolution 21]
+tourism=artwork [0x2c04 resolution 21]
+tourism=attraction [0x2c04 resolution 21]
+tourism=attraction & historic=* [0x2c02 resolution 21]
+tourism=camp_site [0x2b03 resolution 21]
+tourism=caravan_site [0x2b03 resolution 21]
+tourism=guest_house [0x2b02 resolution 21]
+tourism=hostel [0x2b02 resolution 21]
+tourism=hotel { name '${name} ${operator}' | '${name}' | '${operator}' } [0x2b01 resolution 20]
+tourism=information [0x4c00 resolution 21 continue]
+tourism=information | information=office [0x4c00 resolution 21]
+tourism=motel [0x2b01 resolution 21]
+tourism=picnic_site [0x4a00 resolution 23]
+tourism=resort [0x2b04 resolution 21]
+tourism=theme_park [0x2c01 resolution 21]
+tourism=viewpoint [0x2c0e resolution 20]
+tourism=wine_cellar [0x2c0a resolution 21]
+tourism=zoo [0x2c07 resolution 21]
+
+# -------------------------------------------------------------------
+
+waterway=waterfall [0x6508 resolution 21]
+
+#barrier=gate [0x2001 resolution 24]
+barrier=toll_booth [0x2500 resolution 23 default_name 'Toll']
+barrier=gate [0x660f resolution 23]
+barrier=bollard | barrier=bus_trap
+    {add access = no; add bicycle = yes; add foot = yes} [0x660f resolution 24]
+barrier=block | barrier=cycle_barier | barrier=stile | barrier=kissing_gate
+    {add access = no; add foot = yes} [0x660f resolution 23]
+
+
+#request by rally
+red_cross_loc=office [0x3009 resolution 23]
+
+# convert building polygon to point POI
+building=* [0x6402 resolution 24]
+
+
+# all other generic tags
+historic=* [0x2c04 resolution 21]
+leisure=* [0x2c06 resolution 22]
+man_made=* [0x6402 resolution 23]
+shop=* [0x2e0a resolution 23]
+sport=* [0x2d0a resolution 21]
+tourism=* [0x2c04 resolution 21]
+
+
+# reducing road speed when approaching traffic signals, etc.
+highway=traffic_signals { add mkgmap:road-speed = '-2'; add mkgmap:road-speed-min = '1' }
+highway=crossing { add mkgmap:road-speed = '-1'; add mkgmap:road-speed-min = '1' }
+highway=stop { add mkgmap:road-speed = '-2'; add mkgmap:road-speed-min = '1' }
+traffic_calming=* { add mkgmap:road-speed = '-2'; add mkgmap:road-speed-min = '1' }
+barrier=toll_booth { add mkgmap:road-speed = '-2'; add mkgmap:road-speed-min = '1' }
+
+# -------------------------------------------------------------------
+# No assigned categories
+
+# amenity=fountain 
+# amenity=arts_centre 
+# highway=crossing
+# highway=mini_roundabout
+# highway=turning_circle
+#leisure=arts_centre
+
+# man_made=water_tower
+# man_made=water_tank
+# man_made=works
+# man_made=hump
+# man_made=mast
+
+# natural=reef
+# natural=shoal
+
+# sport=cockfighting [0x resolution 20]
+# sport=horse_racing [0x resolution 20]
+# sport=multi [0x resolution 20]
+# sport=racquet [0x resolution 20]
+# sport=tennis [0x resolution 20]
+# sport=waterskiing [0x resolution 20]
+# sport=badminton [0x resolution 20]
+# sport=basketball [0x resolution 20]
+# sport=* [0x resolution 20]
+
+# tourism=chalet
+
+# Unused Categories
+
+# Marine
+# Public Land Survey
+# Other
