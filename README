@@ -11,8 +11,13 @@ Download maps here (choose one):
 
 Changes and updates:
 
+20110223
+ - city and street search now working via mapsource, roadtrip and basecamp "Send to device option"
+ - reorganize places tags
+ - add branch in bank names
+
 20110106
- -Oneway arrows on highways
+ - Oneway arrows on highways
 
 20101022
  - New typ style created by Rally as the default
