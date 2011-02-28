@@ -155,3 +155,12 @@ waterway=river [0x1f resolution 18]
 waterway=stream [0x18 resolution 20]
 
 man_made=pipeline {name '${operator}'} [0x28 resolution 23]
+# barierrs and fences
+barrier=wall [0x10f02 resolution 24 continue]
+barrier=retaining_wall [0x10f03 resolution 24 continue]
+barrier=city_wall [0x10f04 resolution 23 continue]
+barrier=fence [0x10f05 resolution 24 continue]
+barrier=wood_fence [0x10f05 resolution 24 continue]
+barrier=wire_fence [0x10f05 resolution 24 continue]
+barrier=metal_fence [0x10f05 resolution 24 continue]
+( natural=cliff | barrier=cliff ) {set name='${name} cliff' | 'cliff'} [0x10f01 resolution 23 continue]
