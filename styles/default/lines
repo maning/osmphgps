@@ -135,7 +135,7 @@ highway=* & area!=yes [0x07 ]
 
 # -------------------------------------------------------------------
 natural=coastline [0x15 resolution 12]
-power=line [0x29 resolution 20]
+#power=line [0x29 resolution 20]
 
 # -------------------------------------------------------------------
 
