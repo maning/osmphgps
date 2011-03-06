@@ -326,7 +326,7 @@ sport=swimming [0x2d09 resolution 23]
 # -------------------------------------------------------------------
 
 tourism=alpine_hut [0x2b0f resolution 21]
-tourism=artwork [0x2c0f resolution 21]
+tourism=artwork [0x2c04 resolution 21]
 tourism=attraction [0x2c04 resolution 21]
 tourism=attraction & historic=* [0x2c02 resolution 21]
 tourism=camp_site [0x2b03 resolution 21]
