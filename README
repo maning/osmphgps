@@ -15,6 +15,7 @@ Changes and updates:
  - city and street search now working via mapsource, roadtrip and basecamp "Send to device option"
  - reorganize places tags
  - add branch in bank names
+ - mkgmap version index-1860 
 
 20110106
  - Oneway arrows on highways
