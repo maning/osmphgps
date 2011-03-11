@@ -1,316 +1,326 @@
+
 # -------------------------------------------------------------------
 # This is the OSM-PH mkgmap style file for converting OSM nodes
 # into Garmin POIs.
 # Any line prefaced with # is a comment and will not be applied.
 # Each line is a rule, of the generalised format:
-#  OSM_tag(s)_to_match  [Garmin_type_code resolution]
-# -------------------------------------------------------------------
-# -------------------------------------------------------------------
+# OSM_tag(s)_to_match  [Garmin_type_code resolution]
 
-# Convert 'is_in:city' or 'is_in:town' (if existing) to addr:city to become searchable in mkgmap1625
-#addr:city!=* & is_in:city=* {add addr:city='${is_in:city}'; delete is_in:city}
-#addr:city!=* & is_in:town=* {add addr:city='${is_in:town}'; delete is_in:town}
+# ---------------
+# Rally Notes for this style-file:
+# This works on Mkgmap r1867: (Place-POI with same city-name but different Provinces) 
+# Doesn't work on Mkgmap r1867: Losing some of the barangay assigned with 0x2800 (for unknown reason)
+# Observed in controlled condition (testmap): 
+# 	     if Barangay-POI (0x2800) is more than 30kilometers from it's City-POI, 
+#            it becomes unsearchable in Mapsource, because it will fail to associate itself 
+#            to that City-POI.
 
-# Temporary HACK for none search-able 'state' tags
-#is_in:state=* | addr:state=* | addr:province=* 
-#{add prov_name='${is_in:state}'; add prov_name='${addr:state}'; add prov_name='${addr:province}';
-# add is_in='${prov_name},,Philippines'; set is_in='${prov_name},,Philippines';
-# delete is_in:state; delete addr:state; delete addr:province;}
-
-# all is_in:country to Philippines 
-is_in:country='disputed territory' {set is_in:country=Philippines}
-is_in:country='Indonesia' {set is_in:country=Philippines}
-place=* {add is_in:country=Philippines}
-
-# Transportation
-aeroway=aerodrome [0x2f04 resolution 20]
-aeroway=airport [0x2f04 resolution 20]
-aeroway=helipad [0x5904 resolution 20]
-aeroway=terminal [0x2f04 resolution 20]
-# -------------------------------------------------------------------
-
-amenity=atm { name '${operator}: ${name}' | '${name}' | '${operator}' } [0x2f06 resolution 23]
-amenity=bank { name '${name} (${operator}) - ${branch}' | '${name}  - ${branch}' | '${operator}  - ${branch}' } [0x2f06 resolution 23]
-amenity=bar [0x2d02 resolution 23]
-amenity=bicycle_parking [0x2f0b resolution 22 default_name 'bikepark']
-amenity=biergarten [0x2d02 resolution 23]
-amenity=bureau_de_change [0x2f11 resolution 23]
-amenity=bus_station [0x2f08 resolution 21]
-amenity=cafe [0x2a0e resolution 23]
-amenity=car_rental [0x2f02 resolution 22]
-amenity=car_wash [0x2f0e resolution 23]
-amenity=casino [0x2d04 resolution 23]
-amenity=cinema [0x2d03 resolution 22]
-amenity=clinic [0x3002 resolution 21]
-amenity=coffee_shop [0x2a0e resolution 23]
-amenity=college [0x2c05 resolution 21]
-amenity=community_centre [0x2c09 resolution 23]
-amenity=concert_hall [0x2c09 resolution 23]
-amenity=conference_centre [0x2c09 resolution 23]
-amenity=convention_center [0x2c09 resolution 23]
-amenity=community_centre [0x3005 resolution 23]
-amenity=community_center [0x3005 resolution 23]
-amenity=courthouse [0x3004 resolution 21]
-amenity=dentist [0x3002 resolution 21]
-amenity=doctors [0x3002 resolution 21]
-amenity=drinking_water [0x5000 resolution 24 default_name 'Water']
-amenity=embassy & country=* { name '${country} ${name|def:}' } [0x3003 resolution 21]
-amenity=embassy & country!=* [0x3003 resolution 21 default_name 'Embassy']
-
-amenity=emergency_phone [0x2f12 resolution 23]
-amenity=event_venue [0x2c09 resolution 23]
-amenity=fast_food & cuisine=grill [0x2a03 resolution 23]
-amenity=fast_food & cuisine=pizza [0x2a0a resolution 23]
-amenity=fast_food & cuisine='pizza;kebab' [0x2a0a resolution 23]
-amenity=fast_food [0x2a07 resolution 23]
-amenity=ferry_terminal [0x2f09 resolution 18 default_name 'Ferry']
-amenity=fire_station [0x3008 resolution 21]
-amenity=food_court [0x2a13 resolution 23]
-amenity=fuel { name '${operator}: ${name}' | '${name}' | '${operator}' } [0x2f01 resolution 21 ]
-amenity=funeral [0x2f11 resolution 23]
-amenity=funeral_services [0x2f11 resolution 23]
-amenity=fx_station [0x2f08 resolution 21 default_name 'FX station']
-amenity=grave_yard [0x6403 resolution 21]
-amenity=hospital [0x3002 resolution 21]
-amenity=iceplant [0x2f11 resolution 23]
-amenity=jeepney_station [0x2f08 resolution 21 default_name 'PUJ station']
-amenity=kindergarten [0x2c05 resolution 23]
-amenity=library [0x2c03 resolution 23]
-amenity=mall [0x2e04 resolution 21]
-amenity=market [0x2e04 resolution 21]
-amenity=marketplace [0x2e04 resolution 21]
-amenity=nightclub [0x2d02 resolution 23]
-amenity=parking [0x2f0b resolution 22 default_name='carpark']
-amenity=pharmacy [0x2e05 resolution 23]
-amenity=place_of_worship [0x2c0b resolution 21]
-amenity=place_of_worship & religion=muslim [0x6404 resolution 21 default_name 'Mosque']
-amenity=police [0x3001 resolution 21]
-amenity=post_office [0x2f05 resolution 21]
-amenity=preschool [0x2c05 resolution 23]
-amenity=prison [0x3000 resolution 21]
-amenity=pub [0x2d02 resolution 23]
-amenity=public_building [0x3000 resolution 21]
-amenity=public_market [0x2e04 resolution 21]
-amenity=recycling [0x2f15 resolution 23]
-amenity=rescue [0x2f14 resolution 23]
-amenity=restaurant & cuisine=* [0x2a00 resolution 23]
-amenity=restaurant & cuisine=american [0x2a01 resolution 23]
-amenity=restaurant & cuisine=asian [0x2a02 resolution 23]
-amenity=restaurant & cuisine=bagel [0x2a0d resolution 23]
-amenity=restaurant & cuisine=barbecue [0x2a03 resolution 23]
-amenity=restaurant & cuisine='cafe/diner' [0x2a0e resolution 23]
-amenity=restaurant & cuisine=chinese [0x2a04 resolution 23]
-amenity=restaurant & cuisine=deli [0x2a05 resolution 23]
-amenity=restaurant & cuisine=french [0x2a0f resolution 23]
-amenity=restaurant & cuisine=german [0x2a10 resolution 23]
-amenity=restaurant & cuisine=grill [0x2a03 resolution 23]
-amenity=restaurant & cuisine=international [0x2a06 resolution 23]
-amenity=restaurant & cuisine=italian [0x2a08 resolution 23]
-amenity=restaurant & cuisine=japanese [0x2a02 resolution 23]
-amenity=restaurant & cuisine=korean [0x2a02 resolution 23]
-amenity=restaurant & cuisine=mexican [0x2a09 resolution 23]
-amenity=restaurant & cuisine=pizza [0x2a0a resolution 23]
-amenity=restaurant & cuisine='pizza;kebab' [0x2a0a resolution 23]
-amenity=restaurant & cuisine=sea_food [0x2a0b resolution 23]
-amenity=restaurant & cuisine=spanish [0x2a09 resolution 23]
-amenity=restaurant & cuisine=speciality [0x2a12 resolution 23]
-amenity=restaurant & cuisine=steak [0x2a0c resolution 23]
-amenity=restaurant & cuisine=thai [0x2a02 resolution 23]
-amenity=restaurant [0x2a00 resolution 23]
-amenity=retail [0x2e0a resolution 23]
-amenity=school [0x2c05 resolution 22]
-amenity=slaughterhouse [0x2f11 resolution 23]
-amenity=supermarket [0x2e02 resolution 22]
-amenity=swimming_pool [0x2d09 resolution 23]
-amenity=telephone [0x5100 resolution 23 default_name 'Telephone']
-amenity=theatre [0x2d01 resolution 22]
-amenity=toilets [0x2f0c resolution 23 default_name 'Toilets' ]
-amenity=town_hall [0x3003 resolution 21]
-amenity=townhall [0x3003 resolution 21]
-amenity=tricycle_station [0x2f18 resolution 21 default_name 'Tricycle station']
-amenity=university [0x2c05 resolution 22]
-amenity=veterinary [0x3002 resolution 23]
-amenity=wrecker_service [0x2f0a  resolution 23]
-amenity=zoo [0x2c07 resolution 22]
-
-# -------------------------------------------------------------------
-
-# -------------------------------------------------------------------
-
-highway=bus_stop [0x2f08 resolution 21]
-highway=gate [0x660f resolution 23]
-#highway=motorway_junction [0x2000 resolution 16]
-#highway=motorway_junction { name '${ref} ${name}' | '${ref}' | '${name}' } 
-highway=services [0x210f resolution 16]
-highway=services { name '${ref} ${name}' | '${ref}' | '${name}' }
-highway=toll_booth [0x2500 resolution 23 default_name 'Toll']
-highway=traffic_signals [0x180f resolution 23]
-
-# -------------------------------------------------------------------
-
-historic=archaeological_site [0x2c02 resolution 21]
-historic=memorial [0x2c10 resolution 21]
-historic=monument [0x2c11 resolution 21]
-historic=museum | tourism=museum [0x2c02 resolution 21]
-historic=ruins | historic=archaeological_site [0x2c12 resolution 21]
-historic=wreck [0x1c01 resolution 21]
-# -------------------------------------------------------------------
-
-leisure=beach_resort [0x2b04 resolution 21]
-leisure=casino [0x2d04 resolution 23]
-leisure=concert_hall [0x2c09 resolution 23]
-leisure=fishing [0x4100 resolution 22]
-leisure=golf_course [0x2d05 resolution 22]
-leisure=ice_rink [0x2d08 resolution 23]
-leisure=marina [0x2f09 resolution 23]
-leisure=park [0x2c06 resolution 22]
-leisure=pitch [0x2c08 resolution 23]
-leisure=playground [0x2c0d resolution 22]
-leisure=sports_center | leisure=sports_centre [0x2d0a resolution 21]
-leisure=stadium [0x2c08 resolution 21]
-leisure=track [0x2c08 resolution 22]
-leisure=water_park [0x2b04 resolution 22]
-# -------------------------------------------------------------------
-
-man_made=arch [0x6601 resolution 21]
-man_made=building [0x6402 resolution 23]
-man_made=lighthouse [0x1707 resolution 21]
-man_made=pier [0x2f09 resolution 21]
-man_made=tower [0x6411 resolution 21]
-man_made=tunnel [0x6413 resolution 21]
-man_made=windmill [0x6411 resolution 21]
-# -------------------------------------------------------------------
-
-natural=bay [0x6503 resolution 21]
-natural=beach [0x6604 resolution 21]
-natural=cave [0x6619 resolution 21 default_name 'cave']
-natural=cave_entrance [0x6619 resolution 21 default_name 'cave']
-natural=channel [0x6506 resolution 21] 
-natural=cliff [0x6607 resolution 21]
-natural=falls [0x6508 resolution 21] 
-natural=peak [0x6616 resolution 21]
-natural=spring [0x6511 resolution 21]
-natural=stream [0x6512 resolution 21]
-natural=volcano [0x6616 resolution 21]
-natural=waterfall [0x6508 resolution 21]
-natural=wetland [0x6513 resolution 21]
-natural=wood [0x6618 resolution 21] 
-
-# -------------------------------------------------------------------
-
-# add is_in tags if there is one
-place=city {name '${name}, ${is_in:state}' | '${name}'} [0x0400 resolution 16]
-place=town {name '${name}, ${is_in:state}' | '${name}'} [0x0800 resolution 18]
-place=village {name '${name}, ${is_in:town}' | '${name}, ${is_in:city}' | '${name}'} [0x0c00 resolution 21]
-place=purok [0x0d00 resolution 23]
-place=hamlet [0x0d00 resolution 23]
-place=locality [0x0d00 resolution 23]
-place=subdivision [0x0d00 resolution 23]
-place=suburb [0x0d00 resolution 23]
+# This works on Mkgmap r1882: (all POI with place=village (etc.) works, and can be filtered using Community Category
+# Doesn't work on Mkgmap r1882 (Place-POI with same city-name but different Provinces)
+# ---------------
 
 
-# Highlight Essential Islands for quick visual reference :
+# Assume all POI's are in the Philippines. Set "is_in:country" to Philippines (by Maning)
+#is_in:country='disputed territory' {set is_in:country=Philippines}
+#is_in:country='Indonesia' {set is_in:country=Philippines}
+#place=* {add is_in:country=Philippines}
+#---- rally's note ---- for unknown reason, the above lines seem to mess up the behavior of is_in:<state>,,Philippines below  --- for investigation
+# most probable reason: conflict with "is_in:<state>,,Philippines"
+
+
+# DELETE all existing "is_in:country" tags (to ensure no more conflict)
+  name=* { delete is_in:country }
+
+# ---------------
+
+# STANDARDIZE SPELLINGS (to maximize searchability)
+
+# Forced-Assignment to NCR (is_in:state) all Metro Manila cities
+( place=city | place=town ) & (is_in:region='NCR' | is_in:region='Metro Manila' ) { add is_in:state='NCR'; set is_in:state='NCR' }
+
+# Commonly mispelled city-tags (for place & none-place POI's) 
+# Karlsruhe schema: this only concerns searchability of Barangays/Purok/Subd and Amenity-POI, not cities) 
+  addr:city='Paranaque' {set addr:city='Parañaque'}						
+  addr:city='Las Pinas' {set addr:city='Las Piñas'}
+
+# ---------------
+
+# CITY on FLOATING-STATUS (no province): assign all of them to 'FIXME Province'  
+# Reason: easier for contributors to hunt & edit untagged cities by typing FIXME (on the province filter)
+( place=city | place=town ) &  addr:state!=* & is_in:state!=* & addr:province!=* { add is_in:state='FIXME' } 	
+
+# Ensure all PLACE-POI's to be in PHL, in their respective provinces, in any state-tag format.
+( place=* | place:ph=* ) & ( is_in:state=* | addr:state=* | addr:province=* )  				 						
+{ add prov_name='${is_in:state}'; add prov_name='${addr:state}'; add prov_name='${addr:province}'; 
+  add is_in='${prov_name},,Philippines'; set is_in='${prov_name},,Philippines'; } 		#   add if it doesn't exist; or correct all wrong entries)			
+
+# ---------------
+
+# CITY/TOWN POI
+( place=city | (place=town & capital=true)) & name!=Manila [0x0400 resolution 16]		#   BIG BOLD FONT search-able (city or capital)
+  place=town [0x0800 resolution 18]								#   BIG FONT search-able - Town
+
+# BARANGAY & SUB-UNITS POI (searchable under COMMUNITY Category) 
+# assign none-city HexCode (0x2f00); and convert to Karlsruhe Schema (addr:city) 
+( place=village | place:ph=barangay ) [0x640a resolution 18 continue] 			 	#   SMALL FONT - NO ICON {searchable} - Barangays 
+( place=suburb | place=locality ) [0x640a resolution 23 continue]	  			#   SMALL FONT - NO ICON {searchable} - Districts & none-LGU units & none 
+( place=hamlet | place=subdivision | place:ph=purok | place=purok | 
+  place:ph=sitio | place=sitio ) [0x640a resolution 21 continue]			        #   SMALL FONT - NO ICON {searchable} - Purok / Sub-Barangay / Subdivisions
+   
+( place=village | place:ph=barangay | place=suburb | place=locality |  
+  place=hamlet | place=subdivision | place:ph=purok | place=purok | place:ph=sitio | place=sitio )
+{ set addr:city='${is_in:city}'} [0x2f00 resolution 23]						#   2f00 appeared in generic services (Others Category)
+
+
+# AMENITY POI fault tolerance - convert is_in:city to Karlsruhe Schema (eg: old POI entries from jklinc)
+  place!=* & is_in:city=*  {add addr:city='${is_in:city}'}
+  place!=* & is_in:town=*  {add addr:city='${is_in:town}'}
+
+
+# --------------- BAND-AID SOLUTION ---------------
+# Stabilize Amenity POI with no city tag (by assigning them Fictitious City) 
+# Reason:       untagged POI's will stick to the nearest erroneous City, Town, Hamlet, etc 
+#		(and give false information of their location/s)
+# Potential Limitation - Untagged Amenity POI's must be within 30km radius of the Fictitious City (observed limitation of mkgmap r1867) 
+#
+# Observed: An Amenity-POI will NOT be searchable in PHL if the 2 conditions exist (so it seems): 
+# 1. No addr:city 
+# 2. No corresponding City-POI exists (with an assigned Province which is located in PHL)
+#
+# Step 1. Create a Fictitious low-profile City named '*** OSM PH' (under the Manila POI) 
+     place=city & name=Manila [0x0400 resolution 16 continue]				# the real Manila POI
+     place=city & name=Manila { set name='*** OSM PH'; add is_in='FIXME,,Philippines'; 
+     set is_in='FIXME,,Philippines'} [0x0d00 resolution 24] 				# fictitious city
+    
+# Step 2. Associate all untagged Amenity-POI's to said fictitious city, located in 'FIXME province' in PHL 
+#        (on the theory that should be searchable, coz they belong to a certain city in PHL)
+     place!=* & addr:city!=* & name=* {add addr:city='*** OSM PH'}
+
+
+
+# ---- END OF PLACE-RELATED-POI HACKS ------------------------
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+# PLACE=ISLANDS - Highlight Essential Islands for quick visual reference :
+
 place=island & 
 ( name="Boracay" | name="Panay Island" | name="Guimaras Island"
 | name="Marinduque"
-| name="Verde Island"
-| name="Maricaban Island"
+| name="Verde Island" | name="Fortune Island" | (name="Maricaban Island" & is_in:state="Batangas")
 | name="Lubang Island"
+| name="Mindoro"
 | name="Corregidor Island"
 | name="Talim Island"
-| name="Mindoro"
 | name="Tablas Island" | name="Romblon Island" | name="Banton Island" | name="Sibuyan Island" | name="Carabao Island"
-| name="Bohol" | name="Panglao Island" | name="Lapinig Island"
+| name="Bohol" | name="Panglao Island" | name="Lapinig Island" | name="Cabilao Island"
 | name="Masbate Island" | name="Burias Island" | name="Ticao Island"
-| name="Cebu" | name="Mactan Island" | name="Malapascua Island" | name="Bantayan Island"
+| name="Cebu" | name="Mactan Island" | name="Malapascua Island" | name="Bantayan Island" | name="Hilutangan Island" | (name="Sumilon Island" & is_in:state="Cebu") 
 | name="Pacijan Island" | name="Poro Island" | name="Ponson Island"
 | name="Leyte" | name="Biliran Island"
 | name="Samar" | name="Homonhon Island" | name="Tagapula Island" | name="Almagro Island"
-| name="Negros"
+| name="Negros" | name="Refugio Island / Sipaway" | (name="Apo Island" & is_in:town=Dauin)
 | name="Panaon Island"
 | name="Camiguin Island"
 | name="Siquijor Island"
-| name="Palawan" | name="Busuanga Island" | name="Coron Island" | name="Linapacan Island" | name="Culion Island" 
-| name="Balabac Island" | name="Dumaran Island" | name="Bugsuc Island" | name="Pandanan Island"
-| name="Pamalican Island" | name="Cuyo Island"
-| name="Caluya Island" | name="Semirara Island" | name="Sibay Island"
+| name="Palawan" | name="Busuanga Island" | name="Coron Island" | name="Linapacan Island" | name="Culion Island" | name="Malcapuya Island"
+| name="Balabac Island" | name="Dumaran Island" | name="Bugsuk Island" | (name="Pandanan Island" & is_in:state="Palawan")
+| name="Pamalican Island" | name="Manamoc Island" | name="Cuyo Island" | (name="Pandan Island" & is_in:state="Palawan")
+| name="Caluya Island" | name="Semirara Island" | (name="Sibay Island" & is_in:state="Antique")
 | name="Siargao Island" | name="Dinagat Island" | name="Bucas Islands"
-| name="Sarangani Island" | name="Balut Island"
-| name="Talikud Island"
+| name="Polillo Island" | name="Patnanongan Island" | name="Jomalig Island" | name="Cabalete Island" | name="Alabat Island" | name="Pagbilao Grande Island"
+| name="Palaui Island" | name="Babuyan Island" | name="Batan Island" | name="Sabtang Island"| name="Calayan Island" | name="Fuga Island" | name="Itbayat Island"
+| (name="Samal Island" & is_in:state="Davao del Norte") | name="Talikud Island" 
+| name="Sarangani Islands" 
 | name="Basilan Island" | name="Banton Island" | name="Jolo Island" | name="Tongkil Island" | name="Pangutaran Island"
-| name="Tawi Tawi Island" | name="Cagayan Sulu Island" | name="Samal Island" | name="Turtle Islands"
-| name="Polillo Island" | name="Patnanongan Island" | name="Jomalig Island" | name="Cabalete Island"
-| name="Babuyan Island" | name="Batan Island" | name="Calayan Island" | name="Fuga Island" | name="Itbayat Island"
-| name="Palaui Island"
-| name="Fortune Island"
-| name="Capones Island" | name="Potipot Island"
-| name="Santiago Island"
-| name="Cabarruyan Island"
-| name="Higatangan Island"
+| name="Tawi Tawi Island" | name="Cagayan Sulu Island" | name="Turtle Islands"
 | name="Catanduanes Island" | name="Rapu Rapu Island" | name="Cagraray Island" | name="San Miquel Island"
 | name="Lahuy Island" | name="Quinasalag Island"
+| name="Santiago Island"
+| name="Capones Island" | name="Potipot Island"
+| name="Cabarruyan Island"
+| name="Higatangan Island"
 | name="Hundred Islands"
 )[0x650c resolution 16]
 
-# all other islands
+
 place=island [0x650c resolution 20]
 
-#test for residential polygons names
-landuse=residential [0x0d00 resolution 23]
-landuse=retail [0x2e04 resolution 21]
+
+
+
+
+
+
+# START OF POI FILTERS AND HEX ASSIGNMENTS ==========================
+
 # -------------------------------------------------------------------
-
-railway=halt [0x2f17 resolution 21]
-railway=station [0x2f17 resolution 21]
-railway=tram_stop [0x2f17 resolution 21]
-
+# TRANSPORTATION and Car Repair related icons
 # -------------------------------------------------------------------
+amenity=fuel [0x2f01 resolution 16]
 
-shop=antique [0x2e0a resolution 23]
-shop=antiques [0x2e0a resolution 23]
-shop=bakers [0x2e02 resolution 23]
-shop=bakery [0x2e02 resolution 23]
-shop=beverages [0x2e0a resolution 23]
-shop=bicycle [0x2e0a resolution 23]
-shop=books [0x2e0a resolution 23]
-shop=butcher [0x2e00 resolution 23]
+amenity=parking [0x2f0b resolution 22 default_name='carpark']
+amenity=bicycle_parking [0x2f0b resolution 22 default_name 'bikepark']
+
+amenity=car_rental [0x2f02 resolution 23]
+amenity=car_wash [0x2f0e resolution 23]
+
+shop=car_repair [0x2f03 resolution 23]
+amenity=wrecker_service [0x2f0a resolution 23]
+shop=tires [0x2f1b resolution 23]
+shop=tyres [0x2f1b resolution 23]
+shop=vulcanizing [0x2f1b resolution 23]
+
 shop=car [0x2f07 resolution 22]
 shop=car_dealer [0x2f07 resolution 22]
-shop=car_repair [0x2f03 resolution 23]
-shop=chemist [0x2e05 resolution 23]
-shop=clothes [0x2e07 resolution 23]
-shop=computer [0x2e0b resolution 23]
-shop=convenience [0x2e02 resolution 23]
-shop=department_store [0x2e01 resolution 21]
-shop=doityourself [0x2e09 resolution 23]
-shop=electronics [0x2e0a resolution 23]
-shop=fashion [0x2e07 resolution 23]
-shop=florist [0x2e0a resolution 23]
-shop=garden [0x2e08 resolution 23]
-shop=garden_center [0x2e08 resolution 23]
-shop=garden_centre [0x2e08 resolution 23]
-shop=general [0x2e03 resolution 23]
-shop=grocery [0x2e02 resolution 23]
-shop=hairdresser [0x2f10 resolution 20]
-shop=hardware [0x2e09 resolution 23]
-shop=home_furnishing [0x2e09 resolution 23]
-shop=laundry [0x2e0a resolution 23]
-shop=mall [0x2e04 resolution 21]
-shop=organic [0x2e0a resolution 23]
-shop=outdoor [0x2e0a resolution 23]
-shop=pasalubong [0x2e0a resolution 23]
-shop=photo [0x2e0a resolution 23]
-shop=printing [0x2e0a resolution 23]
-shop=repair_service [0x2f13 resolution 21]
-shop=scuba [0x2e0a resolution 23]
-shop=shopping_centre [0x2e04 resolution 21]
-shop=stationery [0x2e0a resolution 23]
-shop=tailor [0x2e0a resolution 23]
-shop=tires [0x2f03 resolution 23]
-shop=tyres [0x2f03 resolution 23]
-shop=vulcanizing [0x2f03 resolution 23]
-shop=wine [0x2e0a resolution 23]
+
+shop=bicycle [0x2f1a resolution 23]
+shop=motorcycle [0x2f1a resolution 23]
+
+highway=crossing [0x6406 resolution 21]
+railway=level_crossing [0x6406 resolution 21]
+
+
+# International Airports:
+aeroway=aerodrome & 
+( name="Laoag Airport" | name="Laoag International Airport"			  	#	
+| name="Diosdado Macapagal International Airport" | name="Clark International Airport"	# Clark International Airport / DMIA
+| name="Ninoy Aquino International Airport"						# NAIA
+| name="Mactan-Cebu International Airport"						# CEB
+| name="Francisco Bangoy International Airport"						# Davao International Airport
+| name="General Santos International Airport"
+| name="Zamboanga International Airport"
+) [0x2f04 resolution 16]
+
+aeroway=aerodrome [0x2f04 resolution 18]
+aeroway=airport [0x2f04 resolution 16]
+aeroway=terminal [0x2f04 resolution 20]
+
+
+
+
+
+
+
+# GarminPC:Transportation:Transit Service 0x2f17 
+railway=halt [0x2f17 resolution 21]
+railway=station [0x2f17 resolution 20]
+railway=tram_stop [0x2f17 resolution 21]
+
+# GarminPC:Transportation:Ground Transportation 0x2f08
+amenity=bus_station [0x2f08 resolution 18]
+highway=bus_stop [0x2f08 resolution 18]
+amenity=fx_station [0x2f08 resolution 21 default_name 'FX station']
+amenity=jeepney_station [0x2f08 resolution 21 default_name 'PUJ station']
+amenity=taxi [0x2f08 resolution 21 default_name 'Taxi']
+
+# NONE Garmin standard - looks like not searchable - investigate
+amenity=tricycle_station [0x2f18 resolution 23 default_name 'Trike station']
+highway=bus_stop [0x2f08 resolution 23 default_name 'PUV Stop']
+
+
+
+
+
+# Major Ports based on: http://wiki.answers.com/Q/What_are_the_major_ports_in_the_Philippines
+# Other List: http://en.wikipedia.org/wiki/Transportation_in_the_Philippines
+# Tag Reference http://wiki.openstreetmap.org/wiki/Humanitarian_OSM_Tags/Humanitarian_Data_Model
+# examples: sea_port river_port lake_port beaching bank pier ramp anchorage 
+
+# in the news...The 10 major ports (to be by international standards by 2010) includes 
+#North Harbour (NH), 
+#South Harbour (SH), 
+#Manila International Container Terminal (MICT), 
+#Batangas, 
+#Iloilo, 
+#Ozamiz, 
+#Cagayan de Oro, 
+#Zamboanga, 
+#Davao (Sasa)
+#others suggested by some website: Bacolod Butuan Lucena, Cotabato, Allen, Ormoc, Ozamiz and Tagbilaran
+
+# HACK - to make major seaport visible on mapsource even when zoomed out (by adding 0x43-- none-searchable hex)
+# the hack doesn't seem to work on 76csx. The pier is only visible at 120m.
+amenity=ferry_terminal & 
+( name="Batangas Pier" 					# International Port
+| name="Cagayan De Oro Port (Macabalan)"		# Port of Cagayan de Oro
+| name="Cebu Port" 					# Cebu Intenational Port (CIP)
+| name="Davao Port (Sasa)"				# Port of Davao
+| name="Guimaras Island"
+| name="Iligan"
+| name="Port of Iloilo"					# Iloilo Port
+| name="Jolo"
+| name="Legazpi"
+| name="Manila North Harbor"				# (NH)
+| name="Manila South Harbor"				# (SH)
+| name="Manila International Container Terminal" 	# (MICT)
+| name="Masao"
+| name="Ozamiz Port"					# Port of Ozamiz
+| name="Puerto Princesa"
+| name="San Fernando"
+| name="Subic Bay"
+| name="Zamboanga Port"					# Zamboanga International Seaport / Port of Zamboanga
+) {add waterway:port_type=sea_port; set waterway:port_type=sea_port}
+
+# Sea_Ferry / Harbor / Marina / River_Ferry
+waterway:port_type=sea_port [0x4300 resolution 17]	# big sea_ports that can handle big ships
+waterway:port_type=lake_port [0x4301 resolution 18]	# regular Boat Stations on Lake
+waterway:port_type=river_port [0x4302 resolution 18]	# regular Boat Stations along river (eg. private, inter-barangay)
+waterway:port_type=river_ferry [0x4303 resolution 18]	# Eg. Pasig River Ferry
+leisure=marina [0x2f09 resolution 18]			# normally will be assigned for leisure boats / fishing vessels	?
+amenity=harbor [0x650b resolution 16]			# provides extra protection for ships against big waves during typhoon ?
+amenity=ferry_terminal [0x2f09 resolution 18 continue]	# to be universally assigned to (pier/beach)terminals for inter-island / inter-port travel via water
+
+
+
+
 # -------------------------------------------------------------------
+# ENTERTAINMENT,HISTORY,LEISURE and SPORTS (killing time & travel)
+# -------------------------------------------------------------------
+
+# HISTORIC & MUSEUM STUFF
+tourism=information | information=office [0x2c00 resolution 21 default_name 'Information' continue] 	# this makes tourist=information searchable - but will be using invisible color
+tourism=information | information=office [0x4c00 resolution 21]		 				# not SEARCHABLE, but visible when zoomed out
+
+historic=wreck [0x1c01 resolution 21]
+historic=museum | tourism=museum [0x2c02 resolution 19]
+historic=memorial [0x2c10 resolution 19]
+historic=monument [0x2c11 resolution 21]
+historic=ruins | historic=archaeological_site [0x2c12 resolution 19]
+
+tourism=attraction & historic=* [0x2c02 resolution 19]
+
+
+# ATTRACTION & LANDMARKS
+leisure=playground [0x2c0d resolution 22]
+tourism=viewpoint [0x2c0e resolution 20]
+tourism=artwork [0x2c0f resolution 21]
+tourism=attraction [0x2c04 resolution 21]
+
+tourism=theme_park [0x2c01 resolution 21]
+tourism=picnic_site [0x2c06 resolution 21]
+tourism=zoo | amenity=zoo [0x2c07 resolution 21]
+leisure=fishing [0x4100 resolution 22]		# THIS IS NOT SEARCHABLE
+
+amenity=cinema [0x2d03 resolution 22]
+amenity=theatre [0x2d01 resolution 22]
+leisure=concert_hall [0x2c09 resolution 23]
+leisure=golf_course [0x2d05 resolution 22]
+leisure=ice_rink [0x2d08 resolution 23]
+leisure=casino | amenity=casino [0x2d04 resolution 23]
+
+# Sports and Outdoor-Play Activities
+leisure=park [0x2c06 resolution 22]
+leisure=pitch [0x2c08 resolution 23]
+leisure=sports_center | leisure=sports_centre [0x2d0a resolution 21]
+leisure=stadium [0x2c08 resolution 21]
+leisure=track [0x2c08 resolution 22]
+
 
 sport=10pin [0x2d07 resolution 23]
 sport=9pin [0x2d07 resolution 23]
@@ -318,83 +328,1251 @@ sport=airport [0x2d0b resolution 21]
 sport=bowling [0x2d07 resolution 23]
 sport=diving [0x2d09 resolution 23]
 sport=golf [0x2d05 resolution 21]
+sport=basketball [0x2c08 resolution 23]
 sport=multi [0x2d0a resolution 21]
 sport=skating [0x2d08 resolution 23]
 sport=skiing [0x2d06 resolution 23]
 sport=swimming [0x2d09 resolution 23]
+amenity=swimming_pool [0x2d09 resolution 23]
+amenity=fitness_center[0x2d0a resolution 23]
+
+
 
 # -------------------------------------------------------------------
+# LODGING - PLACES TO SLEEP FOR THE NIGHT (5-categories)
+# -------------------------------------------------------------------
 
-tourism=alpine_hut [0x2b0f resolution 21]
-tourism=artwork [0x2c04 resolution 21]
-tourism=attraction [0x2c04 resolution 21]
-tourism=attraction & historic=* [0x2c02 resolution 21]
-tourism=camp_site [0x2b03 resolution 21]
-tourism=caravan_site [0x2b03 resolution 21]
+# GarminPC:Lodging:Other 0x2b00 is generic hotel, assigned to Motel (offers <24hrs stay or short-time) <pink lodging icon>
+tourism=motel [0x2b00 resolution 21]
+
+# GarminPC:Lodging:Hotel/Motel 0x2b01 <green lodging icon>
+tourism=hotel { name '${name} ${operator}' | '${name}' | '${operator}'; } [0x2b01 resolution 20]
+
+# GarminPC:Lodging:Bed&Breakfast_Inn 0x2b02 <yellow lodging icon>
 tourism=guest_house [0x2b02 resolution 21]
 tourism=hostel [0x2b02 resolution 21]
-tourism=hotel { name '${name} ${operator}' | '${name}' | '${operator}' } [0x2b01 resolution 20]
-tourism=information [0x4c00 resolution 21 continue]
-tourism=information | information=office [0x4c00 resolution 21]
-tourism=motel [0x2b01 resolution 21]
-tourism=picnic_site [0x4a00 resolution 23]
+tourism=alpine_hut [0x2b02 resolution 21]
+tourism=chalet [0x2b02 resolution 21]
+
+# GarminPC:Lodging:Campground/RV_Park 0x2b03 <green tent icon>
+tourism=camp_site [0x2b03 resolution 18]
+tourism=caravan_site [0x2b03 resolution 21]
+
+# GarminPC:Lodging:Resort 0x2b04 <resort icon>
 tourism=resort [0x2b04 resolution 21]
-tourism=theme_park [0x2c01 resolution 21]
-tourism=viewpoint [0x2c0e resolution 20]
-tourism=wine_cellar [0x2c0a resolution 21]
-tourism=zoo [0x2c07 resolution 21]
+leisure=beach_resort [0x2b04 resolution 21]
+leisure=water_park [0x2b04 resolution 22]
+
+# -------------------------------------------------------------------
+# SCHOOLS, COMMUNITY  AND OTHER BUILDINGS
+# -------------------------------------------------------------------
+amenity=concert_hall [0x2c09 resolution 23]
+amenity=conference_centre [0x2c09 resolution 23]
+amenity=convention_center [0x2c09 resolution 23]
+amenity=event_venue [0x2c09 resolution 23]
+
+amenity=community_centre [0x3005 resolution 23]
+amenity=community_center [0x3005 resolution 23]
+amenity=civic_org [0x2f14 resolution 21]
+
+amenity=place_of_worship & religion=muslim [0x2c0b resolution 21 default_name 'Mosque']
+amenity=place_of_worship [0x2c0b resolution 21]
+
+amenity=school [0x2c05 resolution 23]
+amenity=preschool [0x2c05 resolution 23]
+amenity=kindergarten [0x2c05 resolution 23]
+amenity=college [0x2c05 resolution 21]
+amenity=university [0x2c05 resolution 22]
+amenity=library [0x2c03 resolution 23]
+
+man_made=works [0x2f0f resolution 23]		# Factory / Manufacturing facility
 
 # -------------------------------------------------------------------
 
-waterway=waterfall [0x6508 resolution 21]
 
-#barrier=gate [0x2001 resolution 24]
-barrier=toll_booth [0x2500 resolution 23 default_name 'Toll']
-barrier=gate [0x660f resolution 23]
+# -------------------------------------------------------------------
+amenity=police [0x3001 resolution 21]
+# EMERGENCY & HEALTH Services Icons
+amenity=fire_station [0x3008 resolution 21]
+amenity=rescue [0x3008 resolution 23]
+amenity=hospital & major=true [0x6408 resolution 18]
+amenity=hospital [0x3002 resolution 16]
+amenity=clinic [0x3010 resolution 21]
+amenity=dentist [0x3010 resolution 23]
+amenity=doctors [0x3010 resolution 21]
+amenity=doctor [0x3010 resolution 21]
+
+shop=telecommunication [0x2f12 resolution 23]
+
+amenity=emergency_phone [0x5100 resolution 23 default_name 'Emergency']
+amenity=telephone [0x5100 resolution 23 default_name 'Telephone']
+amenity=toilets [0x4e00 resolution 23 default_name 'Toilets' ]
+
+name='Philippine National Red Cross' [0x3009 resolution 18]
+red_cross_loc=office [0x3009 resolution 18]
+humanitarian=red_cross [0x3009 resolution 18]
+
+amenity=veterinary [0x3011 resolution 23]
+shop=pet_store [0x3011 resolution 23]
+shop=pet_supply [0x3011 resolution 23]
+
+# -------------------------------------------------------------------
+# GOVERNMENT AND CIVIL BUILDINGS
+# -------------------------------------------------------------------
+amenity=embassy & country=* { name '${country} ${name|def:}' } [0x3000 resolution 18]
+amenity=embassy & country!=* [0x3000 resolution 18 default_name 'Embassy']
+amenity=courthouse [0x3004 resolution 21]
+amenity=post_office [0x2f05 resolution 21]
+amenity=prison [0x3013 resolution 21]
+
+#amenity=public_building & building=* [0x3007 resolution 22]
+amenity=public_building [0x3007 resolution 22]
+
+amenity=town_hall [0x3003 resolution 18]
+amenity=townhall [0x3003 resolution 18]
+
+
+# -------------------------------------------------------------------
+
+barrier=gate & access=private [0x2002 resolution 24]
+barrier=gate & access=permissive [0x2003 resolution 24]
+barrier=gate & access=pedestrian [0x2004 resolution 24]
+barrier=gate & access=closed [0x2005 resolution 24]
+highway=gate [0x2001 resolution 24]
+barrier=gate [0x2001 resolution 24]
+barrier=sally_port [0x2001 resolution 24]
 barrier=bollard | barrier=bus_trap
-    {add access = no; add bicycle = yes; add foot = yes} [0x660f resolution 24]
+    {add access = no; add bicycle = yes; add foot = yes} [0x660f resolution 21]
 barrier=block | barrier=cycle_barier | barrier=stile | barrier=kissing_gate
-    {add access = no; add foot = yes} [0x660f resolution 23]
+    {add access = no; add foot = yes} [0x660f resolution 21]
 
-
-#request by rally
-red_cross_loc=office [0x3009 resolution 23]
-
-# convert building polygon to point POI
-building=* [0x6402 resolution 24]
-
-
-# all other generic tags
-historic=* [0x2c04 resolution 21]
-leisure=* [0x2c06 resolution 22]
-man_made=* [0x6402 resolution 23]
-shop=* [0x2e0a resolution 23]
-sport=* [0x2d0a resolution 21]
-tourism=* [0x2c04 resolution 21]
-
-
-# reducing road speed when approaching traffic signals, etc.
-highway=traffic_signals { add mkgmap:road-speed = '-2'; add mkgmap:road-speed-min = '1' }
-highway=crossing { add mkgmap:road-speed = '-1'; add mkgmap:road-speed-min = '1' }
-highway=stop { add mkgmap:road-speed = '-2'; add mkgmap:road-speed-min = '1' }
-traffic_calming=* { add mkgmap:road-speed = '-2'; add mkgmap:road-speed-min = '1' }
-barrier=toll_booth { add mkgmap:road-speed = '-2'; add mkgmap:road-speed-min = '1' }
 
 # -------------------------------------------------------------------
+
+# Expressway Toll Booth 
+barrier=toll_booth [0x2500 resolution 23 default_name 'Toll']
+highway=toll_booth [0x2501 resolution 19 default_name 'Toll']
+
+# Motorway Exit Point (junction)
+highway=motorway_junction { name '${ref} ${name}' | '${ref}' | '${name}' } 
+highway=motorway_junction [0x2701 resolution 19 default_name 'Exit Point']
+
+# Sevice Exit Point (StopOver) for Fuel / Restroom / Shops
+highway=services { name '${ref} ${name}' | '${ref}' | '${name}' }
+highway=services [0x2702 resolution 19]
+
+highway=traffic_signals [0x180f resolution 23]
+
+# Roadside Signboards & Archs (Not Search-able)
+highway=km_marker [0x5a00 resolution 21]
+highway=milestone [0x5a00 resolution 21]
+man_made=km_marker [0x5a00 resolution 21]		# DPWH KM marker
+historic=km_marker [0x5a01 resolution 21]		# eg. Death March KM marker
+historic=wayside_shrine [0x5a04 resolution 21]
+traffic_sign=city_limit [0x5a05 resolution 21]
+man_made=highway_boundary [0x5a06 resolution 21]	# Barangay Boundary	
+man_made=arch [0x5a06 resolution 21] 			# http://www.huffingtonpost.com/2010/12/16/worlds-most-beautiful-man_n_797829.html#s209720&title=Arc_de_Triomf
+
+# -------------------------------------------------------------------
+
+man_made=lighthouse [0x1707 resolution 21]
+man_made=pier [0x2f09 resolution 21]
+man_made=tower [0x6411 resolution 21]
+# man_made=mast [0x6411 resolution 21]
+man_made=windmill [0x6417 resolution 21]
+man_made=tunnel [0x6413 resolution 21]
+man_made=tunnel_entrance [0x6413 resolution 21]
+
+man_made=dam [0x6407 resolution 16]
+waterway=dam [0x6407 resolution 16]
+
+#man_made=survey_point				# BLLM, Triangulation Point
+
+
+# -------------------------------------------------------------------
+
+
+# Utilities
+amenity=utilities [0x2f15 resolution 23]
+power=generator
+| power=substation
+| power_source=hydro
+| power_source=nuclear
+| power_source=geothermal
+| power_source=biofuel
+[0x2f15 resolution 23]
+power=tower [0x640d resolution 23]
+power=pole [0x640d resolution 23]	# note: assign a smaller icon	
+
+# Recycled Products / 2nd Hand Items
+amenity=recycling [0x2e10 resolution 23]
+shop=junkshop [0x2e10 resolution 23]
+shop=surplus [0x2e10 resolution 23]
+
+# Waste Disposal & Trash Containers
+
+
+# -------------------------------------------------------------------
+
+# take note of natural=wood's conflict with polygon (if any)
+
+natural=bay [0x6503 resolution 18]
+natural=cove [0x6507 resolution 18]
+natural=beach [0x6604 resolution 21]
+natural=cave [0x6619 resolution 21]
+natural=cave_entrance [0x6619 resolution 21]
+natural=channel [0x6506 resolution 18] 
+natural=cliff [0x6607 resolution 18]
+natural=peak [0x6616 resolution 18]
+natural=spring [0x6511 resolution 20]
+natural=hot_spring [0x0c resolution 20]
+natural=stream [0x6512 resolution 21]
+natural=volcano [0x6616 resolution 18]
+natural=wetland [0x6513 resolution 21]
+natural=wood [0x6618 resolution 21] 
+
+natural=hot_spring [0x0c resolution 18]
+natural=falls [0x6508 resolution 18]
+waterway=waterfall [0x6508 resolution 18] 
+
+landuse=quarry [0x640c resolution 18]
+
+landuse=aquaculture [0x4100 resolution 18]
+#aquaculture=fish ...oyster/shrimp/mussels
+
+amenity=drinking_water [0x5000 resolution 21 default_name 'Water']
+
+#none searchable amenities
+amenity=shower [0x4f00 resolution 24]
+amenity=bench [0x4901 resolution 24]
+
+
+
+# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
+# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
+# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
+# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
+# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
+# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
+#
+# -------------------------------------------------------------------
+# F O O D   A N D   D R I N K S 
+# -------------------------------------------------------------------
+# PRE-FILTER & PRE-TAGGING (by name-specific)  
+# -------------------------------------------------------------------
+# ###############  BRUTEFORCE PRE-FILTERING EXPERIMENT #################
+# using http://www.munchpunch.com/ database "By Cuisine" classification. (not all) 
+# some spellings were cross-referenced with their respective websites 
+# Note: "*" asterisk (after name) means FIXME for spelling on OSM
+# Note: check for duplications (eg american & pizza or burger / italian/pasta & pizza)
+# (check for name duplications using FIND function)
+# TIP: COMMON MISTAKE not using " " if name has an apostrophe; putting "|" on first line; name has one missing ' 
+# Observation: Most of the time this namefilter will not work because "name" appears to be case-sensitive
+# -------------------------------------------------------------------
+# AMERICAN (American - 0x2a01) (american food that is NOT (primarily) selling burgers, or has 'pizza' on it's name brand)
+#name='American' | name='Burger' {set name="Greenwich *"} [0x2a0a resolution 23]
+# -------------------------------------------------------------------
+# ASIAN # THAI # SINGAPOREAN # MALAYSIAN # VIETNAMESE # INDONESIAN (Asian - 0x2a02)
+name="8 Spices"
+|name="4th Street Kitchen"
+|name="Absinth"
+|name="Arya"
+|name="Azuthai"
+|name="Bai Mai Thai Foods"
+|name="Bali Hai Restaurant"
+|name="Banana Leaf Asian Cafe"
+|name="Banana Leaf"
+|name="Barrio Fiesta"
+|name="Basix"
+|name="Benjarong Royal Thai Restaurant"
+|name="Bistro Cinco"
+|name="Blue Bay"
+|name="Blue Ocean Bar and Restaurant"
+|name="Blue Petals Catering"
+|name="Buma Seafood Market and Restaurant"
+|name="Cabalen"
+|name="Cafe Alfonso"
+|name="Cafe Bocobo"
+|name="Cafe Feliz"
+|name="Cafe Juanita"
+|name="Cambusa"
+|name="Celsius Gastrolounge"
+|name="Cha Gio"
+|name="Chaikofi"
+|name="Chang Mai"
+|name="Chibooze Bar and Restaurant"
+|name="Chicken Ginger"
+|name="Chili's Bar and Grill"
+|name="Cilantro Resto Bar"
+|name="Club Phi Restobar"
+|name="Coco Lime Restaurant"
+|name="Contempo New Asia Cuisine"
+|name="Corky's Sizzling n Grills"
+|name="Crustasia"
+|name="Cucina Gayuma"
+|name="Diner's DreamHaus"
+|name="Dusit Thani"
+|name="Eat and Go"
+|name="El Botin"
+|name="Elbow Room"
+|name="Felah Restaurant"
+|name="Felix"
+|name="Fely J's Restaurant"
+|name="Fire Lake Grill"
+|name="Food Galore Fun Dining"
+|name="Hai Phong"
+|name="Hai Pong Authentic Vietnamese Cuisine"
+|name="Hizon's Catering"
+|name="Hungry Marlin Grill and Restaurant"
+|name="Ila Puti"
+|name="Indulgence Deli Cafe"
+|name="Ippon Yari"
+|name="Jatujak"
+|name="Jill's"
+|name="Jin Go Gae"
+|name="Kaishu"
+|name="Kama Keema!"
+|name="Khao Pad"
+|name="Kitchen"
+|name="Kopi Roti"
+|name="Krua Thai"
+|name="Krung Thai"
+|name="Kutchara"
+|name="Latasia Fusion"
+|name="Le Bistro"
+|name="Little Asia"
+|name="M2M (Morning to Midnight)"
+|name="Mag:net Cafe"
+|name="Malacca"
+|name="Mankansutra Asian Food Village"
+|name="Manna Bar and Restaurant"
+|name="Mooters"
+|name="My Thai Lucky Niku Cafe"
+|name="Nabeya Seafood Hotspot Shabu-Shabu"
+|name="Nasi Lemak Authentic Singaporean"
+|name="Ninyo Fusion Cuisine"
+|name="Old Chinatown Kopitiam"
+|name="Oody's Bar and Restaurant"
+|name="People's Palace"
+|name="Pho 24"
+|name="Pho Bac Vietnamese Specialties"
+|name="Pho Hoa Vietnamese Noodle House"
+|name="Pino Resto Bar"
+|name="Plates and Yummy"
+|name="Portico 1771"
+|name="Prana Restaurant"
+|name="Qasa 61"
+|name="Rasa"
+|name="Recipes by Cafe Metro"
+|name="Restaurant 5"
+|name="SOMS Noodle House"
+|name="SR Thai"
+|name="Sa Neh Thai"
+|name="Sakon Thai Resto"
+|name="Seasons"
+|name="Shiok"
+|name="Siam Taste"
+|name="Sukhothai Restaurant"
+|name="Thai Kitchen"
+|name="Thai Patio"
+|name="Thai at Silk"
+|name="Thai in a Box"
+|name="The Playa Seaside Restaurant"
+|name="Thuk Thai"
+|name="Toast Box"
+|name="Wild Ginger"
+|name="Zao Vietnamese Bistro"
+# JAPANESE # KOREAN (Asian - 0x2a02)
+|name="Queen Crystal Garden Restaurant"
+|name="Rumah Makan"
+# VEGETARIAN (Asian - 0x2a02)
+|name="Cantinetta"
+|name="Bodhi"
+|name="Oh my Gulay"
+|name="Chimara Neo-Vegan Cafe"
+|name="Bliss Cafe"
+|name="Greens"
+|name="Healthy Kitchen"
+|name="Brown Sugar Muffin"
+|name="Conways"
+|name="Corner Tree Cafe"
+|name="Kahayag Cafe"
+|name="Latasia Fusion"
+|name="Royal Lotus Cafe"
+[0x2a02 resolution 23]
+# -------------------------------------------------------------------
+# GRILLED (Barbecue and Grill - 0x2a03)
+name="Dencio's Bar and Grill" | (name="Dencio's" | name="Dencios") {set name="Dencio's Bar and Grill *"} [0x2a03 resolution 23]
+name="Colasa's" | name="Colasa's Barbecue" {set name="Colasa's *"} [0x2a03 resolution 23]
+name="Andok's"| ( name='Andoks' | name="Andok's Chicken" | name='Andoks Chicken Fast Food' | name='Andoks Lechon' | name="Andok's Lechon" | name="Andok's Litson" | name="Andok's Litson Manok") {set name="Andok's *"} [0x2a03 resolution 23]
+name='Baliwag Lechon Manok' | (name='Baliwag'|name="Baliwag Chicken" | name='Baliwag Litson'|name='Baliwag Lechon') {set name='Baliwag Lechon Manok *'} [0x2a03 resolution 23]
+name="Banok's Barbecue" | name="Banoks" {set name="Banok's Barbecue *"} [0x2a03 resolution 23]
+name='Mang Inasal' | name='Bacolod Chicken Inasal' [0x2a03 resolution 23]
+name="Ankie's Bar Resto & Grill"
+|name="121 Grill and Restaurant"
+|name="Alan's Grill"
+|name="Aling Tonya"
+|name="Atcha's Grill"
+|name="Bedrock Bar and Grill"
+|name="Botong's Up"
+|name="Caingit Fish Grill"
+|name="Campsite Bar and Grill"
+|name="Central BBQ Boy Grill"
+|name="Chiggy's Original Barbecue"
+|name="Claire Dela Fuente Grill and Seafood"
+|name="Darwin's Grill"
+|name="Dream Plaza KTV Resto Bar and Grill"
+|name="Ebisu Grill"
+|name="Gerry's Grill"
+|name="Grilla Bar & Grill"
+|name="Hot Mixx Grill"
+|name="Ineng's Barbeque"
+|name="Jaymi's Grill"
+|name="Jimmy's Grill"
+|name="Julian's Pax Grill"
+|name="Julie's Ihaw-Ihaw"
+|name="Kangaroo Jack"
+|name="Kaona Grill"
+|name="Keiyu Bar and Resto"
+|name="Lago's Grill"
+|name="Laiya Grill Sisig Republic"
+|name="Lamesa Grill"
+|name="Macopa Grille & Restaurant"
+|name="Manong's"
+|name="Norberto Grill"
+|name="Peri-Peri Grill House"
+|name="Pier One Bar and Grill"
+|name="Racks"
+|name="Ray & Pete's Texas Smoke'Em"
+|name="Reyes Barbeque"
+|name="Richmonde Grill"
+|name="Rogelio's Grill"
+|name="Roma Mia"
+|name="Sangkalan Restaurant"
+|name="Serendinity Grill Restaurant & Bar"
+|name="Shylin Restaurant and Seafood Palutuan"
+|name="Skyroom Bar and Grill"
+|name="Slabadu Cafe and Bistro"
+|name="Squared Palutuan"
+|name="Stardish"
+|name="Stefano's"
+|name="Texas Roadhouse Grill"
+|name="Trinity Ihaw-Ihaw and Food House"
+|name="Upgraded Bar and Grill"
+# HAWAIIAN
+|name="The Polu Kai Grill"
+|name="Hula-Hula"
+|name="Big Kahuna"
+|name="Hawaiian Barbecue"
+[0x2a03 resolution 23]
+# -------------------------------------------------------------------
+# CHINESE # DIM SUM (Chinese - 0x2a04)
+name="Hap Chan Tea House" | name="Hap Chan" {set name="Hap Chan Tea House *"} [0x2a04 resolution 23]
+name="North Park" | name="Northpark" {set name="North Park *"} [0x2a04 resolution 23]
+name='Hen Lin' | name='Hen-Lin' {set name='Hen Lin *'} [0x2a07 resolution 23]
+name="Dimsum N' Dumplings" | name="Dimsum N Dumplings" {set name="Dimsum N' Dumplings *"} [0x2a07 resolution 23]
+name="Gloria Maris" 
+|name="Dimples"
+|name="Good Earth Tea Room"
+|name="Hai Chinese Restaurant & Bar"
+|name="Hai Shin Lou Seafood King Restaurant"
+|name="Kowloon House"
+|name="LinLin Dimsum House"
+|name="Luk Yuen Noodle House"
+|name="Next Door Noodles"
+|name="Paotsin"
+|name="Suzhou Dimsum"
+|name='Ma Mon Luk'
+|name='Mandarin Tea Garden' 
+|name='Mandarin' 
+[0x2a04 resolution 23]
+# -------------------------------------------------------------------
+# DELI (Deli/Bakers - 0x2a05)
+name='Red Ribbon' | name='Delifrance' [0x2a05 resolution 23]
+name='Cravings' | (name='Cravings Bakeshop & Restaurant' | name="Craving's") {set name='Cravings *'} [0x2a05 resolution 23]
+name="Conti's" | name="Conti's Pastry Shop and Restaurant" [0x2a05 resolution 23]
+name="Aurely's Bakeshop" | name="Aurely's Bake Shop" {set name="Aurely's Bakeshop *"} [0x2a05 resolution 23]
+name='Eurobake' [0x2a05 resolution 23]
+name='Goldilocks Bakeshop' | (name='Goldilocks' | name='Goldi Locks') {set name='Goldilocks Bakeshop *'} [0x2a05 resolution 23]
+name="Alexa's Deli Cafe and Wine Bar"
+|name="Apartment 1B"
+|name="Au Bon Pain"
+|name="Balducci Restorante & Deli"
+|name="Big Brother Bakeshop and Restaurant"
+|name="Cafe A Go-Go"
+|name="Chelsea Market and Cafe"
+|name="Deli Snack"
+|name="Dighay"
+|name="Earl's Delicatessen"
+|name="Extremely Espresso"
+|name="Galileo Enoteca"
+|name="Oliver's Super Sandwiches"
+|name="Pat Lin Delicacies"
+|name="Rafa's Deli and Cafe"
+|name="Salud! Stopover Deli & Cafe"
+|name="Santis Deli"
+[0x2a05 resolution 23]
+# -------------------------------------------------------------------
+# INTERNATIONAL # CONTINENTAL # EUROPEAN # SWISS (International Food - 0x2a06)
+name="Chef & Brewer"
+|name="A.C.Rumpa"
+|name="Absinth"
+|name="Aioli Cafe"
+|name="Al Fresco Diner"
+|name="Almon Marina"
+|name="Annabel's"
+|name="Aramicos Catering"
+|name="Astralis"
+|name="Beluga Bar and Restaurant"
+|name="Bistro Cinco"
+|name="Bistro Marinero"
+|name="Bistro Mateo"
+|name="Cafe 1771"
+|name="Cafe Adriatico"
+|name="Cafe in the Park"
+|name="Cesca Wine Cafe"
+|name="Chaa"
+|name="Chef's Quarter"
+|name="Chesa Blanca Swiss Restaurant"
+|name="City Breakfast Club"
+|name="City Grill"
+|name="DUO Steakhouse & Wine Bar"
+|name="Dad's"
+|name="Florabel"
+|name="G8 Avenue"
+|name="Gateau de Manille"
+|name="Grassi's Restaurant"
+|name="Ilustrado"
+|name="Lina Vitan Catering"
+|name="Malcolm's Place"
+|name="Masseto"
+|name="Miggy's Place"
+|name="Milky Way Cafe"
+|name="Mooters"
+|name="Museum Cafe"
+|name="Old Swiss Inn Restaurant"
+|name="PNKY Cafe"
+|name="Pidente"
+|name="Plates Restaurant"
+|name="Prana Restaurant"
+|name="Red"
+|name="Riviera"
+|name="Rotisserie"
+|name="The Frazzled Cook"
+|name="The French Corner"
+|name="The Gustavian"
+|name="The Manila Catering Services"
+|name="The Peach Kitchen"
+|name="Unit 8 Cafe"
+|name="Vieux Chalet"
+# MIDDLE EASTERN # ARABIC # HALAL # PERSIAN # INDIAN 
+|name="Ababu Persian Kitchen"
+|name="Baba Ghannouj" 
+|name="Eastern Treasures Cuisine"
+|name="Ghazal Restaurant"
+|name="Grilled Tomato"
+|name="Hossein's Persian Kebab" 
+|name="Indian By Nature"
+|name="Jerusalem Restaurant" 
+|name="Kashmir"
+|name="Kebab Marley"
+|name="Kebab! Kebab! Restaurant"
+|name="Legend of India"
+|name="Little Pio's Shawarma Kingdom"
+|name="Little Tehran"
+|name="Miraj Persian Grill"
+|name="New Bombay"
+|name="Night Kebab Persian Restaurant"
+|name="Persia Grill"
+|name="Perspolis"
+|name="Prince of Jaipur"
+|name="Prince of Persia"
+|name="Prosperos Shawarma"
+|name="Pyeza Cafe"
+|name="Queens Crystal Garden Restaurant"
+|name="Queens at Bollywood"
+|name="Salt & Pepper"
+|name="Santush"
+|name="Shawarma Snack Center"
+|name="Shomal"
+|name="Simorgh Persian Restaurant"
+|name="Sinbad's"
+|name="Swagat Indian Cuisine"
+|name="Taj of Tagaytay"
+|name="Tandoor"
+|name="Tasty Fresh Halal Foods"
+|name="Ziggurat"
+# MEDITERRANEAN # GREEK # TURKEY # AFRICAN # MOROCCAN 
+|name="Cafe Mediterranean"
+|name="Cyma"
+|name="Go Greek!"
+|name="Hella's Taverna"
+|name="Manos Greek Taverna"
+|name="Real Coffee and Tea Cafe"
+|name="Sophia's Mediterranean Deli"
+|name="Fez"
+|name="Kasbah Restaurant and Bar"
+|name="Turkce Yer Bar & Restaurant"
+# MONGOLIAN
+|name="Aberdeen Court"
+|name="Mongolian Stop"
+|name="Kublai Khan Mongolian Restaurant"
+|name="Kublai's Rack"
+|name="Lina Vitan Catering"
+|name="Mongolian Grill"
+|name="O'Mai Khan"
+# FUSION
+|name="Ila Puti"
+|name="Moksha"
+|name="Kuchara"
+|name="Pino Resto Bar"
+|name="Oceano Fusion Restaurant"
+|name="21 Restaurant"
+|name="Chef Robert"
+|name="Top of the Citi"
+|name="O'sonho Portuguese Fusion Restobar"
+|name="Okura Fusion Japanese Restaurant"
+|name="Felix"
+|name="Antonio's Restaurant"
+|name="Cafe Juanita"
+|name="Class95cafe"
+|name="Secret Recipe"
+|name="Ninyo Fusion Cuisine"
+|name="Cookbook Kitchen"
+|name="Abe Restaurant"
+|name="77 Bar and Cafe"
+|name="Bistro Michelle"
+|name="Bulan"
+|name="Cabizerra Bistro"
+|name="Cafe Artina"
+|name="Cafe Sweet Inspirations"
+|name="Celsius Gastrolounge"
+|name="Chibooze Bar and Restaurant"
+|name="Club Phi Restobar"
+|name="F Word"
+|name="Fluke! Cuisine From Home"
+|name="Formo Resto-Lounge"
+|name="Grub Club"
+|name="Gusto Bar Restaurant"
+|name="Henry's Place by Good Earth"
+|name="Metro Cuisines"
+|name="Opus Restobar"
+|name="Recipes by Cafe Metro"
+|name="Santush"
+|name="Sidebar Cafe"
+|name="Siggi's Grill and Restaurant"
+|name="Tea & Therapy"
+|name="The Tivoli"
+|name="Upper East"
+[0x2a06 resolution 23]
+# -------------------------------------------------------------------
+# BURGERS & Quick Chinese & Eatery (Fastfood - 0x2a07) normally pay-as-you-order 
+name='Burger King' | name='Burger Machine' [0x2a07 resolution 23]
+name='Brothers Burger' | name="Brother's Burger" {set name='Brothers Burger *'} [0x2a07 resolution 23]
+name="McDonald's" | (name='McDonalds'| name='McDonald'| name="Mc Donald's" | name='Mc Donalds' | name='McDo') {set name="McDonald's *"} [0x2a07 resolution 23]  
+name='Jollibee' | (name='Jolibee' | name='Jollybee') {set name='Jollibee *'} [0x2a07 resolution 23]
+name='Chowking' | name='Chow King' {set name='Chowking *'} [0x2a07 resolution 23]
+name='KFC'| name='Kentucky Fried Chicken' {set name='KFC *'} [0x2a07 resolution 23]
+name='Goodah' [0x2a07 resolution 23]
+name="Good Burgers" [0x2a07 resolution 23]
+# -------------------------------------------------------------------
+# ITALIAN (Italian / Pasta - 0x2a08)
+name="Amici" 
+|name="Adora Cafe"
+|name="Lusso"
+[0x2a08 resolution 23]
+# -------------------------------------------------------------------
+# SPANISH # PORTUGESE (Spanish/Mexican - 0x2a09)
+# MEXICAN # TEX-MEX
+name="Taco Bell"
+|name="Chili Willy's"
+|name="Tia Maria's"
+# LATIN_AMERICAN # CARIBBEAN # CUBAN # BRAZILIAN # JAMAICAN 
+|name="Aruba Bar & Restaurant"
+|name="Brazil Brazil"
+|name="Cafe Havana"
+|name="Coco Cabana Restaurant and Bar"
+|name="Cuba Libre Bar and Restaurant"
+|name="Inagiku"
+|name="Paseo de Bahamas"
+[0x2a09 resolution 23]
+# -------------------------------------------------------------------
+# GERMAN # AUSTRIAN (German-Austrian - 0x2a10)
+name="Mama's Restaurant Bar and Chillout Lounge"
+|name="Cafe Deutschland"
+|name="Gasthof"
+|name="Imbiss Bacolod"
+|name="Konig's Bar"
+|name="Schwarzwalder"
+|name="Treffpunkt"
+[0x2a10 resolution 23]
+# -------------------------------------------------------------------
+# ENGLISH # IRISH (Britain Isle - 0x2a11)
+name="Union Jack Tavern"
+|name="Bowler Restaurant and Bar"
+|name="Nueus Vienna Kaffehaus"
+|name="The London Pub"
+[0x2a11 resolution 23]
+# -------------------------------------------------------------------
+# FRENCH (French - 0x2a0f) 
+name="The Goose Station"
+|name="Bar & Restaurant de Paris"
+|name="Bizu Patisserie & Bistro"
+|name="Champagne Room"
+|name="Chef Jessie"
+|name="Crystal Room French Fine Dining"
+|name="Cuillere"
+|name="Dami Cuisine"
+|name="Humphrey Navarro's Parallel-45"
+|name="Je Suis Gourmand"
+|name="L'Eau Vive in Asia"
+|name="La Bonne Table"
+|name="La Cabane"
+|name="La Regalade French Bistro"
+|name="La Vetta Wine Bar & Restaurant"
+|name="Le Coude Rouge"
+|name="Le Souffle"
+|name="Pink Pepper"
+|name="Prince Albert Rotisserie"
+|name="Reserve Restaurant (La)"
+|name="Restaurant Cicou"
+|name="The Blue Frog"
+|name="The Flying Pig"
+|name="Voulez-Vous"
+|name="Yats Restaurant"
+[0x2a0f resolution 23] 
+# -------------------------------------------------------------------
+# STEAKS (Steak - 0x2a0c)
+name="Steakhouse Boracay"
+|name="Alfredo's Steaks"
+|name="Archie's Resto-Bar"
+|name="Bag of Beans"
+|name="Bistro Roberto"
+|name="Bocarino's"
+|name="Buon Giorno"
+|name="Cafe Jeepney"
+|name="Carlito's Way"
+|name="Carnegie Diner"
+|name="Cowrie Grill"
+|name="DUO Steakhouse & Wine Bar"
+|name="Elbert's Steak Room"
+|name="Everything at Steak"
+|name="Gaite De Coeur"
+|name="Gourmet's Palate"
+|name="Gustavus Steak Lounge"
+|name="Handlebar Manila"
+|name="Highlands Steakhouse"
+|name="Holy Cow Chop House"
+|name="House of Wagyu"
+|name="I'm Angus Steakhouse"
+|name="Kangaroo Jack"
+|name="Keizo"
+|name="La Maison"
+|name="Latitude"
+|name="Lord Byron's Back Ribs"
+|name="Mamou"
+|name="Meat Plus Cafe"
+|name="Melo's"
+|name="Mesa Steak Sizzler"
+|name="Mickey's Delicatessen"
+|name="Myron's Place"
+|name="New Orleans Bourbon Street Steaks & Oysters"
+|name="RAP Steaks and Cakes"
+|name="Ribs Steaks"
+|name="Sala Bistro"
+|name="Saso's"
+|name="Slabadu Cafe and Bistro"
+|name="Slice N' Dice"
+|name="Steak MD"
+|name="Steaktown"
+|name="Stir Crazy Bar & Restaurant"
+|name="Sweepsteak"
+|name="Tender Bob's"
+|name="The Steak House"
+|name="Tony Roma's Restaurant"
+|name="Valhalla Steakhouse"
+[0x2a0c resolution 23]
+# -------------------------------------------------------------------
+# PIZZA (Pizza House - 0x2a0a)
+name='Greenwich' | name='Greenwich Pizza' {set name="Greenwich *"} [0x2a0a resolution 23]
+name='Pizza Hut' | name='Shakeys' [0x2a0a resolution 23]
+name="Don Henrico's" | name='Don Henricos' {set name="Don Henrico's *"}  [0x2a0a resolution 23]
+name="Domino's Pizza" | (name="Dominos Pizza" | name="Dominos") {set name="Domino's Pizza *"} [0x2a0a resolution 23]
+name="Carlo's Pizza" | name='Carlos Pizza' {set name="Carlo's Pizza *"} [0x2a0a resolution 23] 
+name='Giacomino Pizza' | name='Brooklyn Pizza' [0x2a0a resolution 23]
+name='Joey Pepperoni Pizzeria' | name='Joey Pepperoni' [0x2a0a resolution 23]
+# -------------------------------------------------------------------
+# SEAFOOD (Seafood - 0x2a0b)
+name='Dalampasigan Restaurant' 
+|name='Dampa' | name='Dampa-Sucat' | name='Dampa-Macapagal' 
+|name="Alavar Seafood Restaurant"
+|name="Aling Lucing Sisig"
+|name="Aquaknox"
+|name="Bangus"
+|name="Blackbeard's Seafood Island"
+|name="Blufish"
+|name="Bocarino's"
+|name="Bubba Gump Shrimp Co."
+|name="Cafe Lupe Grill and Restaurant"
+|name="Caingit Fish Grill"
+|name="Causeway Seafood Restaurant"
+|name="Chateau 1771"
+|name="Choi Garden Seafood and Shark's Fin Restaurant"
+|name="Clawdaddy"
+|name="Congo Grille"
+|name="Crustasia"
+|name="Dave's Tropical Breeze Resto Bar Grill"
+|name="Dragon Gate Seafood Restaurant"
+|name="Escondido's Boracay Crab House"
+|name="Fish & Co."
+|name="Fish Out of Water"
+|name="Fisherman's Garden"
+|name="Fisherman's Net Seafood Restaurant"
+|name="Fishing Village"
+|name="Freska"
+|name="Game Crab Boardgame Cafe" 
+|name="Giligan's Island Restaurant and Bar"
+|name="Golden Sand Seafood Restaurant"
+|name="Gumbo"
+|name="Hai Kang Seafood Restaurant"
+|name="Harbor View"
+|name="Hula-Hula"
+|name="Hungry Marlin Grill and Restaurant"
+|name="Imperial Dragon Seafood Restaurant"
+|name="Isdaan Restaurant"
+|name="Isla Naburot"
+|name="JJ's Seafood Village"
+|name="Ka Lui"
+|name="Kaiseki"
+|name="Kamayan sa Palaisdaan"
+|name="Kim Chie Seaside Paluto Restaurant"
+|name="Koana Grill"
+|name="La Maison"
+|name="Legend Restaurant"
+|name="Leslie's Restaurant"
+|name="Lotus Seafood Restaurant"
+|name="Macopa Grille & Restaurant"
+|name="Malate Sea Palace Restaurant"
+|name="Marikit-Na Hapag Kainan" 
+|name="Marina"
+|name="Master Cook"
+|name="Matutina's"
+|name="Merkato Cuisine"
+|name="Mongolian Grill"
+|name="New Orleans Bourbon Streaks & Oysters"
+|name="Oyster Boy"
+|name="Port Seafoods Restaurant"
+|name="Red Crab Seafood and Steaks"
+|name="Robbie's Seafood Restaurant"
+|name="Rockefeller"
+|name="Sala Bistro"
+|name="SeaFood Market and Restaurant"
+|name="Buma Seafood Market and Restaurant"
+|name="Seafood Club by Red Crab"
+|name="Seafood Seafood Market"
+|name="Shangri-La"
+|name="Shrimps Ahoy Seafood Bar & Restaurant"
+|name="Shylin Restaurant and Seafood Palutuan"
+|name="Sis Dang"
+|name="Sizzling Seafoods"
+|name="Slabadu Cafe and Bistro"
+|name="Squared Palutuan"
+|name="Stardish"
+|name="Sugbahan Food Corner"
+|name="Sumo Sam"
+|name="The Century Seafood Restaurant"
+|name="Tony Roma's Restaurant"
+|name="Trinity Ihaw-Ihaw and Food House"
+|name="Via Mare"
+|name="Viewsite Seafood Inihaw Restaurant"
+|name="Villa Regatta"
+|name="Wok with Joe Seafood Restaurant"
+|name="Yam Cha Sea Food"
+[0x2a0b resolution 23]
+# -------------------------------------------------------------------
+# DONUTS (Donuts - 0x2a0d)
+name="Mister Donut" [0x2a0d resolution 23]
+name="Dunkin Donuts" | name="Dunkin Donut" {set name="Dunkin Donuts *"} [0x2a0d resolution 23]
+name="Go Nuts Donuts"| name="Gonuts Donuts" {set name="Go Nuts Donuts *"} [0x2a0d resolution 23]
+name="Krispy Kreme" | name="Cielo's Donuts" [0x2a0d resolution 23]
+# -------------------------------------------------------------------
+# CAFE/COFFEE_SHOP (Cafe/Diner/Coffee_Shop - 0x2a0e)
+name='Starbucks' | name='Cafe Breton' [0x2a0e resolution 23]
+name='Figaro' | (name='Figaro Coffee' | name='Figaro Coffee Company') {set name='Figaro *'} [0x2a0e resolution 23]
+name="Gloria Jean's Coffees" | (name="Gloria Jean's Coffee" | name='Gloria Jeans' | name="Gloria Jeans Coffee") {set name="Gloria Jean's Coffees *"} [0x2a0e resolution 23]
+name="The Coffee and Pancake Company"
+[0x2a0e resolution 23]
+# -------------------------------------------------------------------
+# FILIPINO (Others - 0x2a00)
+name="Hizon's"
+[0x2a00 resolution 23]
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+
+
+
+# -------------------------------------------------------------------
+# FILTER by CUISINE type
+# -------------------------------------------------------------------
+# note: it is assumed that "cuisine" is always a restautant (with or without amenity=restaurant tag)
+
+# 1  American - 0x2a01
+cuisine=american 
+[0x2a01 resolution 23]
+
+# 2  Asian - 0x2a02
+cuisine=asian 
+| cuisine=japanese | cuisine=sushi
+| cuisine=korean 
+| cuisine=thai 
+| cuisine=filipino 
+| cuisine=indonesian 
+| cuisine=malaysian
+| cuisine=singaporean
+| cuisine=vietnamese
+| cuisine=vegetarian
+| cuisine=vegan
+[0x2a02 resolution 23]
+
+# 3  Barbecue and Grill - 0x2a03 - (note:cooked on direct flame)
+cuisine=barbecue
+| cuisine=grill
+| cuisine=roast
+| cuisine=rotisserie
+| cuisine=hawaiian
+| cuisine=chicken
+[0x2a03 resolution 23]
+
+# 4  Chinese - 0x2a04
+cuisine=chinese 
+[0x2a04 resolution 23]
+
+# 5  Bread and Flour Food - 0x2a05 - (Deli / Bakeshop / Sandwich ) but not donutshop & local panaderia
+#    GarminPC:Food&Drink:Deli/Bakery 0x2a05 <rally:Pink Fork & Knife Icon>
+cuisine=deli 
+| shop=bakers 
+| shop=bakeshop
+| cuisine=pie
+| cuisine=sandwich
+| cuisine=savory_pancakes
+[0x2a05 resolution 23]
+
+# 6  International Food - 0x2a06
+cuisine=international  
+| cuisine=australian 
+| cuisine=european | cuisine=continental | cuisine=swiss
+| cuisine=mediterranean | cuisine=greek | cuisine=turkish | cuisine=kebap
+| cuisine=african | cuisine=moroccan
+| cuisine=arabic | cuisine=halal | cuisine=persian | cuisine=middle_eastern | cuisine='middle eastern'  
+| cuisine=indian | cuisine=curry
+| cuisine=mongolian
+| cuisine=fusion
+[0x2a06 resolution 23]
+
+# 7  Fastfood - 0x2a07 - pay-as-you-order (overpriced softdrink on plastic cup with lots of ice) 
+# GarminPC:Food&Drink:Fastfood <rally:Disposable Plastic Cup Icon>  
+# (placed below all cuisine tags --- see below)
+
+# 8  Italian / Pasta - 0x2a08 - (primarily italian pasta, but may include pizzas)
+cuisine=italian 
+|cuisine=pasta 
+[0x2a08 resolution 23]
+
+# 9  Spanish/Mexican, Portugese, Latin Americans - 0x2a09 - mostly spicy tacos, burritos, chilli, jalapeno, taske 
+cuisine=latin_american | cuisine='latin american'
+| cuisine=spanish
+| cuisine=mexican
+| cuisine=tex_mex
+| cuisine=caribbean
+| cuisine=jamaican
+| cuisine=cuban
+| cuisine=brazilian
+| cuisine=portugese 
+[0x2a09 resolution 23]
+
+# 10 German / Austrian - 0x2a10 (most likely about sausages - i guess)
+#    Note: may appear on Mapsource Place Category but not on GarminPC
+cuisine=german 
+| cuisine=austrian
+[0x2a10 resolution 23]
+
+# 11 Britain Isle & Ireland - 0x2a11
+#    GarminPC:Food&Drink:British Isle 0x2a11 <rally:Purple Fork&Knife Icon>
+#    Note: may not appear on old Mapsource Place Category
+cuisine=british
+|cuisine=english
+|cuisine=irish
+[0x2a11 resolution 23]
+
+# 12 Specialty Food Products - 0x2a12
+#    GarminPC:Food&Drink:Specialty Food Products (or all pakwan, bagoong, daing, etc) <rally:Brown Paper Bag Icon>
+shop=specialty_food_products | shop=specialty_food_product
+| shop=pasalubong 
+[0x2a12 resolution 23]
+
+# 0A Pizza Resto / Pizza Delivery / Pizza Fastfood - 0x2a0a
+cuisine=pizza 
+| cuisine='pizza;kebab' 
+[0x2a0a resolution 23]
+
+# 0B Seafood - 0x2a0b - Fresh Seafood normally "Paluto" or Resto or Bar or Grill which especializes in Tuna, Bangus, Oyster and alikes
+cuisine=sea_food 
+[0x2a0b resolution 23]
+
+# 0C Steak - 0x2a0c
+cuisine=steak | cuisine=steak_house 
+[0x2a0c resolution 23]
+
+# 0D Donuts/Bagels - 0x2a0d (Donuts & local pan de sal stores)
+#    GarminPC: Donuts/Bagels <rally:Donuts Icon>
+cuisine=donut
+| cuisine=bagel 
+| shop=bakery
+[0x2a0d resolution 23]
+
+# 0E Cafe/Diner/Coffee_Shop - 0x2a0e
+#    GarminPC:Food&Drink:Cafe/Diner 0x2a0e <rally:Coffee Icon>
+#    Note: Does not appear on old Mapsource Category - but searchable under "American"	
+amenity=coffee_shop 
+| amenity=cafe
+| cuisine='cafe/diner' 
+[0x2a0e resolution 23]
+
+# 0F French - 0x2a0f
+#    GarminPC:Food&Drink:French 0x2a0e <rally:Blue & Red Fork&Knife Icon>
+#    Note: may not appear on old Mapsource Place Category
+cuisine=french 
+[0x2a0f resolution 23]
+
+# -------------------------------------------------------------------
+# Alcohol Entertainments
+amenity=pub [0x2d02 resolution 23]
+amenity=bar [0x2d02 resolution 23]
+amenity=biergarten [0x2d02 resolution 23]
+amenity=nightclub [0x2d02 resolution 23]
+# -------------------------------------------------------------------
+
+
+
+
+
+# GENERIC FOOD TAGS
+amenity=restaurant [0x2a00 resolution 23]
+cuisine=speciality [0x2a00 resolution 23]
+cuisine=* [0x2a00 resolution 23]
+
+# 7 Fastfood 0x2a07 - pay-as-you-order (lower priority than cuisine)
+amenity=fast_food
+| amenity=food_court 
+| shop=beverages 
+| cuisine=burger
+[0x2a07 resolution 23]
+
+
+
+# DO NOT PLACE ANY "CUISINE" or "RESTAURANT" TAG BELOW THIS LINE !!!!
+
+
+
+
+
+
+# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
+
+# -------------------------------------------------------------------
+# SHOPPING 
+# -------------------------------------------------------------------
+
+#PRE-FILTER 
+#24-Hour Convenience Store before they become tagged as Fast Food or Market
+name="7-Eleven" [0x2e06 resolution 23]
+(name="7 Eleven" | name="7Eleven" |name="7eleven" | name="711" | name="7-11" | name="7/11" |name="7 11" | name="7 - 11 Store") {set name='7-Eleven *'} [0x2e06 resolution 23]
+name="Ministop" [0x2e06 resolution 23]
+name="Mini Stop" {set name="Ministop *"} [0x2e06 resolution 23]
+name="Mightee Mart" [0x2e06 resolution 23] 
+name="Mighty Mart" {set name="Mightee Mart *"} [0x2e06 resolution 23]
+#SARI-SARI Store (suking tindahan not 24hour operation) set to General Merchandise
+shop=convenience & ( name!="7-Eleven" | name!="7 Eleven" | name!="7Eleven" |name!="7eleven" | name!="711" | name!="7-11" | name!="7/11" |name!="7 11" | name!=!"7 - 11 Store" ) [0x2e03 resolution 23]
+shop=convenience & ( name!="Ministop" | name!="Mini Stop") [0x2e03 resolution 23]
+shop=convenience & ( name!="Mightee Mart" | name!="Mighty Mart") [0x2e03 resolution 23]
+shop=convenience & operating_hours='24/7' [0x2e03 resolution 23]
+# -------------------------------------------------------------------
+
+# GarminPC:Shopping:Department 0x2b01 (Anchor-Establishments inside shopping complex) <rally:RedCoatOnHanger Icon>
+shop=department_store [0x2e01 resolution 21]
+
+# NOT on GarminPC menu:Supermarket 0x2e02 (Hypermart-Supermarket-MembershipShopping-WarehouseClubs-Big airconditioned groceries with no flies) <rally:Yellow Push Cart Icon>
+amenity=supermarket [0x2e02 resolution 22]
+shop=supermarket [0x2e02 resolution 22]
+
+# GarminPC:Shopping:General Merchandise 0x2e03 (sari-sari, LPG dealer, daisu, japanhome, ukay-ukay, books, stationary shops) <rally:Green Bag Icon>
+shop=variety_store [0x2e03 resolution 23]
+shop=general [0x2e03 resolution 23]
+amenity=retail [0x2e03 resolution 23]
+shop=books [0x2e0a resolution 23]
+shop=stationery [0x2e0a resolution 23]
+
+# GarminPC:Shopping:Shopping Center 0x2b04 (malls and shopping complex covering big land area) <rally:Yellow Bag Icon>
+amenity=mall [0x2e04 resolution 21]
+shop=shopping_centre [0x2e04 resolution 21]
+shop=mall [0x2e04 resolution 21]
+
+# GarminPC:Shopping:Pharmacy/Chemist 0x2b05 (Mercury Watsons and small drug stores) <rally:Rx Icon>
+shop=chemist [0x2e05 resolution 23]
+amenity=pharmacy [0x2e05 resolution 23]
+
+# GarminPC:Shopping:Convenience 0x2e06 (24hours AirConditioned Sari-Sari Stores) <rally:7-Eleven/Ministop Icon> 
+shop=convenience [0x2e06 resolution 23]
+
+# GarminPC:Shopping:Apparel 0x2e07 <rally:Coat Icon>
+shop=apparel [0x2e07 resolution 23]
+shop=clothes [0x2e07 resolution 23]
+shop=fashion [0x2e07 resolution 23]
+shop=shoes [0x2e07 resolution 23]
+
+# GarminPC:Shopping:House and Garden 0x2e08 (DIY, Hardware, Lumber and Construction) <rally:Handyman Icon>
+shop=hardware [0x2e08 resolution 23]
+shop=doityourself [0x2e08 resolution 23]
+shop=lumber [0x2e08 resolution 23]
+shop=garden [0x2e08 resolution 23]
+shop=garden_center [0x2e08 resolution 23]
+shop=garden_centre [0x2e08 resolution 23]
+
+# GarminPC:Shopping:Home Furnishings 0x2e09 <rally:Chair Icon>
+shop=furniture [0x2e09 resolution 23]
+shop=home_furnishing [0x2e09 resolution 23]
+
+# GarminPC:Shopping:Specialty Retail 0x2e0a (specialty shops) <rally:Pink Bag Icon>
+shop=florist [0x2e0a resolution 23]
+shop=sports [0x2e0a resolution 23]
+shop=outdoor [0x2e0a resolution 23]
+shop=scuba [0x2e0a resolution 23]
+shop=toys [0x2e0a resolution 23]
+shop=video [0x2e0a resolution 23]
+shop=antique [0x2e0a resolution 23]
+shop=antiques [0x2e0a resolution 23]
+shop=optician [0x2e0a resolution 23]
+shop=newsagent [0x2e0a resolution 23]
+
+# GarminPC:Shopping:Computer/Software 0x2e0b (normally computer shops + electronics DIYs) <rally:Computer Icon>
+shop=computer [0x2e0b resolution 23]
+shop=electronics [0x2e0b resolution 23]
+
+# GarminPC:Shopping:Other 0x2e00 <rally:Green Push Cart Icon>
+# (WaterStore or Tube Ice, Market/Talipapa with flies or Local FoodMart/MiniMart or Small Local Grocery Store) 
+shop=grocery [0x2e00 resolution 21]
+amenity=market [0x2e00 resolution 21]
+amenity=public_market [0x2e00 resolution 21]
+shop=public_market [0x2e00 resolution 21]
+shop=butcher [0x2e00 resolution 23]
+shop=farm [0x2e00 resolution 23]
+amenity=iceplant [0x2e00 resolution 23]
+shop=water_refilling [0x2e00 resolution 23]
+
+
+# WINE / LIQUOR / ALCOHOL STORE
+shop=wine [0x2c0a resolution 23]
+tourism=wine_cellar [0x2c0a resolution 21]
+amenity=winery [0x2c0a resolution 23]
+shop=alcohol [0x2c0a resolution 23]
+
+# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
+
+# -------------------------------------------------------------------
+# PERSONAL AND BUSINESS SERVICES, WELLNESS (selling services not items)
+# -------------------------------------------------------------------
+amenity=atm { name '${operator}: ${name}' | '${name}' | '${operator}' } [0x2f06 resolution 23]
+amenity=bank { name '${name} (${operator})' | '${name}' | '${operator}' } [0x2f06 resolution 23]
+
+# Personal Service (wellness, spa, personal wellbeing, pampering, salon, haircut, beauty, aesthetic, yoga and local massage or may sell organic products) 
+shop=hairdresser [0x2f10 resolution 20]
+amenity=beauty_center [0x2f10 resolution 20]
+shop=spa | amenity=spa | amenity=wellness | shop=wellness [0x2f10 resolution 20]
+shop=massage [0x2f10 resolution 20]
+shop=organic [0x2f10 resolution 20]
+
+# Business Service (print, copy, pawnshop, remit, courier -- if you want your 'item' processed) <rally:YellowPages Icon>
+shop=money_changer | amenity=bureau_de_change [0x2f11 resolution 23]
+shop=pawnshop [0x2f11 resolution 23]
+shop=photo [0x2e11 resolution 23]
+shop=printing [0x2f11 resolution 23]
+shop=laundry [0x2f11 resolution 23]
+shop=dry_cleaning [0x2f11 resolution 23]
+shop=tailor [0x2f11 resolution 23]
+shop=courier [0x2f11 resolution 23]
+amenity=funeral | amenity=funeral_services [0x2f11 resolution 23]
+amenity=slaughterhouse [0x2f11 resolution 23]
+amenity=business_center [0x2f11 resolution 23]
+shop=travel_agency [0x2f11 resolution 23]
+ahop=lawyer [0x2f11 resolution 23]
+
+# Generic Service
+shop=service [0x2f00 resolution 23]
+shop=pest_control [0x2f00 resolution 23]
+
+
+amenity=truck_scale [0x2f16 resolution 23]
+amenity=truck_stop [0x2f16 resolution 23]
+
+
+
+# Repair (limited to electronic & electrical service center, locksmith) <rally:Wrench Icon>
+shop=repair_service [0x2f13 resolution 21]
+shop=locksmith [0x2f13 resolution 21]
+
+
+landuse=cemetery [0x6403 resolution 21]
+amenity=grave_yard [0x6403 resolution 21]
+
+highway=trailhead [0x6412 resolution 19]
+
+# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+
+military=* [0x640b resolution 21]
+landuse=military [0x640b resolution 21]
+
+
+
+# Generic assigned to General Merchandise 0x2e03 (sari-sari stores & other merchandisers)
+shop=* [0x2e03 resolution 23]
+
+# THERE SHOULD BE NO "SHOP" TAG OR ANY FILTER BELOW THIS LINE!!!!
+# --------------------------------------------------------
+
+# GENERIC STRUCTURES & BUILDINGS
+
+man_made=building [0x6400 resolution 23]	# no-polygon buildings or enterprise (use building icon)
+building=* & name!=* [0x6402 resolution 24]	# add POI to named building polygon to become searchable & any named stand-alone POI with building=yes
+ 
+# -------------------------------------------------------------------
+
+
+
+# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
+
+
+
+
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+
 # No assigned categories
 
 # amenity=fountain 
 # amenity=arts_centre 
-# highway=crossing
 # highway=mini_roundabout
 # highway=turning_circle
-#leisure=arts_centre
+# leisure=arts_centre
 
 # man_made=water_tower
 # man_made=water_tank
-# man_made=works
 # man_made=hump
-# man_made=mast
+
 
 # natural=reef
 # natural=shoal
@@ -409,11 +1587,10 @@ barrier=toll_booth { add mkgmap:road-speed = '-2'; add mkgmap:road-speed-min = '
 # sport=basketball [0x resolution 20]
 # sport=* [0x resolution 20]
 
-# tourism=chalet
+
 
 # Unused Categories
 
 # Marine
 # Public Land Survey
 # Other
-# stub edit 
