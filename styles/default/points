@@ -19,7 +19,6 @@
 # Doesn't work on Mkgmap r1882 (Place-POI with same city-name but different Provinces)
 # ---------------
 
-
 # Reducing road speed when approaching traffic signals and other barriers, this applies to road way where the node is included
 highway=traffic_signals { add mkgmap:road-speed = '-2'; add mkgmap:road-speed-min = '1' }
 highway=crossing { add mkgmap:road-speed = '-1'; add mkgmap:road-speed-min = '1' }
@@ -28,6 +27,7 @@ traffic_calming=* { add mkgmap:road-speed = '-2'; add mkgmap:road-speed-min = '1
 barrier=toll_booth { add mkgmap:road-speed = '-2'; add mkgmap:road-speed-min = '1' }
 barrier=gate { add mkgmap:road-speed = '-1'; add mkgmap:road-speed-min = '1' }
 
+# ---------------
 
 # Assume all POI's are in the Philippines. Set "is_in:country" to Philippines (by Maning)
 #is_in:country='disputed territory' {set is_in:country=Philippines}
@@ -111,13 +111,7 @@ barrier=gate { add mkgmap:road-speed = '-1'; add mkgmap:road-speed-min = '1' }
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-
-
-
-
 # PLACE=ISLANDS - Highlight Essential Islands for quick visual reference :
-
 place=island & 
 ( name="Boracay" | name="Panay Island" | name="Guimaras Island"
 | name="Marinduque"
@@ -157,14 +151,9 @@ place=island &
 | name="Hundred Islands"
 )[0x650c resolution 16]
 
-
 place=island [0x650c resolution 20]
 
-
-
-
-
-
+# ---------------
 
 # START OF POI FILTERS AND HEX ASSIGNMENTS ==========================
 
@@ -194,7 +183,6 @@ shop=motorcycle [0x2f1a resolution 23]
 highway=crossing [0x6406 resolution 21]
 railway=level_crossing [0x6406 resolution 21]
 
-
 # International Airports:
 aeroway=aerodrome & 
 ( name="Laoag Airport" | name="Laoag International Airport"			  	#	
@@ -209,12 +197,6 @@ aeroway=aerodrome &
 aeroway=aerodrome [0x2f04 resolution 18]
 aeroway=airport [0x2f04 resolution 16]
 aeroway=terminal [0x2f04 resolution 20]
-
-
-
-
-
-
 
 # GarminPC:Transportation:Transit Service 0x2f17 
 railway=halt [0x2f17 resolution 21]
@@ -231,9 +213,6 @@ amenity=taxi [0x2f08 resolution 21 default_name 'Taxi']
 # NONE Garmin standard - looks like not searchable - investigate
 amenity=tricycle_station [0x2f18 resolution 23 default_name 'Trike station']
 highway=bus_stop [0x2f08 resolution 23 default_name 'PUV Stop']
-
-
-
 
 
 # Major Ports based on: http://wiki.answers.com/Q/What_are_the_major_ports_in_the_Philippines
@@ -285,9 +264,6 @@ leisure=marina [0x2f09 resolution 18]			# normally will be assigned for leisure 
 amenity=harbor [0x650b resolution 16]			# provides extra protection for ships against big waves during typhoon ?
 amenity=ferry_terminal [0x2f09 resolution 18 continue]	# to be universally assigned to (pier/beach)terminals for inter-island / inter-port travel via water
 
-
-
-
 # -------------------------------------------------------------------
 # ENTERTAINMENT,HISTORY,LEISURE and SPORTS (killing time & travel)
 # -------------------------------------------------------------------
@@ -303,7 +279,6 @@ historic=monument [0x2c11 resolution 21]
 historic=ruins | historic=archaeological_site [0x2c12 resolution 19]
 
 tourism=attraction & historic=* [0x2c02 resolution 19]
-
 
 # ATTRACTION & LANDMARKS
 leisure=playground [0x2c0d resolution 22]
@@ -330,7 +305,6 @@ leisure=sports_center | leisure=sports_centre [0x2d0a resolution 21]
 leisure=stadium [0x2c08 resolution 21]
 leisure=track [0x2c08 resolution 22]
 
-
 sport=10pin [0x2d07 resolution 23]
 sport=9pin [0x2d07 resolution 23]
 sport=airport [0x2d0b resolution 21]
@@ -344,8 +318,6 @@ sport=skiing [0x2d06 resolution 23]
 sport=swimming [0x2d09 resolution 23]
 amenity=swimming_pool [0x2d09 resolution 23]
 amenity=fitness_center[0x2d0a resolution 23]
-
-
 
 # -------------------------------------------------------------------
 # LODGING - PLACES TO SLEEP FOR THE NIGHT (5-categories)
@@ -440,7 +412,6 @@ amenity=public_building [0x3007 resolution 22]
 amenity=town_hall [0x3003 resolution 18]
 amenity=townhall [0x3003 resolution 18]
 
-
 # -------------------------------------------------------------------
 
 barrier=gate & access=private [0x2002 resolution 24]
@@ -454,7 +425,6 @@ barrier=bollard | barrier=bus_trap
     {add access = no; add bicycle = yes; add foot = yes} [0x660f resolution 21]
 barrier=block | barrier=cycle_barier | barrier=stile | barrier=kissing_gate
     {add access = no; add foot = yes} [0x660f resolution 21]
-
 
 # -------------------------------------------------------------------
 
@@ -497,9 +467,7 @@ waterway=dam [0x6407 resolution 16]
 
 #man_made=survey_point				# BLLM, Triangulation Point
 
-
 # -------------------------------------------------------------------
-
 
 # Utilities
 amenity=utilities [0x2f15 resolution 23]
@@ -519,7 +487,6 @@ shop=junkshop [0x2e10 resolution 23]
 shop=surplus [0x2e10 resolution 23]
 
 # Waste Disposal & Trash Containers
-
 
 # -------------------------------------------------------------------
 
@@ -555,15 +522,8 @@ amenity=drinking_water [0x5000 resolution 21 default_name 'Water']
 amenity=shower [0x4f00 resolution 24]
 amenity=bench [0x4901 resolution 24]
 
+# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
 
-
-# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
-# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
-# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
-# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
-# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
-# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
-#
 # -------------------------------------------------------------------
 # F O O D   A N D   D R I N K S 
 # -------------------------------------------------------------------
@@ -581,6 +541,7 @@ amenity=bench [0x4901 resolution 24]
 # AMERICAN (American - 0x2a01) (american food that is NOT (primarily) selling burgers, or has 'pizza' on it's name brand)
 #name='American' | name='Burger' {set name="Greenwich *"} [0x2a0a resolution 23]
 # -------------------------------------------------------------------
+
 # ASIAN # THAI # SINGAPOREAN # MALAYSIAN # VIETNAMESE # INDONESIAN (Asian - 0x2a02)
 name="8 Spices"
 |name="4th Street Kitchen"
@@ -709,7 +670,9 @@ name="8 Spices"
 |name="Latasia Fusion"
 |name="Royal Lotus Cafe"
 [0x2a02 resolution 23]
+
 # -------------------------------------------------------------------
+
 # GRILLED (Barbecue and Grill - 0x2a03)
 name="Dencio's Bar and Grill" | (name="Dencio's" | name="Dencios") {set name="Dencio's Bar and Grill *"} [0x2a03 resolution 23]
 name="Colasa's" | name="Colasa's Barbecue" {set name="Colasa's *"} [0x2a03 resolution 23]
@@ -774,7 +737,9 @@ name="Ankie's Bar Resto & Grill"
 |name="Big Kahuna"
 |name="Hawaiian Barbecue"
 [0x2a03 resolution 23]
+
 # -------------------------------------------------------------------
+
 # CHINESE # DIM SUM (Chinese - 0x2a04)
 name="Hap Chan Tea House" | name="Hap Chan" {set name="Hap Chan Tea House *"} [0x2a04 resolution 23]
 name="North Park" | name="Northpark" {set name="North Park *"} [0x2a04 resolution 23]
@@ -795,7 +760,9 @@ name="Gloria Maris"
 |name='Mandarin Tea Garden' 
 |name='Mandarin' 
 [0x2a04 resolution 23]
+
 # -------------------------------------------------------------------
+
 # DELI (Deli/Bakers - 0x2a05)
 name='Red Ribbon' | name='Delifrance' [0x2a05 resolution 23]
 name='Cravings' | (name='Cravings Bakeshop & Restaurant' | name="Craving's") {set name='Cravings *'} [0x2a05 resolution 23]
@@ -821,7 +788,9 @@ name="Alexa's Deli Cafe and Wine Bar"
 |name="Salud! Stopover Deli & Cafe"
 |name="Santis Deli"
 [0x2a05 resolution 23]
+
 # -------------------------------------------------------------------
+
 # INTERNATIONAL # CONTINENTAL # EUROPEAN # SWISS (International Food - 0x2a06)
 name="Chef & Brewer"
 |name="A.C.Rumpa"
@@ -974,7 +943,9 @@ name="Chef & Brewer"
 |name="The Tivoli"
 |name="Upper East"
 [0x2a06 resolution 23]
+
 # -------------------------------------------------------------------
+
 # BURGERS & Quick Chinese & Eatery (Fastfood - 0x2a07) normally pay-as-you-order 
 name='Burger King' | name='Burger Machine' [0x2a07 resolution 23]
 name='Brothers Burger' | name="Brother's Burger" {set name='Brothers Burger *'} [0x2a07 resolution 23]
@@ -984,13 +955,17 @@ name='Chowking' | name='Chow King' {set name='Chowking *'} [0x2a07 resolution 23
 name='KFC'| name='Kentucky Fried Chicken' {set name='KFC *'} [0x2a07 resolution 23]
 name='Goodah' [0x2a07 resolution 23]
 name="Good Burgers" [0x2a07 resolution 23]
+
 # -------------------------------------------------------------------
+
 # ITALIAN (Italian / Pasta - 0x2a08)
 name="Amici" 
 |name="Adora Cafe"
 |name="Lusso"
 [0x2a08 resolution 23]
+
 # -------------------------------------------------------------------
+
 # SPANISH # PORTUGESE (Spanish/Mexican - 0x2a09)
 # MEXICAN # TEX-MEX
 name="Taco Bell"
@@ -1005,7 +980,9 @@ name="Taco Bell"
 |name="Inagiku"
 |name="Paseo de Bahamas"
 [0x2a09 resolution 23]
+
 # -------------------------------------------------------------------
+
 # GERMAN # AUSTRIAN (German-Austrian - 0x2a10)
 name="Mama's Restaurant Bar and Chillout Lounge"
 |name="Cafe Deutschland"
@@ -1015,14 +992,18 @@ name="Mama's Restaurant Bar and Chillout Lounge"
 |name="Schwarzwalder"
 |name="Treffpunkt"
 [0x2a10 resolution 23]
+
 # -------------------------------------------------------------------
+
 # ENGLISH # IRISH (Britain Isle - 0x2a11)
 name="Union Jack Tavern"
 |name="Bowler Restaurant and Bar"
 |name="Nueus Vienna Kaffehaus"
 |name="The London Pub"
 [0x2a11 resolution 23]
+
 # -------------------------------------------------------------------
+
 # FRENCH (French - 0x2a0f) 
 name="The Goose Station"
 |name="Bar & Restaurant de Paris"
@@ -1050,7 +1031,9 @@ name="The Goose Station"
 |name="Voulez-Vous"
 |name="Yats Restaurant"
 [0x2a0f resolution 23] 
+
 # -------------------------------------------------------------------
+
 # STEAKS (Steak - 0x2a0c)
 name="Steakhouse Boracay"
 |name="Alfredo's Steaks"
@@ -1101,7 +1084,9 @@ name="Steakhouse Boracay"
 |name="Tony Roma's Restaurant"
 |name="Valhalla Steakhouse"
 [0x2a0c resolution 23]
+
 # -------------------------------------------------------------------
+
 # PIZZA (Pizza House - 0x2a0a)
 name='Greenwich' | name='Greenwich Pizza' {set name="Greenwich *"} [0x2a0a resolution 23]
 name='Pizza Hut' | name='Shakeys' [0x2a0a resolution 23]
@@ -1110,7 +1095,9 @@ name="Domino's Pizza" | (name="Dominos Pizza" | name="Dominos") {set name="Domin
 name="Carlo's Pizza" | name='Carlos Pizza' {set name="Carlo's Pizza *"} [0x2a0a resolution 23] 
 name='Giacomino Pizza' | name='Brooklyn Pizza' [0x2a0a resolution 23]
 name='Joey Pepperoni Pizzeria' | name='Joey Pepperoni' [0x2a0a resolution 23]
+
 # -------------------------------------------------------------------
+
 # SEAFOOD (Seafood - 0x2a0b)
 name='Dalampasigan Restaurant' 
 |name='Dampa' | name='Dampa-Sucat' | name='Dampa-Macapagal' 
@@ -1198,33 +1185,36 @@ name='Dalampasigan Restaurant'
 |name="Wok with Joe Seafood Restaurant"
 |name="Yam Cha Sea Food"
 [0x2a0b resolution 23]
+
 # -------------------------------------------------------------------
+
 # DONUTS (Donuts - 0x2a0d)
 name="Mister Donut" [0x2a0d resolution 23]
 name="Dunkin Donuts" | name="Dunkin Donut" {set name="Dunkin Donuts *"} [0x2a0d resolution 23]
 name="Go Nuts Donuts"| name="Gonuts Donuts" {set name="Go Nuts Donuts *"} [0x2a0d resolution 23]
 name="Krispy Kreme" | name="Cielo's Donuts" [0x2a0d resolution 23]
+
 # -------------------------------------------------------------------
+
 # CAFE/COFFEE_SHOP (Cafe/Diner/Coffee_Shop - 0x2a0e)
 name='Starbucks' | name='Cafe Breton' [0x2a0e resolution 23]
 name='Figaro' | (name='Figaro Coffee' | name='Figaro Coffee Company') {set name='Figaro *'} [0x2a0e resolution 23]
 name="Gloria Jean's Coffees" | (name="Gloria Jean's Coffee" | name='Gloria Jeans' | name="Gloria Jeans Coffee") {set name="Gloria Jean's Coffees *"} [0x2a0e resolution 23]
 name="The Coffee and Pancake Company"
 [0x2a0e resolution 23]
+
 # -------------------------------------------------------------------
+
 # FILIPINO (Others - 0x2a00)
 name="Hizon's"
 [0x2a00 resolution 23]
-# -------------------------------------------------------------------
-# -------------------------------------------------------------------
-# -------------------------------------------------------------------
 
-
+# -------------------------------------------------------------------
 
 # -------------------------------------------------------------------
 # FILTER by CUISINE type
 # -------------------------------------------------------------------
-# note: it is assumed that "cuisine" is always a restautant (with or without amenity=restaurant tag)
+# note: it is assumed that "cuisine" is always a restaurant (with or without amenity=restaurant tag)
 
 # 1  American - 0x2a01
 cuisine=american 
@@ -1363,9 +1353,6 @@ amenity=nightclub [0x2d02 resolution 23]
 # -------------------------------------------------------------------
 
 
-
-
-
 # GENERIC FOOD TAGS
 amenity=restaurant [0x2a00 resolution 23]
 cuisine=speciality [0x2a00 resolution 23]
@@ -1381,11 +1368,6 @@ amenity=fast_food
 
 
 # DO NOT PLACE ANY "CUISINE" or "RESTAURANT" TAG BELOW THIS LINE !!!!
-
-
-
-
-
 
 # -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
 
@@ -1406,6 +1388,7 @@ shop=convenience & ( name!="7-Eleven" | name!="7 Eleven" | name!="7Eleven" |name
 shop=convenience & ( name!="Ministop" | name!="Mini Stop") [0x2e03 resolution 23]
 shop=convenience & ( name!="Mightee Mart" | name!="Mighty Mart") [0x2e03 resolution 23]
 shop=convenience & operating_hours='24/7' [0x2e03 resolution 23]
+
 # -------------------------------------------------------------------
 
 # GarminPC:Shopping:Department 0x2b01 (Anchor-Establishments inside shopping complex) <rally:RedCoatOnHanger Icon>
@@ -1491,6 +1474,7 @@ shop=alcohol [0x2c0a resolution 23]
 # -------------------------------------------------------------------
 # PERSONAL AND BUSINESS SERVICES, WELLNESS (selling services not items)
 # -------------------------------------------------------------------
+
 amenity=atm { name '${operator}: ${name}' | '${name}' | '${operator}' } [0x2f06 resolution 23]
 amenity=bank { name '${name} (${operator}) - ${branch}' | '${name}  - ${branch}' | '${operator}  - ${branch}' } [0x2f06 resolution 23]
 
@@ -1538,13 +1522,9 @@ highway=trailhead [0x6412 resolution 19]
 
 # -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
 # -------------------------------------------------------------------
-# -------------------------------------------------------------------
-# -------------------------------------------------------------------
 
 military=* [0x640b resolution 21]
 landuse=military [0x640b resolution 21]
-
-
 
 # Generic assigned to General Merchandise 0x2e03 (sari-sari stores & other merchandisers)
 shop=* [0x2e03 resolution 23]
@@ -1559,12 +1539,7 @@ building=* & name!=* [0x6402 resolution 24]	# add POI to named building polygon 
  
 # -------------------------------------------------------------------
 
-
-
 # -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
-
-
-
 
 # -------------------------------------------------------------------
 # -------------------------------------------------------------------
