@@ -9,7 +9,7 @@
 #pre-process tags
 
 # Debugging 
-highway=motorway_link & oneway!=yes & oneway!=no { echo "motorway_link lacks oneway" }
+#highway=motorway_link & oneway!=yes & oneway!=no { echo "motorway_link lacks oneway" }
 
 # Bridge 'with no name tag' on major roads, shall be an annoying'Bridge-FIXME' (particularly those long-span bridges), instead of replacing with road name
 bridge=yes & name!=* & (highway=motorway | highway=trunk | highway=primary | highway=secondary ) {add name='Bridge-FIXME'}
@@ -135,7 +135,7 @@ highway=* & area!=yes [0x07 ]
 
 # -------------------------------------------------------------------
 natural=coastline [0x15 resolution 12]
-#power=line [0x29 resolution 20]
+power=line [0x29 resolution 20]
 
 # -------------------------------------------------------------------
 
@@ -152,7 +152,15 @@ route=ferry [0x1b road_class=3 road_speed=0 resolution 18]
 waterway=canal [0x1f resolution 22]
 waterway=drain [0x1f resolution 22]
 waterway=river [0x1f resolution 18]
-waterway=stream [0x18 resolution 22]
+waterway=stream [0x18 resolution 20]
 
 man_made=pipeline {name '${operator}'} [0x28 resolution 23]
-
+# barierrs and fences
+barrier=wall [0x10f02 resolution 24 continue]
+barrier=retaining_wall [0x10f03 resolution 24 continue]
+barrier=city_wall [0x10f04 resolution 23 continue]
+barrier=fence [0x10f05 resolution 24 continue]
+barrier=wood_fence [0x10f05 resolution 24 continue]
+barrier=wire_fence [0x10f05 resolution 24 continue]
+barrier=metal_fence [0x10f05 resolution 24 continue]
+( natural=cliff | barrier=cliff ) {set name='${name} cliff' | 'cliff'} [0x10f01 resolution 23 continue]

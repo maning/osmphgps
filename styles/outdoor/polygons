@@ -97,3 +97,11 @@ amenity=fuel [0x08 resolution 20]
 building=* | man_made=* | amenity=* | tourism=* [0x13 resolution 24]
 
 # boundary=national_park [0x16 resolution 20]
+
+# For topographic polygons
+elev_level=300 [0x2a resolution 10]
+elev_level=500 [0x2c resolution 10]
+elev_level=800 [0x2e resolution 10]
+elev_level=1200 [0x30 resolution 10]
+elev_level=1500 [0x34 resolution 10]
+elev_level=peak [0x36 resolution 10]

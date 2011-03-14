@@ -1,0 +1,11 @@
+# overlays in MapSource don't seem to work with bitmap TYP elements, only solid lines, but work fine in the GPS itself
+# also, overlays in MapSource are plotted in the reverse order to on the GPS (e.g. oneway arrows plot under lines in MapSource, but on top of lines in GPS
+
+#oneway arrows
+0x123: 0x02, 0x10
+0x124: 0x04, 0x10
+0x125: 0x05, 0x10
+0x126: 0x06, 0x10
+0x127: 0x06, 0x10
+
+# bridges

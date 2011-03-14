@@ -5,16 +5,23 @@ README
 
 Routable Garmin Map for OSM Philippines
 
-textme 3
-
 Download maps here (choose one):
  - http://esambale.wikispaces.com/osmphil_garmin
  - https://github.com/maning/osmphgps/wiki/Download
 
 Changes and updates:
 
+20110312
+ - re-organized most of the POIs and corresponding typ commited by rally
+
+20110223
+ - city and street search now working via mapsource, roadtrip and basecamp "Send to device option"
+ - reorganize places tags
+ - add branch in bank names
+ - mkgmap version index-1860 
+
 20110106
- -Oneway arrows on highways
+ - Oneway arrows on highways
 
 20101022
  - New typ style created by Rally as the default
