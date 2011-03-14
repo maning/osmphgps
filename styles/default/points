@@ -1492,7 +1492,7 @@ shop=alcohol [0x2c0a resolution 23]
 # PERSONAL AND BUSINESS SERVICES, WELLNESS (selling services not items)
 # -------------------------------------------------------------------
 amenity=atm { name '${operator}: ${name}' | '${name}' | '${operator}' } [0x2f06 resolution 23]
-amenity=bank { name '${name} (${operator})' | '${name}' | '${operator}' } [0x2f06 resolution 23]
+amenity=bank { name '${name} (${operator}) - ${branch}' | '${name}  - ${branch}' | '${operator}  - ${branch}' } [0x2f06 resolution 23]
 
 # Personal Service (wellness, spa, personal wellbeing, pampering, salon, haircut, beauty, aesthetic, yoga and local massage or may sell organic products) 
 shop=hairdresser [0x2f10 resolution 20]
