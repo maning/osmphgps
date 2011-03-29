@@ -14,13 +14,16 @@
 #
 #############################################################################
 
-#set parameters and paths
-download_dir=~/Downloads/osm/routable_garmin/data/
+# Prerequisites                                                                             
+# Symlink mkgmap.jar from your downloaded mkgmap.jar                                                                         
+# Symlink gmapi-builder from your gmapi-builder python script                                                                 
 
-#===========
+# Set paths
+download_dir=~/Downloads/osm/routable_garmin/data/
 echo ${download_dir}
 cd ${download_dir}
 
+# Get latest extract from geofabrik
 wget -c http://download.geofabrik.de/osm/asia/philippines.osm.bz2
 bunzip2 philippines.osm.bz2
 cd  ${download_dir}
