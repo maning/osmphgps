@@ -1,4 +1,3 @@
-
 # -------------------------------------------------------------------
 # This is the OSM-PH mkgmap style file for converting OSM nodes
 # into Garmin POIs.
@@ -49,8 +48,8 @@ barrier=gate { add mkgmap:road-speed = '-1'; add mkgmap:road-speed-min = '1' }
 
 # Commonly mispelled city-tags (for place & none-place POI's) 
 # Karlsruhe schema: this only concerns searchability of Barangays/Purok/Subd and Amenity-POI, not cities) 
-  addr:city='Paranaque' {set addr:city='Parañaque'}						
-  addr:city='Las Pinas' {set addr:city='Las Piñas'}
+  addr:city='Paranaque' {set addr:city='Paraï¿½aque'}						
+  addr:city='Las Pinas' {set addr:city='Las Piï¿½as'}
 
 # ---------------
 
@@ -414,10 +413,10 @@ amenity=townhall [0x3003 resolution 18]
 
 # -------------------------------------------------------------------
 
-barrier=gate & access=private [0x2002 resolution 24]
-barrier=gate & access=permissive [0x2003 resolution 24]
-barrier=gate & access=pedestrian [0x2004 resolution 24]
-barrier=gate & access=closed [0x2005 resolution 24]
+barrier=gate & access=private [0x2705resolution 24]
+barrier=gate & access=permissive [0x2706 resolution 24]
+barrier=gate & access=pedestrian [0x2707 resolution 24]
+barrier=gate & access=closed [0x2708 resolution 24]
 highway=gate [0x2001 resolution 24]
 barrier=gate [0x2001 resolution 24]
 barrier=sally_port [0x2001 resolution 24]
