@@ -12,7 +12,6 @@ series-name=OSM_PHIL
 description=OSM Philippines
 style-file=/home/maning/Downloads/osm/routable_garmin/git/osmphgps/styles/default
 generate-sea=polygons,extend-sea-sectors,close-gaps=1000
-index
 make-poi-index
 adjust-turn-headings
 drive-on-right
