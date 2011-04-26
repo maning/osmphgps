@@ -159,7 +159,7 @@ place=island [0x650c resolution 20]
 # -------------------------------------------------------------------
 # TRANSPORTATION and Car Repair related icons
 # -------------------------------------------------------------------
-amenity=fuel [0x2f01 resolution 16]
+amenity=fuel { name '${name} (${operator}) - ${branch}' | '${name}  - ${branch}' | '${operator}  - ${branch}' } [0x2f01 resolution 16]
 
 amenity=parking [0x2f0b resolution 22 default_name='carpark']
 amenity=bicycle_parking [0x2f0b resolution 22 default_name 'bikepark']
@@ -1362,7 +1362,7 @@ amenity=fast_food
 | amenity=food_court 
 | shop=beverages 
 | cuisine=burger
-[0x2a07 resolution 23]
+{ name '${name} (${operator}) - ${branch}' | '${name}  - ${branch}' | '${operator}  - ${branch}' } [0x2a07 resolution 23]
 
 
 
