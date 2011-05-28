@@ -1,88 +1,153 @@
-# pre=process tags
-place=* {add is_in:country=Philippines}
+# reminder to self:
+# it's the TYP that dictates by which polygons are stacked over the other
+# the use of the polygon style dictates the order of processing of tags
 
-aeroway=airport [0x07 resolution 18]
-aeroway=aerodrome [0x07 resolution 18]
-aeroway=helipad [0x0e resolution 20]
-aeroway=terminal [0x13 resolution 20]
-aeroway=apron [0x0e resolution 20]
 
-amenity=kindergarten [0x0a resolution 20]
-amenity=cafe | amenity=fast_food | amenity=restaurant | amenity=food_court [0x08 resolution 20]
-amenity=college [0x0a resolution 20]
-amenity=grave_yard [0x1a resolution 18]
-amenity=hospital [0x0b resolution 18]
-parking=underground | parking=multi-storey [0x06 resolution 21]
-amenity=parking | parking=surface [0x05 resolution 21]
-amenity=prison [0x04 resolution 20]
+# LEVEL_1 (Ocean)
+	
+	natural=sea [0x32 resolution 14]
+
+# LEVEL_2 (Main Islands)
+
+	natural=land [0x27 resolution 14]
+
+# LEVEL_3 (Protected Areas & Mountain Polygons)
+	
+#	boundary=national_park [0x16 resolution 16]
+	
+
+# LEVEL_4 (Lakes, Rivers & Lagoons) (Airport, Military, Reservation, Crops)
+
+	natural:ph=mountain                                                { delete natural } [0x20 resolution 18]
+	natural:ph=mountain2 | natural:ph=mountain_mid 			   { delete natural } [0x1f resolution 18]
+	natural:ph=mountain3 						   { delete natural } [0x1e resolution 18]
+	natural:ph=mountain4 | natural:ph=summit | natural:ph=mountain_top { delete natural } [0x1d resolution 18]
+	
+	contour=elevation & ele=300 { delete natural } [0x2a resolution 16]
+	contour=elevation & ele=500 { delete natural } [0x2c resolution 16]
+	contour=elevation & ele=700 { delete natural } [0x2e resolution 16]
+	contour=elevation & ele=1000 { delete natural } [0x30 resolution 16]
+	contour=elevation & ele=1200 { delete natural } [0x33 resolution 16]
+	contour=elevation & ele=1500 { delete natural } [0x34 resolution 16]
+	contour=elevation & ele=2000 { delete natural } [0x36 resolution 16]
+	contour=elevation & ele=2500 { delete natural } [0x38 resolution 16]
+	
+	natural=water [0x3c resolution 16]   		
+
+	natural=glacier [0x4d resolution 16]
+	natural=marsh [0x51 resolution 20]
+	natural=mud [0x51 resolution 20]
+ 	natural=marsh [0x4c resolution 20]
+ 	natural=mud [0x4c resolution 20]
+	natural=beach {set natural=sand} [0x53 resolution 18]	# convert beach to sand ---> that means any beach with no separate POI will not be searchable
+	natural=sand [0x53 resolution 18]
+
+	natural=scrub [0x4f resolution 18]
+	leisure=nature_reserve [0x16 resolution 18]
+	natural=wood [0x50 resolution 18]
+	landuse=forest [0x50 resolution 18]
+	# NOTES: wood/forest is currently assigned to isolated 'urban park' or 'managed forests' & alikes
+	
+	
+	aeroway=airport [0x07 resolution 18]
+	aeroway=aerodrome [0x07 resolution 18]
+	aeroway=apron [0x07 resolution 18]
+	military=airfield [0x16 resolution 18]
+
+	landuse=military | military=base [0x04 resolution 18]
+	military=air_base [0x04 resolution 18]
+	military=naval_base [0x04 resolution 18]
+
+	military=danger_area [0x04 resolution 18]
+	military=range [0x04 resolution 18]
+	military=barracks {set building=yes} [0x13 resolution 20]
+	
+	man_made=pier [0x0c resolution 16]
+	
+
+# ------ TOURIST AREA (building over 'places of interest')
+	(landuse=reservoir | natural=water) [0x3c resolution 19] 				# this must be on top of tourism=attraction, else the water turns to brown (attraction)
+	(building=* | barrier=wall ) & tourism=attraction [0x13 resolution 20]	  
+	(landuse!=reservoir | natural!=water) & tourism=attraction  [0x25 resolution 20]	# generic attractions
+	
+
+# LEVEL_5 (etc)
+
+
+# LEVEL_6 (etc)
+
+
+# LEVEL_7
+
+
+# -----------
+
+aeroway=terminal [0x13 resolution 20]				# ordinary building
+
 amenity=school [0x0a resolution 20]
-amenity=supermarket [0x08 resolution 21]
+amenity=kindergarten [0x0a resolution 20]
+amenity=college [0x0a resolution 20]
 amenity=university [0x0a resolution 20]
-amenity=place_of_worship [0x1a resolution 21]
 
-landuse=allotments [0x4e resolution 20]
-landuse=basin [0x3f resolution 18]
-landuse=cemetary [0x1a resolution 18]
+amenity=hospital [0x0b resolution 18]
+amenity=parking [0x05 resolution 21]
+amenity=supermarket [0x08 resolution 21]
+amenity=grave_yard [0x1a resolution 18]
 landuse=cemetery [0x1a resolution 18]
+
+landuse=basin [0x3f resolution 16]
+
+landuse=allotments [0x4e resolution 20]		# 4e is orchard or plantation, http://wiki.openstreetmap.org/wiki/Tag:landuse%3Dallotments
 landuse=commercial [0x08 resolution 18]
 landuse=construction [0x0c resolution 18]
 landuse=farm [0x4e resolution 18]
 landuse=farmyard [0x4e resolution 18]
-landuse=forest [0x50 resolution 18]
+landuse=orchard [0x4e resolution 18]
+
 landuse=greenfield [0x17 resolution 18]
 landuse=industrial [0x0c resolution 18]
 landuse=meadow [0x17 resolution 18]
-landuse=military [0x04 resolution 18]
-landuse=quarry | landuse=surface_mining | landuse=mining [0x0c resolution 18]
-landuse=recreation_ground [0x19 resolution 18]
-landuse=reservoir [0x3f resolution 18]
-landuse=residential [0x10 resolution 23-18]
-landuse=retail [0x08 resolution 20]
-landuse=village_green [0x17 resolution 20]
+landuse=quarry [0x0c resolution 18]   		#use industrial polygon typ
 landuse=vineyard [0x4e resolution 20]
-landuse=wood [0x50 resolution 18]
+landuse=grass [0x17 resolution 20]
+landuse=recreation_ground [0x19 resolution 18]
+landuse=retail [0x08 resolution 20]
 
+leisure=water_park [0x09 resolution 18]    	#resort with fun/recreational facilities 
+leisure=golf_course [0x18 resolution 20]   	#NOTE: golf_course before village_green (just in case village green is also applied on golf_course)
+landuse=village_green [0x17 resolution 18]
 leisure=common [0x17 resolution 20]
 leisure=garden [0x17 resolution 20]
-leisure=golf_course [0x18 resolution 20]
-leisure=ice_rink [0x19 resolution 21]
 leisure=marina [0x09 resolution 20]
-leisure=nature_reserve [0x16 resolution 18]
-leisure=park [0x17 resolution 20]
-leisure=pitch { name '${name} (${sport})' | '${name}' } [0x19 resolution 20]
+
+# INLAND Water Body
+
+landuse=reservoir  [0x3c resolution 19] 					# dont use [0x3f resolution 18] - won't work on top of Village Green
+landuse=swimming_pool | landuse=pool | landuse=pond [0x3c resolution 19] 	# dont use [0x40 resolution 18] - won't work on top of Village Green
+waterway=riverbank [0x46 resolution 16]
+
+man_made=breakwater [0x0c resolution 16]
+
+leisure=park [0x17 resolution 18]
+leisure=pitch [0x19 resolution 20]
 leisure=playground [0x17 resolution 20]
-leisure=recreation_ground [0x19 resolution 18]
-leisure=sports_center | leisure=sports_centre { name '${name} (${sport})' | '${name}' } [0x19 resolution 20]
-leisure=stadium { name '${name} (${sport})' | '${name}' } [0x19 resolution 19]
-leisure=track { name '${name} (${sport})' | '${name}' } [0x19 resolution 18]
-leisure=water_park [0x09 resolution 18]
+leisure=sports_center | leisure=sports_centre [0x19 resolution 20]
+leisure=stadium [0x19 resolution 19]
+leisure=track [0x19 resolution 18]
 
-military=airfield [0x04 resolution 18]
-military=barracks [0x04 resolution 18]
-military=danger_area [0x04 resolution 18]
-military=range [0x04 resolution 18]
 
-natural=land [0x27 resolution 10]
-natural=glacier [0x4d resolution 16]
-natural=marsh [0x51 resolution 20]
-natural=mud [0x51 resolution 20]
-natural=scrub [0x4f resolution 20]
-natural=sea [0x32 resolution 10]
-natural=water [0x3c resolution 18]
-natural=wood [0x50 resolution 18]
-natural=beach [0x53 resolution 18]
 
-tourism=attraction & ( building=* | barrier=wall )  [0x13 resolution 20]
-tourism=attraction [0x25 resolution 20]
+# place=village [0x03 resolution 18]
 
-wetland=mangrove [0x50 resolution 18]
-
+shop=* [0x08 resolution 18]
 # squares and plazas
 highway=pedestrian & area=yes [0x17 resolution 20]
 # other highways that have area=yes set must be parking lots
-highway=* & area=yes [0x05 resolution 21]
+(highway=motorway | highway=motoway_link) & area=yes [0x05 resolution 18 default_name 'Toll Plaza']
+highway=* & area=yes [0x05 resolution 18]
+#http://www.thefreedictionary.com/plaza
 
-waterway=riverbank [0x46 resolution 20]
+
 
 # adding housenumbers in buildings
 addr:housenumber=* & name=* {name '${name} (${addr:housenumber})'}
@@ -90,10 +155,17 @@ addr:housenumber=* & addr:housename=* {name '${addr:housename} ${addr:housenumbe
 addr:housename=* & name!=* {name '${addr:housename}'}
 addr:housenumber=* {name '${addr:housenumber}'}
 
-# generic polygons 
-place=* [0x10 resolution 23-18]
-shop=* [0x08 resolution 20]
-amenity=fuel [0x08 resolution 20]
-building=* | man_made=* | amenity=* | tourism=* [0x13 resolution 24]
 
-# boundary=national_park [0x16 resolution 20]
+# ------------------------------------------------- 
+
+
+amenity=fuel [0x08 resolution 20]
+
+# ------------------------------------------------- 
+
+# Process 1st - GOVERNMENT BUILDING (building over 'places of interest') --- currently uses generic building polygon
+amenity=townhall | amenity=public_building  {add public=yes} [0x13 resolution 22]
+
+# Process 2nd: (all else remaining) NONE-GOVERNMENT structures including Museum, Public Market etc 
+building=* [0x13 resolution 22]		
+
