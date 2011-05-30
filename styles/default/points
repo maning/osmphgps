@@ -563,7 +563,7 @@ place=island [0x1150c resolution 20]
 	historic=monument [0x2c02 resolution 23 continue]			# Symbolic Structure or Statue in honor of somebody
 	historic=monument {delete name} [0x11002 resolution 23]
 	
-	historic=ruins | historic=archaeological_site [0x2c23 resolution 23 continue]
+	historic=ruins | historic=archaeological_site [0x2c02 resolution 23 continue]
 	historic=ruins | historic=archaeological_site {delete name} [0x11003 resolution 23]
 	
 	historic=marker [0x2c02 resolution 23 continue] 			# National Historic Commission (Plate Marker) --- find all and replace with 'memorial'
@@ -662,34 +662,46 @@ place=island [0x1150c resolution 20]
 # 2c03	Nuvi: Library (any private or public building (or room within a building) with collection of books & reference materials for academic studies)	
 	amenity=library [0x2c03 resolution 23]
 
-# 2c0b	Nuvi: Place of Worship (Catholic)
-	denomination=catholic |	denomination=roman_catholic [0x2c0b resolution 21]
-
-# 2c0d	Nuvi: Place of Worship (Protestants & most None-Sectarian Christians, Aglipay, Iglesia Ni Cristo, Mormon, Jehovah's Witness, Jewish)  
-	name='Iglesia Ni Cristo' | name='Iglesia ni Cristo' | denomination=iglesia_ni_cristo [0x2c0d resolution 21]
+# 2c0d	Nuvi: Place of Worship (Protestants & none-sectarian Christians, Aglipay, Iglesia Ni Cristo, Mormon, Jehovah's Witness, Jewish)  
+	name='Iglesia Ni Cristo' |  denomination=iglesia_ni_cristo [0x2c0d resolution 21]
+	name='Iglesia ni Cristo' | name='Iglesia ni Kristo' | name='Iglesia ni Christo' | name='Iglesia' {set name='Iglesia Ni Cristo *'} [0x2c0d resolution 21]
         name='Dating Daan' | name='Ang Dating Daan' [0x2c0d resolution 21]
-        denomination=aglipay | denomination=aglipayan | religion=aglipayan [0x2c0d resolution 21] 
+        denomination=aglipay | denomination=aglipayan | religion=aglipayan 
+        | name='Philippine Independent Church' | name='Aglipay'  
+        | name='Aglipayan Church' | name='Aglipay Memorial Church'  
+        | name='Iglesia Filipina Independiente' | name='Iglesia Independiente Filipinas' 
+          [0x2c0d resolution 21] 
         denomination=protestant |
 	denomination=baptist | denomination=anglican | denomination=evangelical |  denomination=lutheran | 
 	denomination=methodist | denomination=orthodox | denomination=pentecostal | denomination=presbyterian  [0x2c0d resolution 21]
+	name='Iglesia Ng Dios' | name='Iglesia Ng Dios Kay Cristo Jesus' | name='Iglesia Watawat Ng Lahi' |
+	name='Church of Christ' | name='Church of Jesus Christ' | name='Church of God' [0x2c0d resolution 21]
 	denomination=mormon [0x2c0d resolution 21]
+	name='Church of Jesus Christ of Latter Day Saints'	#either no 'denomination' or 'wrong spelling' 
+	| name='Church of Jesus Christ of Latter Days Saint' 
+	| name='Church of Latter Days Saints' 
+	| name='Church of Jesus Christ of Later-Day Saints' 
+	{set name='Church of Jesus Christ of Latter Day Saints *'} [0x2c0d resolution 21]
 	denomination=jehovahs_witness [0x2c0d resolution 21]
 	religion=jewish [0x2c0d resolution 21 default_name 'Jewish temple']
 	
 # 2c0e	Nuvi: Place of Worship (Muslim) 
 	religion=muslim | name="Mosque" [0x2c0e resolution 21 default_name 'Mosque']
 
-# 2c0f	Nuvi: Place of Worship (none-christian eastern religions: Taoist, Buddist, Hindu & other east asian beliefs + masonic) 
+# 2c0f	Nuvi: Place of Worship (none-christian temple or lodge: Taoist, Buddist, Hindu & other east asian beliefs + masonic) 
 	religion=taoist [0x2c0f resolution 21]
 	religion=buddhist [0x2c0f resolution 21]
 	religion=hindu [0x2c0f resolution 21]
 	religion=sikh [0x2c0f resolution 21]
 	religion=masonic [0x2c0f resolution 21]
 
-# 2c10	Nuvi: Place of Worship (None-Church (Shrines / Grotto / Religious Icons) -- inappropriate tag - not historic - proposed a new one 
+# 2c10	Nuvi: Place of Worship (None-Church ((none-church shrines / grotto / religious statue) -- inappropriate tag - not historic - propose a new one 
 	historic=wayside_shrine [0x2c10 resolution 21]
 
-# 	ALL other generic "Place of Worship" are temporarily assigned to 2c0b (Catholic) - for further checking
+# 2c0b	Nuvi: Place of Worship (Roman Catholic)	# Keep this line below Protestant etc.
+	denomination=catholic | denomination=roman_catholic [0x2c0b resolution 21]
+
+# 	ALL other generic "Place of Worship" are temporarily assigned to 2c0b (catholic's assigned hexcode) - for further checking
 	amenity=place_of_worship [0x2c0b resolution 21]
 
 # 3001	Nuvi: Police Station
@@ -859,18 +871,19 @@ highway=services [0x2702 resolution 19]
 
 
 # MAN_MADE - ENGINEERING WONDERS/ICONS (Attractions)
+# typ 114xx has annoying green dot similar to city)
 
 	man_made=windmill | power_source=wind | generator:source=wind [0x6417 resolution 21]
 
-	man_made=tunnel [0x11413 resolution 21]
-	man_made=tunnel_entrance [0x11413 resolution 21]
+	man_made=tunnel [0x6413 resolution 21]
+	man_made=tunnel_entrance [0x6413 resolution 21]
 
-# 	scenic & historical bridges
+# 	Scenic & Historical Bridges
 	
-	bridge=yes & tourism=attraction [0x11401 resolution 18]
-	bridge=yes & historic=* [0x11401 resolution 18]
-	man_made=dam [0x11407 resolution 16]
-	waterway=dam [0x11407 resolution 16]
+	bridge=yes & tourism=attraction [0x6401 resolution 18]
+	bridge=yes & historic=* [0x6401 resolution 18]
+	man_made=dam [0x6407 resolution 16]
+	waterway=dam [0x6407 resolution 16]
 
 	man_made=lighthouse [0x1707 resolution 21]		#must be searchable under landmark
 	man_made=tower [0x6411 resolution 21]
@@ -878,13 +891,22 @@ highway=services [0x2702 resolution 19]
 
 #	man_made=survey_point				# BLLM, Triangulation Point
 
+#       Landuse for Industrial Farming or Mining
+	landuse=quarry [0x640c resolution 18]
+	landuse=aquaculture [0x4100 resolution 18]
+#	aquaculture=fish ...oyster/shrimp/mussels
 
+	landuse=cemetery [0x6403 resolution 21]
+	amenity=grave_yard [0x6403 resolution 21]
+
+	military=* [0x640b resolution 21]
+	landuse=military [0x640b resolution 21]
 
 # -------------------------------------------------------------------
-# WATER FEATURES
+# WATER FEATURES (typ 115 has no annoying dot)
 
-	natural=falls [0x11508 resolution 18]
-	waterway=waterfall [0x11508 resolution 18] 
+	natural=falls [0x6508 resolution 18]
+	waterway=waterfall [0x6508 resolution 18] 
 	natural=spring [0x6511 resolution 20]
 	natural=stream [0x6512 resolution 21]
 	natural=channel [0x6506 resolution 18] 
@@ -897,24 +919,20 @@ highway=services [0x2702 resolution 19]
 
 
 # -------------------------------------------------------------------
-# LAND FEATURES
+# LAND FEATURES (typ 116xx has a small gray dot visible even at zoom out)
 
 	natural=wood [0x6618 resolution 21] 
-	natural=beach [0x11604 resolution 21]
+	natural=beach [0x6604 resolution 21]
 	natural=cave [0x6619 resolution 21]
 	natural=cave_entrance [0x6619 resolution 21]
 	natural=cliff [0x6607 resolution 18]
-	natural=peak [0x11616 resolution 19]
-	natural=peak & tourism=* [0x11616 resolution 18]
-	natural=volcano [0x11616 resolution 19]
-	natural=volcano & tourism=* [0x11616 resolution 18]
+	natural=peak [0x6616 resolution 19]
+	natural=peak & tourism=* [0x6616 resolution 18]
+	natural=volcano [0x6616 resolution 19]
+	natural=volcano & tourism=* [0x6616 resolution 18]
 
 
 
-# Landuse for Industrial Farming or Mining
-	landuse=quarry [0x1140c resolution 18]
-	landuse=aquaculture [0x4100 resolution 18]
-#	aquaculture=fish ...oyster/shrimp/mussels
 
 	
 
@@ -925,8 +943,8 @@ highway=services [0x2702 resolution 19]
 	amenity=fountain [0x6511 resolution 23]
 #	amenity=clock
 
-	amenity=drinking_water [0x11414 resolution 21 default_name 'Water']
 
+#	amenity=drinking_water [0x11414 resolution 21 default_name 'Water']
 
 # -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
 
@@ -1017,17 +1035,6 @@ highway=services [0x2702 resolution 19]
 
 
 
-landuse=cemetery [0x11403 resolution 21]
-amenity=grave_yard [0x11403 resolution 21]
-
-
-
-
-military=* [0x640b resolution 21]
-landuse=military [0x640b resolution 21]
-
-
-
 # Generic assigned to General Merchandise 0x2e03 (sari-sari stores & other merchandisers)
 shop=* [0x2e03 resolution 23]
 
@@ -1036,15 +1043,15 @@ shop=* [0x2e03 resolution 23]
 
 # GENERIC STRUCTURES & BUILDINGS & FACTORIES
 
-man_made=building [0x11400 resolution 23]				# buildings or enterprise without polygon (add building icon)
+man_made=building [0x6400 resolution 23]				# buildings or enterprise without polygon (add building icon)
 
 # ALL OTHER BUILDINGS that are not food related
-building=* & name=* & amenity!=restaurant [0x11402 resolution 24]	# add POI to named building polygon to become searchable & any named stand-alone POI with building=yes
-building=* & name=* & amenity!=fast_food [0x11402 resolution 24]
-building=* & name=* & amenity!=fast_court [0x11402 resolution 24]
-building=* & name=* & amenity!=cafe [0x11402 resolution 24]
-building=* & name=* & shop!=beverages [0x11402 resolution 24]
-building=* & name=* & shop!=bakery [0x11402 resolution 24]
+building=* & name=* & amenity!=restaurant [0x6402 resolution 24]	# add POI to named building polygon to become searchable & any named stand-alone POI with building=yes
+building=* & name=* & amenity!=fast_food [0x6402 resolution 24]
+building=* & name=* & amenity!=fast_court [0x6402 resolution 24]
+building=* & name=* & amenity!=cafe [0x6402 resolution 24]
+building=* & name=* & shop!=beverages [0x6402 resolution 24]
+building=* & name=* & shop!=bakery [0x6402 resolution 24]
 # -------------------------------------------------------------------
 
 
@@ -1053,18 +1060,6 @@ building=* & name=* & shop!=bakery [0x11402 resolution 24]
 
 
 
-
-# -------------------------------------------------------------------
-# -------------------------------------------------------------------
-# -------------------------------------------------------------------
-
-# No assigned categories
-
-# highway=mini_roundabout
-# highway=turning_circle
-
-# man_made=water_tower
-# man_made=water_tank
 
 
 
