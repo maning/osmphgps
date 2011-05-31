@@ -123,7 +123,7 @@ highway=trunk & int_ref=AH26 { add g_name='DMH'; add alt_name='Maharlika Highway
 highway=motorway & (name='Subic-Clark-Tarlac Expressway' | ref='SCTEx' | ref='SCTEX') { add g_name=SCTEx; set ref='${name}'; }
 highway=motorway & (name='North Luzon Expressway' | ref='R-8') { add g_name=NLEx; set ref='${name}'; }
 highway=motorway & (name='Metro Manila Skyway' | name='Metro Manila Skyway Buendia Exit' | name='Metro Manila Skyway Makati Exit' ) { add g_name=Skyway; set ref='Skyway'; }
-(highway=motorway | highway=trunk) & (name='South Luzon Expressway' | alt_name='South Super Highway' | alt_name='South Luzon Expressway' | name='President Sergio Osme�a Highway' ) 
+(highway=motorway | highway=trunk) & (name='South Luzon Expressway' | alt_name='South Super Highway' | alt_name='South Luzon Expressway' | name='President Sergio Osmeña Highway' ) 
 	{ add g_name=SLEx; set ref='South Luzon Expressway'; }
 highway=motorway & (name='Southern Tagalog Arterial Road' | name='Apolinario Mabini Superhighway' | alt_name='Southern Tagalog Arterial Road; STAR Tollway') 
 	{ add g_name=STAR; set ref='Southern Tagalog Arterial Road'; }

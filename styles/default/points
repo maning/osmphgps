@@ -51,7 +51,7 @@
 # 17.Other - Garmin Dealer
 # 18.Other - Marine/Repair & Storage (not related to public transportation)
 # 19.Other - Personal Service
-# 20.Other - Repair ServiceLas Piñas
+# 20.Other - Repair Service
 # 21.Other - Social Service
 # 22.Other - Other
 # --- not yet sorted out
@@ -1879,8 +1879,7 @@ cuisine=* [0x2a00 resolution 23]
 amenity=fast_food
 | amenity=food_court 
 | shop=beverages 
-| cuisine=burger
-[0x2a07 resolution 23]
+| cuisine=burger [0x2a07 resolution 23]
 
 
 
