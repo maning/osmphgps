@@ -51,7 +51,7 @@
 # 17.Other - Garmin Dealer
 # 18.Other - Marine/Repair & Storage (not related to public transportation)
 # 19.Other - Personal Service
-# 20.Other - Repair Service
+# 20.Other - Repair ServiceLas Piñas
 # 21.Other - Social Service
 # 22.Other - Other
 # --- not yet sorted out
@@ -92,14 +92,6 @@
 # Forced-Assignment to NCR (is_in:state) all Metro Manila cities
 ( place=city | place=town ) & (is_in:region='NCR' | is_in:region='Metro Manila' ) { add is_in:state='NCR'; set is_in:state='NCR' }
 
-<<<<<<< HEAD
-# Commonly mispelled city-tags (for place & none-place POI's) 
-# Karlsruhe schema: this only concerns searchability of Barangays/Purok/Subd and Amenity-POI, not cities) 
-  addr:city='Paranaque' {set addr:city='Paraï¿½aque'}						
-  addr:city='Las Pinas' {set addr:city='Las Piï¿½as'}
-
-=======
->>>>>>> 2296d0ab3e95b90543434660072777704bdab7c7
 # ---------------
 
 # CITY on FLOATING-STATUS (no provincial tag): assign all of them to 'FIXME Province'  
@@ -219,60 +211,6 @@ place=island [0x1150c resolution 20]
 
 # START OF POI FILTERS AND HEX ASSIGNMENTS ==========================
 
-<<<<<<< HEAD
-# -------------------------------------------------------------------
-# TRANSPORTATION and Car Repair related icons
-# -------------------------------------------------------------------
-amenity=fuel { name '${name} (${operator}) - ${branch}' | '${name}  - ${branch}' | '${operator}  - ${branch}' } [0x2f01 resolution 16]
-
-amenity=parking [0x2f0b resolution 22 default_name='carpark']
-amenity=bicycle_parking [0x2f0b resolution 22 default_name 'bikepark']
-
-amenity=car_rental [0x2f02 resolution 23]
-amenity=car_wash [0x2f0e resolution 23]
-
-shop=car_repair [0x2f03 resolution 23]
-amenity=wrecker_service [0x2f0a resolution 23]
-shop=tires [0x2f1b resolution 23]
-shop=tyres [0x2f1b resolution 23]
-shop=vulcanizing [0x2f1b resolution 23]
-
-shop=car [0x2f07 resolution 22]
-shop=car_dealer [0x2f07 resolution 22]
-
-shop=bicycle [0x2f1a resolution 23]
-shop=motorcycle [0x2f1a resolution 23]
-
-highway=crossing [0x6406 resolution 21]
-railway=level_crossing [0x6406 resolution 21]
-
-# International Airports:
-aeroway=aerodrome & 
-( name="Laoag Airport" | name="Laoag International Airport"			  	#	
-| name="Diosdado Macapagal International Airport" | name="Clark International Airport"	# Clark International Airport / DMIA
-| name="Ninoy Aquino International Airport"						# NAIA
-| name="Mactan-Cebu International Airport"						# CEB
-| name="Francisco Bangoy International Airport"						# Davao International Airport
-| name="General Santos International Airport"
-| name="Zamboanga International Airport"
-) [0x2f04 resolution 16]
-
-aeroway=aerodrome [0x2f04 resolution 18]
-aeroway=airport [0x2f04 resolution 16]
-aeroway=terminal [0x2f04 resolution 20]
-
-# GarminPC:Transportation:Transit Service 0x2f17 
-railway=halt [0x2f17 resolution 21]
-railway=station [0x2f17 resolution 20]
-railway=tram_stop [0x2f17 resolution 21]
-
-# GarminPC:Transportation:Ground Transportation 0x2f08
-amenity=bus_station [0x2f08 resolution 18]
-highway=bus_stop [0x2f08 resolution 18]
-amenity=fx_station [0x2f08 resolution 21 default_name 'FX station']
-amenity=jeepney_station [0x2f08 resolution 21 default_name 'PUJ station']
-amenity=taxi [0x2f08 resolution 21 default_name 'Taxi']
-=======
 ###01	FOOD (See bottom portion)
 
 
@@ -391,7 +329,6 @@ amenity=taxi [0x2f08 resolution 21 default_name 'Taxi']
 	amenity=harbor [0x650b resolution 16]	# provides extra protection for ships against big waves during typhoon --- it's like a 'parking space' of ships, not for transport
 	leisure=marina [0x2f09 resolution 18]	# for leisure/private use - not for mass/public transport 
 
->>>>>>> 2296d0ab3e95b90543434660072777704bdab7c7
 
 # NONE Garmin standard - looks like not searchable - investigate
 	amenity=tricycle_station [0x2f18 resolution 23 default_name 'Trike station']
@@ -902,19 +839,6 @@ shop=livestock_supply | shop=animal_health [0x3011 resolution 23]
 
 # -------------------------------------------------------------------
 
-<<<<<<< HEAD
-barrier=gate & access=private [0x2705 resolution 24]
-barrier=gate & access=permissive [0x2706 resolution 24]
-barrier=gate & access=pedestrian [0x2707 resolution 24]
-barrier=gate & access=closed [0x2708 resolution 24]
-highway=gate [0x2708 resolution 24]
-barrier=gate [0x2708 resolution 24]
-barrier=sally_port [0x2008 resolution 24]
-barrier=bollard | barrier=bus_trap
-    {add access = no; add bicycle = yes; add foot = yes} [0x660f resolution 21]
-barrier=block | barrier=cycle_barier | barrier=stile | barrier=kissing_gate
-    {add access = no; add foot = yes} [0x660f resolution 21]
-=======
 # GATES
 	barrier=gate & access=private [0x11206 resolution 24]
 	barrier=gate & access=permissive [0x11207 resolution 24]
@@ -927,7 +851,6 @@ barrier=block | barrier=cycle_barier | barrier=stile | barrier=kissing_gate
 	    {add access = no; add bicycle = yes; add foot = yes} [0x11208 resolution 21]
 	barrier=block | barrier=cycle_barier | barrier=stile | barrier=kissing_gate
 	    {add access = no; add foot = yes} [0x11208 resolution 21]
->>>>>>> 2296d0ab3e95b90543434660072777704bdab7c7
 
 # -------------------------------------------------------------------
 
@@ -1957,14 +1880,11 @@ amenity=fast_food
 | amenity=food_court 
 | shop=beverages 
 | cuisine=burger
-{ name '${name} (${operator}) - ${branch}' | '${name}  - ${branch}' | '${operator}  - ${branch}' } [0x2a07 resolution 23]
+[0x2a07 resolution 23]
 
 
 
 # DO NOT PLACE ANY "CUISINE" or "RESTAURANT" TAG BELOW THIS LINE !!!!
-
-
-
 
 
 

@@ -123,7 +123,7 @@ highway=trunk & int_ref=AH26 { add g_name='DMH'; add alt_name='Maharlika Highway
 highway=motorway & (name='Subic-Clark-Tarlac Expressway' | ref='SCTEx' | ref='SCTEX') { add g_name=SCTEx; set ref='${name}'; }
 highway=motorway & (name='North Luzon Expressway' | ref='R-8') { add g_name=NLEx; set ref='${name}'; }
 highway=motorway & (name='Metro Manila Skyway' | name='Metro Manila Skyway Buendia Exit' | name='Metro Manila Skyway Makati Exit' ) { add g_name=Skyway; set ref='Skyway'; }
-(highway=motorway | highway=trunk) & (name='South Luzon Expressway' | alt_name='South Super Highway' | alt_name='South Luzon Expressway' | name='President Sergio Osmeña Highway' ) 
+(highway=motorway | highway=trunk) & (name='South Luzon Expressway' | alt_name='South Super Highway' | alt_name='South Luzon Expressway' | name='President Sergio Osmeï¿½a Highway' ) 
 	{ add g_name=SLEx; set ref='South Luzon Expressway'; }
 highway=motorway & (name='Southern Tagalog Arterial Road' | name='Apolinario Mabini Superhighway' | alt_name='Southern Tagalog Arterial Road; STAR Tollway') 
 	{ add g_name=STAR; set ref='Southern Tagalog Arterial Road'; }
@@ -241,6 +241,18 @@ junction=roundabout & highway=secondary [0x0c road_class=2 road_speed=2 resoluti
 junction=roundabout & highway=tertiary [0x0c road_class=1 road_speed=1 resolution 21]
 junction=roundabout & highway=unclassified [0x0c road_class=1 road_speed=1 resolution 21]
 junction=roundabout [0x0c road_class=0 road_speed=1 resolution 21]
+
+# pre-process highways for oneway arrows
+(oneway=yes | oneway=true) & highway=trunk [0x123 resolution 22 continue]
+(oneway=yes | oneway=true) & highway=trunk_link [0x127 resolution 22 continue]
+(oneway=yes | oneway=true) & highway=primary [0x123 resolution 22 continue]
+(oneway=yes | oneway=true) & highway=primary_link [0x127 resolution 22 continue]
+(oneway=yes | oneway=true) & highway=secondary [0x124 resolution 22 continue]
+(oneway=yes | oneway=true) & highway=secondary_link [0x127 resolution 22 continue]
+(oneway=yes | oneway=true) & highway=tertiary [0x125 resolution 22 continue]
+(oneway=yes | oneway=true) & highway=tertiary_link [0x127 resolution 22 continue]
+(oneway=yes | oneway=true) & highway=unclassified [0x126 resolution 22 continue]
+(oneway=yes | oneway=true) & highway=residential [0x126 resolution 22 continue]
 
 # Ways that may or may not be useable
 # Treat ways under construction as highway=path
@@ -381,5 +393,4 @@ boundary=national_park [0x1e resolution 18]
 # name='Agoo-Damortis Protected Landscape and Seascape'
 # name='Biri Larosa Protected Landscape and Seascape'
 # name='Casecnan Protected Landscape'
-
 

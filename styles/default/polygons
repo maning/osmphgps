@@ -111,11 +111,6 @@ landuse=quarry [0x0c resolution 18]   		#use industrial polygon typ
 landuse=vineyard [0x4e resolution 20]
 landuse=grass [0x17 resolution 20]
 landuse=recreation_ground [0x19 resolution 18]
-<<<<<<< HEAD
-landuse=reservoir [0x3f resolution 17x]
-landuse=residential [0x10 resolution 23-18]
-=======
->>>>>>> 2296d0ab3e95b90543434660072777704bdab7c7
 landuse=retail [0x08 resolution 20]
 
 leisure=water_park [0x09 resolution 18]    	#resort with fun/recreational facilities 
@@ -136,39 +131,11 @@ man_made=breakwater [0x0c resolution 16]
 leisure=park [0x17 resolution 18]
 leisure=pitch [0x19 resolution 20]
 leisure=playground [0x17 resolution 20]
-<<<<<<< HEAD
-leisure=recreation_ground [0x19 resolution 18]
-leisure=sports_center | leisure=sports_centre { name '${name} (${sport})' | '${name}' } [0x19 resolution 20]
-leisure=stadium { name '${name} (${sport})' | '${name}' } [0x19 resolution 19]
-leisure=track { name '${name} (${sport})' | '${name}' } [0x19 resolution 18]
-leisure=water_park [0x09 resolution 18]
-
-military=airfield [0x04 resolution 18]
-military=barracks [0x04 resolution 18]
-military=danger_area [0x04 resolution 18]
-military=range [0x04 resolution 18]
-
-natural=land [0x27 resolution 10]
-natural=glacier [0x4d resolution 16]
-natural=marsh [0x51 resolution 20]
-natural=mud [0x51 resolution 20]
-natural=scrub [0x4f resolution 20]
-natural=sea [0x32 resolution 10]
-natural=water [0x3c resolution 14]
-natural=wood [0x50 resolution 18]
-natural=beach [0x53 resolution 18]
-
-tourism=attraction & ( building=* | barrier=wall )  [0x13 resolution 20]
-tourism=attraction [0x25 resolution 20]
-
-wetland=mangrove [0x50 resolution 18]
-=======
 leisure=sports_center | leisure=sports_centre [0x19 resolution 20]
 leisure=stadium [0x19 resolution 19]
 leisure=track [0x19 resolution 18]
 
 
->>>>>>> 2296d0ab3e95b90543434660072777704bdab7c7
 
 # place=village [0x03 resolution 18]
 
@@ -201,4 +168,5 @@ amenity=townhall | amenity=public_building  {add public=yes} [0x13 resolution 22
 
 # Process 2nd: (all else remaining) NONE-GOVERNMENT structures including Museum, Public Market etc 
 building=* [0x13 resolution 22]		
+
 
