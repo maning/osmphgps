@@ -13,5 +13,4 @@
 # name_tag = name:en, int_name, name
 
 # The levels specification for this style
-#
-levels = 0:24, 1:22, 2:20, 3:18, 4:16
+# levels=0:24, 1:22, 2:20, 3:18, 4:16

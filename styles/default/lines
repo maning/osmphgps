@@ -6,29 +6,210 @@
 #  OSM_tag(s)_to_match  [Garmin_type_code resolution]
 # -------------------------------------------------------------------
 
-#pre-process tags
+# rally temporary kodiko
 
-# Debugging 
-highway=motorway_link & oneway!=yes & oneway!=no { echo "motorway_link lacks oneway" }
+#  The first is 'resolution' this is a number between 1 and 24 with 24 being
+#  the most detailed resolution and each number less is half as detailed.
+#  So for example if a road was 12 units long at resolution 24 it would be
+#  only 6 at resolution 23 and just 3 at resolution 22.
 
-# Bridge 'with no name tag' on major roads, shall be an annoying'Bridge-FIXME' (particularly those long-span bridges), instead of replacing with road name
-bridge=yes & name!=* & (highway=motorway | highway=trunk | highway=primary | highway=secondary ) {add name='Bridge-FIXME'}
+#  On a Legend Cx the resolution corresponds the these scales on the device:
 
-#-------------------------------------------------------------------
+#  16  30km-12km
+#  18  8km-3km
+#  20  2km-800m
+#  22  500m-200m
+#  23  300m-80m
+#  24  120m-50m
 
-aeroway=runway [0x27 resolution 20]
-aeroway=taxiway [0x27 resolution 24]
+#  You can specify this mapping on the command line, for example:
+
+#     --levels=0:24,1:22,2:20
+
+# what if? --levels=0:23,1:22,2:21,3:20,4:19,5:18,6:16,7:14
+
+#road_class
+
+# Used for routing; gives the class of the road where 4 is the best roads eg. motorways and 0 are residential roads etc. The classes are used as follows:
+# Class 	Used as
+#  4 	 Major HW/Ramp
+#  3 	 Principal HW
+#  2 	 Arterial St / Other HW
+#  1 	 Roundabout / Collector
+#  0 	 Residential Street / Unpaved road / Trail 
+ 
+#  road_speed
+
+# Used for routing; an indication of how fast traffic on the road is. 0 is the slowest and 7 the fastest. The speed limits that Garmin knows are shown in the following table:
+# road_speed 	highest speed
+#  7 		No speed limit
+#  6 		70 mph / 110 kmh
+#  5 		60 mph / 90 kmh
+#  4 		50 mph / 80 kmh
+#  3 		35 mph / 60 kmh
+#  2 		25 mph / 40 kmh
+#  1 		15 mph / 20 kmh
+#  0 		3 mph / 5 kmh 
+
+
+# Pan-Philippine Highway (Maharlika Highway / AH26) http://en.wikipedia.org/wiki/AH26
+# Strong Republic Nautical Highway (SRNH) http://en.wikipedia.org/wiki/Strong_Republic_Nautical_Highway
+# Clark Spur Road http://motorways-exitlists.com/asia/rp/csr.htm
+# Manila-Cavite Expressway http://en.wikipedia.org/wiki/Manila-Cavite_Expressway
+# Halsema Road/Highway (Philippines' highest road system) - being a system, should be converted to trunk
+# Marcos Highway - Marilaque http://en.wikipedia.org/wiki/Marikina_Infanta_Highway
+# Candidates for Trunk Roads http://engineer-einjel.blogspot.com/
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+# Mapsource Driving Speed Setting. Check if setting on Mapsource Driving Speed affects routing speed of GPSR
+
+#		Type		OSMPH default	Mapsource (adjustable driving speed)
+
+#	0x00					
+#	0x01	Tollways	Motorway	Interstate Highways	
+#	0x02	Provincial	Trunk		Major Highways
+#	0x03	Primary		Primary		Other Highways
+#	0x04	Arterial	Secondary	Collector Road
+#	0x05	Collector	Tertiary	Collector Road
+#	0x06	Minor		Residential
+
+
+
+
+
+# /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+aeroway=runway [0x27 resolution 19]
+aeroway=taxiway [0x06 resolution 19]
+
+
 # -------------------------------------------------------------------
 
-# -------------------------------------------------------------------
-# Set highway names to include the reference if there is one
-highway=motorway {name '${ref|highway-symbol:hbox} ${name}' | '${ref|highway-symbol:hbox}' | '${name}' ; add display_name = '${name} - (${ref})' }
-highway=trunk {name '${ref|highway-symbol:hbox} ${name}' | '${ref|highway-symbol:hbox}' | '${name}'; add display_name = '${name} - (${ref})' }
-highway=primary {name '${ref|highway-symbol:box} ${name}' | '${ref|highway-symbol:box}' | '${name}'; add display_name = '${name} - (${ref})' }
-highway=secondary {name '${ref|highway-symbol:oval} ${name}' | '${ref|highway-symbol:oval}' | '${name}' ; add display_name = '${name} - (${ref})' }
-highway=* {name '${ref} ${name}' | '${ref}' | '${name}' }
+junction=roundabout & highway=trunk [0x0c road_class=3 road_speed=5 resolution 16]
+junction=roundabout & highway=primary [0x0c road_class=3 road_speed=4 resolution 19]
+junction=roundabout & highway=secondary [0x0c road_class=2 road_speed=3 resolution 20]
+junction=roundabout & highway=tertiary [0x0c road_class=1 road_speed=3 resolution 20]
+junction=roundabout & highway=unclassified [0x0c road_class=1 road_speed=2 resolution 21]
+junction=roundabout [0x0c road_class=0 road_speed=1 resolution 21]
 
-# Flag unpaved roads.
+
+# SUPPRESS all ref 'numbers' on 'highways symbols'
+ref=1 | ref=3 | ref=5 | ref=13 | ref=17 | ref=19 | ref=21 | ref=25 | ref=412 { delete ref }
+
+
+# ---------------------------------------------------------------------
+# PROBLEM: the symbol box on highways will carry 'ref' value, but somehow, the local road 'name' is also replaced by 'ref' value. 
+
+# BAND-AID Solution (temporary - customized by trial and error) 
+# weird observation: set ref='${name}' magically assigns name to the road with symbol. Without this line, the road becomes name=ref (meaning roadname will be same as symbol name eg C-3, R-4, etc). Mapsource tends to use 'ref' if the item is assign a highwaysymbol
+
+# Bridge 'with no name tag' on major roads, shall be an annoying'Bridge-FIXME' (particularly those long-span bridges), instead of replacing with road name 
+bridge=yes & name!=* & (highway=motorway | highway=trunk | highway=primary ) {add name='Bridge-FIXME'} 
+
+# Customized Exceptions: Assign g_name customized-value along specific road systems - for use as common qualifier/tag (until consistency of name spelling is applied)
+# because the following roads below belong to a 'road system' with common name, 
+# but at the moment have inconsistent spellings, or with name too technical or too long for use on symbols, 
+# or has ref value assigned not used by dpwh or any traffic management. 
+
+#(highway=trunk | highway=primary) & ref='R-9'& int_ref='AH26' { add g_name='R9/AH26'; set ref='${name}'; }
+#highway=trunk & (name='Pan-Philippine Highway' | name='Maharlika Highway' | name='Daang Maharlika') { add g_name='AH26'; add alt_name='Maharlika Highway'; set alt_name='Maharlika Highway'; add ref=AH26; set ref='${name}'; }
+#highway=trunk & int_ref=AH26 { add g_name='AH26'; add alt_name='Maharlika Highway'; set alt_name='Maharlika Highway'; add ref=AH26; set ref='${name}'; }
+
+# STEP 1 add g_name (highway code); re-assign the highway name to 'ref'
+(highway=trunk | highway=primary) & ref='R-9'& int_ref='AH26' { add g_name='R9/DMH'; set ref='${name}'; }
+highway=trunk & (name='Pan-Philippine Highway' | name='Maharlika Highway' | name='Daang Maharlika') { add g_name='DMH'; add alt_name='Maharlika Highway'; set alt_name='Maharlika Highway'; add ref=DMH; set ref='${name}'; }
+highway=trunk & int_ref=AH26 { add g_name='DMH'; add alt_name='Maharlika Highway'; set alt_name='Maharlika Highway'; add ref=DMH; set ref='${name}'; }
+
+highway=motorway & (name='Subic-Clark-Tarlac Expressway' | ref='SCTEx' | ref='SCTEX') { add g_name=SCTEx; set ref='${name}'; }
+highway=motorway & (name='North Luzon Expressway' | ref='R-8') { add g_name=NLEx; set ref='${name}'; }
+highway=motorway & (name='Metro Manila Skyway' | name='Metro Manila Skyway Buendia Exit' | name='Metro Manila Skyway Makati Exit' ) { add g_name=Skyway; set ref='Skyway'; }
+(highway=motorway | highway=trunk) & (name='South Luzon Expressway' | alt_name='South Super Highway' | alt_name='South Luzon Expressway' | name='President Sergio Osmeña Highway' ) 
+	{ add g_name=SLEx; set ref='South Luzon Expressway'; }
+highway=motorway & (name='Southern Tagalog Arterial Road' | name='Apolinario Mabini Superhighway' | alt_name='Southern Tagalog Arterial Road; STAR Tollway') 
+	{ add g_name=STAR; set ref='Southern Tagalog Arterial Road'; }
+highway=motorway & name='Manila-Cavite Expressway' { add g_name='Coastal'; set ref='${name}'; }
+highway=motorway_link & name='Clark Spur Road' { add g_name='CSR'; set ref='${name}'; }
+(highway=motorway | highway=motorway_link) & name='Tabang Spur Road' { add g_name='TSR'; set ref='${name}'; }
+# highway=trunk & name='MacArthur Highway' { add g_name='MacArthur'; set ref='${name}'; }
+(highway=trunk | highway=primary) & name='Kennon Road' { add g_name='Kennon'; set ref='${name}';}
+highway=trunk & name='Jose Abad Santos Avenue' { add g_name='GSO'; set ref='${name}';}
+highway=trunk & name='Gapan - San Fernando - Olongapo Road' { add g_name='GSO'; set ref='${name}';}
+(highway=trunk | highway=primary) & name='Bataan Provincial Expressway' { add g_name='BPEx'; set ref='${name}';}
+(highway=trunk | highway=primary) & ref='C-5' { add g_name='C-5'; set ref='${name}';}
+(highway=trunk | highway=primary) & ref='C-6' { add g_name='C-6'; set ref='${name}';}
+highway=trunk & (name='Epifanio de los Santos Avenue' | name='EDSA' | alt_name='EDSA' | name:abbr='EDSA' ) { add g_name=EDSA; set ref='${name}'; }
+# highway=trunk & name='Aguinaldo Highway' { add g_name='Aguinaldo'; set ref='${name}';}
+(highway=trunk | highway=primary) & (name='Marcos Highway' | name='Marikina-Infanta Road' | name='Tanay - Capinpin' | name='Marikina to Infanta') { add g_name='Marcos'; set ref='${name}';}
+(highway=trunk | highway=primary) & (name='Halsema' | name='Halsema Highway' | alt_name='Halsema Highway') { add g_name='Halsema'; set ref='${name}';}
+(highway=trunk | highway=primary) & name='Ortigas Avenue Extension' & ref='21' { add g_name='Ortigas Ave Ext'; set name='Ortigas Avenue Ext'; set ref='${name}';}
+(highway=trunk | highway=primary) & name='Manila East Road' { add g_name='MER'; set ref='${name}';}
+(highway=trunk | highway=primary) & (name='Rizal Avenue' | name='M L Quezon Avenue') & ref='21' { add g_name='MER'; set ref='${name}';}
+(highway=trunk | highway=primary) & name="Governor's Drive" { add g_name='GOV'; set ref='${name}';}
+
+# STEP 2 - use the value of 'name-format' using the g_name value + the highwaysymbol; it gets to keep the value of ref (as the name of the highway) 
+# Forced-Addition of SYMBOLS, & rename selected road to g_name for purpose of shortening/making intuitive symbols for driving navigation
+# where g_name becomes the replacement name for ref, with maxlength of 8 characters
+
+#highway=trunk & g_name='AH26' 				{name '${g_name|highway-symbol:hbox}';}
+#(highway=trunk | highway=primary) & g_name='R9/AH26'	{name '${g_name|highway-symbol:hbox}';}
+highway=trunk & g_name='DMH' 				{name '${g_name|highway-symbol:hbox}';}
+(highway=trunk | highway=primary) & g_name='R9/DMH'	{name '${g_name|highway-symbol:hbox}';}
+
+highway=motorway & g_name='SCTEx' 			{name '${g_name|highway-symbol:hbox}';}
+highway=motorway & g_name='NLEx'  			{name '${g_name|highway-symbol:hbox}';}
+highway=motorway & g_name='Skyway'  			{name '${g_name|highway-symbol:hbox}';}
+(highway=motorway | highway=trunk) & g_name='SLEx'	{name '${g_name|highway-symbol:hbox}';}
+highway=motorway & g_name='STAR'  			{name '${g_name|highway-symbol:hbox}';}
+highway=motorway & g_name='Coastal'			{name '${g_name|highway-symbol:hbox}';}
+highway=motorway_link & g_name='CSR'			{name '${g_name|highway-symbol:hbox}';}
+highway=motorway_link & g_name='TSR'			{name '${g_name|highway-symbol:hbox}';}
+# highway=trunk & g_name='MacArthur'			{name '${g_name|highway-symbol:box}';}
+# highway=trunk & g_name='Aguinaldo'			{name '${g_name|highway-symbol:box}';}
+highway=trunk & g_name='EDSA'     			{name '${g_name|highway-symbol:hbox}';}
+highway=trunk & g_name='BPEx' 				{name '${g_name|highway-symbol:box}';} 
+highway=trunk & g_name='GSO' 				{name '${g_name|highway-symbol:box}';} 
+(highway=trunk | highway=primary) & g_name='C-5' 	{name '${g_name|highway-symbol:hbox}';}
+(highway=trunk | highway=primary) & g_name='C-6' 	{name '${g_name|highway-symbol:hbox}';}
+(highway=trunk | highway=primary) & g_name='Marcos' 	{name '${g_name|highway-symbol:box}';} 
+(highway=trunk | highway=primary) & g_name='Kennon'   	{name '${g_name|highway-symbol:box}';}
+(highway=trunk | highway=primary) & g_name='Halsema'   	{name '${g_name|highway-symbol:box}';} 
+(highway=trunk | highway=primary) & g_name='MER' 	{name '${g_name|highway-symbol:box}';}
+(highway=trunk | highway=primary) & g_name='GOV'  	{name '${g_name|highway-symbol:box}';}
+
+
+
+#EXCEPTION: primary roads that needs to be seen together with the trunk roads (to fill the visual gaps when zoomed out)
+#pending discussion to convert the entire Halsema Highway connecting Baguio to Banaue and back to trunk
+#(highway=trunk | highway=primary) & name='La Trinidad Road'	[0x03 road_class=3 road_speed=4 resolution 16]
+#(highway=trunk | highway=primary) & name='Bokawkan Road'	[0x03 road_class=3 road_speed=4 resolution 16]
+#(highway=trunk | highway=primary) & name='Saytan - Pugo Road'	[0x03 road_class=3 road_speed=4 resolution 16]
+#(highway=trunk | highway=primary) & name='Lagawe - Banaue'	[0x03 road_class=3 road_speed=4 resolution 16]
+#(highway=trunk | highway=primary) & name='Lamut - Lagawe'	[0x03 road_class=3 road_speed=4 resolution 16]
+#(highway=trunk | highway=primary) & name='Bagabag - Lamut'	[0x03 road_class=3 road_speed=4 resolution 16]
+
+
+# -------------------------------------------------------------------
+
+# Set (remaining) highway names, to include the reference if there is one 
+
+bridge!=yes & highway=motorway  {set g_name='${ref}'; name '${g_name|highway-symbol:hbox}'| '${name} (${ref})' | '${name}'; set ref='${name}';}
+bridge!=yes & highway=trunk     {set g_name='${ref}'; name '${g_name|highway-symbol:box}' | '${name} (${ref})' | '${name}'; set ref='${name}';} 
+bridge!=yes & highway=primary	{set g_name='${ref}'; name '${g_name|highway-symbol:box}' | '${name} (${ref})' | '${name}'; set ref='${name}';}
+bridge!=yes & highway=secondary {set g_name='${ref}'; name '${g_name|highway-symbol:oval}'| '${name} (${ref})' | '${name}'; set ref='${name}';}
+bridge!=yes & highway=* 	{name '${name}';}
+
+# -------------------------------------------------------------------
+# HEX GUIDE for trails:
+# 0x0e path - mtb, mountain hiking trail
+# 0x0f track - 4x4 mountain track (uncompacted/muddy/rough roads)
+# 0x16 footway - urban pedestrian or bike only
+# 0x0a unpaved road - on populated flat lands
+
+# PRE-FILTER for visibility - 'mtb/hiking trails' 
+highway=path & ( sac_scale=* | mtb:scale=* ) 
+{delete surface; add access = no; add bicycle = yes; add foot = yes} [0x0e road_class=0 road_speed=1 resolution 18]
+
+# Flag unpaved lowland/flat roads & add mkgmap:unpaved=1
 highway=*
 & (surface=cobblestone | surface=compacted | surface=dirt |
    surface=earth | surface=grass | surface=grass_paver |
@@ -40,6 +221,7 @@ highway=*
    sac_scale ~ '.*(mountain|alpine)_hiking' |
    sport=via_ferrata)
 { add mkgmap:unpaved=1 }
+
 (highway=bridleway | highway=path | highway=track | highway=unsurfaced)
 & surface!=* & tracktype!=* & smoothness!=* & sac_scale!=*
 { add mkgmap:unpaved=1 }
@@ -49,9 +231,12 @@ highway=path & bicycle=designated {set highway=cycleway }
 highway=path & horse=designated {set highway=bridleway }
 highway=path & foot=designated {set highway=footway }
 
+# -------------------------------------------------------------------
+
+
 # Roundabouts
 junction=roundabout & highway=trunk [0x0c road_class=3 road_speed=2 resolution 18]
-junction=roundabout & highway=primary [0x0c road_class=3 road_speed=2 resolution 19]
+junction=roundabout & highway=primary [0x0c road_class=3 road_speed=2 resolution 18]
 junction=roundabout & highway=secondary [0x0c road_class=2 road_speed=2 resolution 20]
 junction=roundabout & highway=tertiary [0x0c road_class=1 road_speed=1 resolution 21]
 junction=roundabout & highway=unclassified [0x0c road_class=1 road_speed=1 resolution 21]
@@ -64,50 +249,53 @@ highway=construction | highway=* & construction=* {add access = no; add bicycle 
 highway=* & disused=yes [0x07 road_class=0 road_speed=1 resolution 22]
 
 # Ways sorted roughly by descending order of class
-highway=motorway {add oneway = yes; add bicycle = no; add foot = no } [0x01 road_class=4 road_speed=5 resolution 14]
-highway=motorway_link {add oneway = yes; add bicycle = no; add foot = no } [0x09 road_class=3 road_speed=2 resolution 16]
-(oneway=yes | oneway=true) & highway=trunk [0x123 resolution 20 continue]
-highway=trunk  {add bicycle = no; add foot = no} [0x02 road_class=3 road_speed=4 resolution 16]
-(oneway=yes | oneway=true) & highway=trunk_link [0x127 resolution 20 continue]
+highway=motorway & area!=yes {add oneway = yes; add bicycle = no; add foot = no } [0x01 road_class=4 road_speed=7 resolution 14]
+highway=motorway_link & area!=yes {add oneway = yes; add bicycle = no; add foot = no } [0x09 road_class=3 road_speed=2 resolution 14]
+highway=trunk  {add bicycle = no; add foot = no} [0x02 road_class=3 road_speed=5 resolution 16]
 highway=trunk_link {add bicycle = no; add foot = no} [0x08 road_class=3 road_speed=2 resolution 18]
 highway=* & motorroad=yes {add bicycle = no; add foot = no} [0x02 road_class=4 road_speed=4 resolution 16]
-(oneway=yes | oneway=true) & highway=primary [0x123 resolution 20 continue]
-highway=primary [0x02 road_class=3 road_speed=4 resolution 19]
-(oneway=yes | oneway=true) & highway=primary_link [0x127 resolution 20 continue]
-highway=primary_link [0x08 road_class=3 road_speed=1 resolution 19]
-(oneway=yes | oneway=true) & highway=secondary [0x124 resolution 20 continue]
+highway=primary [0x03 road_class=3 road_speed=4 resolution 18]
+highway=primary_link [0x08 road_class=3 road_speed=1 resolution 18]
 highway=secondary [0x04 road_class=2 road_speed=3 resolution 20]
-(oneway=yes | oneway=true) & highway=secondary_link [0x127 resolution 20 continue]
 highway=secondary_link [0x08 road_class=2 road_speed=1 resolution 20]
-(oneway=yes | oneway=true) & highway=tertiary [0x125 resolution 20 continue]
 highway=tertiary [0x05 road_class=1 road_speed=3 resolution 20]
-(oneway=yes | oneway=true) & highway=tertiary_link [0x127 resolution 20 continue]
 highway=tertiary_link [0x08 road_class=1 road_speed=1 resolution 20]
-highway=minor [0x06 road_class=1 road_speed=2 resolution 21]
-(oneway=yes | oneway=true) & highway=unclassified [0x126 resolution 20 continue]
-highway=unclassified [0x06 road_class=0 road_speed=2 resolution 21]
+highway=minor [0x06 road_class=1 road_speed=3 resolution 21]
+highway=unclassified [0x06 road_class=0 road_speed=3 resolution 21]
 
-highway=pedestrian & area!=yes {add access = no; add foot = yes} [0x07 road_class=0 road_speed=0 resolution 22]
-highway=living_street [0x07 road_class=0 road_speed=0 resolution 22]
-(oneway=yes | oneway=true) & highway=residential [0x126 resolution 20 continue]
+highway=pedestrian & area!=yes {add access = no; add foot = yes} [0x06 road_class=0 road_speed=0 resolution 22]
+highway=living_street [0x06 road_class=0 road_speed=1 resolution 22]
 highway=residential [0x06 road_class=0 road_speed=2 resolution 22]
 highway=bridleway {add access = no; add bicycle = yes; add foot = yes} [0x16 road_class=0 road_speed=0 resolution 23]
 highway=byway [0x16 road_class=0 road_speed=0 resolution 23]
-highway=service & service=parking_aisle [0x07 road_class=0 road_speed=0 resolution 22 default_name 'parking aisle']
-highway=service [0x07 road_class=0 road_speed=0 resolution 22]
-highway=cycleway {add access = no; add bicycle = yes; add foot = yes} [0x16 road_class=0 road_speed=1 resolution 23]
-highway=footway {add access = no; add foot = yes} [0x16 road_class=0 road_speed=0 resolution 23]
-highway=path {add access = no; add bicycle = yes; add foot = yes} [0x16 road_class=0 road_speed=1 resolution 23]
-highway=steps {add access = no; add foot = yes} [0x16 road_class=0 road_speed=0 resolution 23]
-highway=track [0x0a road_class=0 road_speed=1 resolution 21]
-highway=unsurfaced [0x0a road_class=0 road_speed=1 resolution 21]
+highway=service [0x07 road_class=0 road_speed=2 resolution 22]
 
-# other highways that is not routable
+
+
+
+# urban recreational human paths
+highway=cycleway {add access = no; add bicycle = yes; add foot = yes} [0x16 road_class=0 road_speed=1 resolution 21]
+highway=footway {add access = no; add foot = yes} [0x16 road_class=0 road_speed=0 resolution 21]
+highway=path {add access = no; add bicycle = yes; add foot = yes} [0x16 road_class=0 road_speed=1 resolution 21]
+highway=steps {add access = no; add foot = yes} [0x16 road_class=0 road_speed=0 resolution 21]
+
+# 4x4 trailroads or uncompacted/muddy roads/remote unpaved road leading to mountain peaks & villages
+highway=track [0x0f road_class=0 road_speed=1 resolution 20]
+
+# unpaved city/rural road
+highway=unsurfaced [0x0a road_class=0 road_speed=1 resolution 20]
+
+# other highways that are not routable
 highway=road {add access = no; add name = fixme} [0x0d resolution 22]
-highway=raceway {add access = no} [0x0e resolution 22]
+highway=raceway {add access = no} [0x0e resolution 22 default_name 'raceway']
 
 # Mop up any unrecognised highway types
 highway=* & area!=yes [0x07 ]
+
+
+
+# -------------------------------------------------------------------
+
 
 # -------------------------------------------------------------------
 
@@ -119,23 +307,29 @@ highway=* & area!=yes [0x07 ]
 # -------------------------------------------------------------------
 
 # Contours take their name from the elevation setting.
-#contour=elevation & contour_ext=elevation_minor
-#	{ name '${ele|conv:m=>ft}'; }
-#	[0x20 resolution 23]
-#contour=elevation & contour_ext=elevation_medium
-#	{ name '${ele|conv:m=>ft}'; }
-#	[0x21 resolution 21]
-#contour=elevation & contour_ext=elevation_major
-#	{ name '${ele|conv:m=>ft}'; }
-#	[0x22 resolution 20]
+contour=elevation & contour_ext=elevation_minor
+	{ name '${ele|conv:m=>ft}'; }
+	[0x20 resolution 23]
+contour=elevation & contour_ext=elevation_medium
+	{ name '${ele|conv:m=>ft}'; }
+	[0x21 resolution 21]
+contour=elevation & contour_ext=elevation_major
+	{ name '${ele|conv:m=>ft}'; }
+	[0x22 resolution 20]
 #contour=elevation | contour_ext=elevation
 #	{ name '${ele|conv:m=>ft}'; }
-#	[0x21 resolution 20]
+#	[0x20 resolution 21] 
+
+
+
+contour=elevation { name '${ele|conv:m=>ft}';} [0x20 resolution 21 continue] 
 
 
 # -------------------------------------------------------------------
+
 natural=coastline [0x15 resolution 12]
-#power=line [0x29 resolution 20]
+
+# man_made=breakwater   ----how about using wall?
 
 # -------------------------------------------------------------------
 
@@ -145,7 +339,10 @@ railway=subway [0x14 resolution 17]
 railway=tram [0x14 resolution 18]
 railway=platform {add access = no; add foot = yes} [0x16 road_class=0 road_speed=0 resolution 23]
 
-route=ferry [0x1b road_class=3 road_speed=0 resolution 18]
+# -------------------------------------------------------------------
+
+route=ferry [0x1b road_class=0 road_speed=0 resolution 16]
+
 
 # -------------------------------------------------------------------
 
@@ -154,5 +351,35 @@ waterway=drain [0x1f resolution 22]
 waterway=river [0x1f resolution 18]
 waterway=stream [0x18 resolution 22]
 
-man_made=pipeline {name '${operator}'} [0x28 resolution 23]
+# -------------------------------------------------------------------
+
+# man_made=pipeline {name '${operator}'} [0x28 resolution 23]
+
+# power=line [0x29 resolution 20]
+
+# barrier=wall [0x19 resolution 24 continue]	#this will be processed ahead of polygon
+
+# -------------------------------------------------------------------
+
+#### TEMPORARY CONVERT EXTRA LARGE "PROTECTED-AREA" POLYGONS INTO LINES
+
+boundary=national_park [0x1e resolution 18]
+
+# name='Northern Sierra Madre Natural Park'
+# name='Palaui Island Marine Reserve'
+# name='Batanes Protected Landscape and Seascape'
+# name='Malampaya Sound Protected Landscape and Seascape'
+# name='Siargao Island Protected Landscape and Seascape'
+# name='Taal Volcano Natural Park'
+# name='Mount Calavite Wildlife Sanctuary'
+# name='Mount Apo Natural Park'
+# name='Mount Kanlaon Natural Park'
+# name='Sibalom Natural Park'
+# name='El Nido Managed Natural Resource'
+# name='Turtle Islands Wildlife Sanctuary' 
+# name='Masinloc and Oyon Bays'
+# name='Agoo-Damortis Protected Landscape and Seascape'
+# name='Biri Larosa Protected Landscape and Seascape'
+# name='Casecnan Protected Landscape'
+
 
