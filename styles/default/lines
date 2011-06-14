@@ -85,13 +85,6 @@ aeroway=taxiway [0x06 resolution 19]
 
 # -------------------------------------------------------------------
 
-junction=roundabout & highway=trunk [0x0c road_class=3 road_speed=5 resolution 16]
-junction=roundabout & highway=primary [0x0c road_class=3 road_speed=4 resolution 19]
-junction=roundabout & highway=secondary [0x0c road_class=2 road_speed=3 resolution 20]
-junction=roundabout & highway=tertiary [0x0c road_class=1 road_speed=3 resolution 20]
-junction=roundabout & highway=unclassified [0x0c road_class=1 road_speed=2 resolution 21]
-junction=roundabout [0x0c road_class=0 road_speed=1 resolution 21]
-
 
 # SUPPRESS all ref 'numbers' on 'highways symbols'
 ref=1 | ref=3 | ref=5 | ref=13 | ref=17 | ref=19 | ref=21 | ref=25 | ref=412 { delete ref }
@@ -281,7 +274,6 @@ highway=residential [0x06 road_class=0 road_speed=2 resolution 22]
 highway=bridleway {add access = no; add bicycle = yes; add foot = yes} [0x16 road_class=0 road_speed=0 resolution 23]
 highway=byway [0x16 road_class=0 road_speed=0 resolution 23]
 highway=service [0x07 road_class=0 road_speed=2 resolution 22]
-
 
 
 
