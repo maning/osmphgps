@@ -102,7 +102,7 @@
 
 # STANDARDIZE SPELLINGS (fault-tolerant:to maximize searchability)
 
-# Forced-Assignment to NCR (is_in:state) all Metro Manila cities
+# Forced-Assignment to NCR (is_in:state) all Metro Manila cities 
 ( place=city | place=town ) & (is_in:region='NCR' | is_in:region='Metro Manila' ) { add is_in:state='NCR'; set is_in:state='NCR' }
 
 # ---------------
@@ -117,7 +117,7 @@
   add is_in='${prov_name},,Philippines'; set is_in='${prov_name},,Philippines'; } 		#   add if it doesn't exist; or correct all wrong entries)			
 
 # ---------------
-# Fault Tolerant:Commonly mispelled city-tags in both format (for place & none-place POI's) 
+# Fault Tolerant for Spanish Characters:Commonly mispelled city-name in both format (for place & none-place POI's) 
 # Karlsruhe schema: this only concerns searchability of Barangays/Purok/Subd and Amenity-POI, not cities) 
 	addr:city='Paranaque' {set addr:city='Parañaque'}	is_in:city='Paranaque' {set is_in:city='Parañaque'}
 	addr:city='Las Pinas' {set addr:city='Las Piñas'} 	is_in:city='Las Pinas' {set is_in:city='Las Piñas'}
@@ -366,26 +366,22 @@ place=island [0x650c resolution 19]
 	tourism=resort [0x2b04 resolution 21]
 	leisure=beach_resort [0x2b04 resolution 21]	#should have lodging facilities for accomodation, otherwise, use "swimming" tag only
 
-
+# Note: Not all Beaches should be considered resort (if there is no lodging facility). 
+#	A none-resort 'beach' may actually have a 'Campground' facility (with simple provision for waste disposals)
 
 
 
 ####05  SHOPPING	
 # -----------------------------------------------------------------------------------------------------------------
-# PRE-FILTER 
-	#24-Hour Convenience Store before they become tagged as Fast Food or Market
-	name="7-Eleven" [0x2e06 resolution 23]
-	(name="7 Eleven" | name="7Eleven" |name="7eleven" | name="711" | name="7-11" | name="7/11" |name="7 11" | name="7 - 11 Store") {set name='7-Eleven *'} [0x2e06 resolution 23]
+# PRE-FILTER - 24-Hour Convenience Store - regardless of tag or spelling. (mistaken for fastfood, market, variety_store, general_merchandise, etc)
+ 	name="7-Eleven" [0x2e06 resolution 23]
+       (name="7 Eleven" | name="7Eleven" | name="7eleven" | name="711" | name="7-11" | name="7/11" | name="7 11" | name="7 - 11 Store") {set name='7-Eleven *'} [0x2e06 resolution 23]
 	name="Ministop" [0x2e06 resolution 23]
 	name="Mini Stop" {set name="Ministop *"} [0x2e06 resolution 23]
 	name="Mightee Mart" [0x2e06 resolution 23] 
 	name="Mighty Mart" {set name="Mightee Mart *"} [0x2e06 resolution 23]
-	#SARI-SARI Store (suking tindahan not 24hour operation) set to General Merchandise
-	shop=convenience & ( (name=* & name!="7-Eleven") | (name=* & name!="7-Eleven *") ) [0x2e03 resolution 23]
-	shop=convenience & ( (name=* & name!="Ministop") | (name=* & name!="Ministop *") ) [0x2e03 resolution 23]
-	shop=convenience & ( (name=* & name!="Mightee mart") | (name=* & name!="Mightee mart *") ) [0x2e03 resolution 23]
-	shop=convenience & operating_hours='24/7' [0x2e03 resolution 23]
-# -------------------------------------------------------------------
+	shop=convenience & operating_hours='24/7' {name'${name} (24h) **'} [0x2e03 resolution 23]
+# 	-------------------------------------------------------------------
 
 # GarminPC:Shopping:Department 0x2b01 (Anchor-Establishments inside shopping complex) <rally:RedCoatOnHanger Icon>
 	shop=department_store [0x2e01 resolution 21]
@@ -397,12 +393,14 @@ place=island [0x650c resolution 19]
 
 # 2e03/10f03
 # GarminPC:Shopping:General Merchandise 0x2e03 (sari-sari, LPG dealer, daisu, japanhome, ukay-ukay, books, stationary shops) <rally:Green Bag Icon>
+
+	shop=convenience  [0x2e03 resolution 23]	# Set 'SARI-SARI' (suking tindahan not 24hour operation) to General Merchandise
 	shop=variety_store [0x2e03 resolution 23]
 	shop=general | shop=general_merchandise [0x2e03 resolution 23]
 	amenity=retail [0x2e03 resolution 23]
 	shop=books [0x2e0a resolution 23]
 	shop=stationery [0x2e0a resolution 23]
-
+	
 # 2b04 
 # GarminPC:Shopping:Shopping Center 0x2b04 (malls and shopping complex covering big land area) <rally:Yellow Bag Icon>
 	amenity=mall [0x2e04 resolution 21]
@@ -411,12 +409,16 @@ place=island [0x650c resolution 19]
 
 # 2b05
 # GarminPC:Shopping:Pharmacy/Chemist 0x2b05 (Mercury Watsons and small drug stores) <rally:Rx Icon>
+	amenity=pharmacy & operating_hours='24/7' {name'${name} (24h) ${branch}' | name'${name} (24h)'} [0x2e05 resolution 23]
+	amenity=pharmacy {name'${name} - ${branch}' | name'${name}'} [0x2e05 resolution 23]
 	shop=chemist [0x2e05 resolution 23]
-	amenity=pharmacy [0x2e05 resolution 23]
+
+#amenity=atm { name '${name} - ${branch}' | '${name}' | '${operator}' }
+
 
 # 2e06/10f06
 # GarminPC:Shopping:Convenience 0x2e06 (24hours AirConditioned Sari-Sari Stores) <rally:7-Eleven/Ministop Icon> 
-	shop=convenience [0x2e06 resolution 23]
+#	shop=convenience [0x2e06 resolution 23]			# useless because of Pre-Filter & Gen.Merchandise filter above
 
 # 2e07/10f07	Nuvi: GarminPC:Shopping:Apparel 0x2e07 <rally:Coat Icon>
 	shop=apparel [0x2e07 resolution 23]
@@ -544,7 +546,7 @@ place=island [0x650c resolution 19]
 	leisure=ice_rink [0x2d08 resolution 23]
 	sport=skating [0x2d08 resolution 23]
 
-# 2d09	Nuvi: Swimming (recreational - swim,dive site & shops,surf,snorkel)
+# 2d09	Nuvi: Swimming (recreational - swim,dive_site&shops,surf,snorkel)
 	sport=swimming [0x2d09 resolution 23]
 	leisure=swimming_pool | amenity=swimming_pool [0x2d09 resolution 23]
 	sport=diving [0x2d09 resolution 23]
@@ -591,14 +593,15 @@ place=island [0x650c resolution 19]
 	amenity=arts_centre [0x2c02 resolution 23 continue]			# Art Gallery - houses a collection of art pieces
 	amenity=arts_centre {delete name} [0x3205 resolution 23]
 	
-# 2c04	Nuvi: Landmark (eg.Lion's Head,HwayHighestPoint,Picture,Viewsite?, None-historical Artworks) the position of this tag is tricky (this needs fool proofing)
+# 2c04	Nuvi: Landmark (eg.Lion's Head,HwayHighestPoint,Picture,Viewsite,None-historical Artworks) the position of this tag is tricky (this needs fool proofing)
 	
 	tourism=artwork [0x2c04 resolution 23 continue]
 	tourism=artwork {delete name} [0x3206 resolution 23]	
 	tourism=viewpoint [0x2c04 resolution 23 continue] 	
 	tourism=viewpoint {delete name} [0x3207 resolution 23]	
-	
-	amenity=fountain [0x6511 resolution 23] 	#6511 is Water Feature=spring	# but this is Decorative Fountain - Same Icon as natural Mountain Spring icon
+	man_made=lighthouse [0x2c04 resolution 18 default_name 'lighthouse' continue]
+	man_made=lighthouse [0x1707 resolution 21]		
+	amenity=fountain [0x6511 resolution 23 default_name 'fountain'] 	#6511 is Water Feature>spring	# but this is Decorative Fountain - Same Icon as natural Mountain Spring icon
 	amenity=clock {add tourism=attraction}
 
 	name=* & tourism=attraction [0x2c04 resolution 21 continue]
@@ -744,8 +747,10 @@ place=island [0x650c resolution 19]
 	religion=sikh [0x2c0f resolution 21]
 	religion=masonic [0x2c0f resolution 21]
 
-# 2c10	Nuvi: Place of Worship (None-Church ((none-church shrines / grotto / religious statue) -- inappropriate tag - not historic - propose a new one 
-	historic=wayside_shrine [0x2c10 resolution 21]
+# 2c10	Nuvi: Place of Worship - None-Church (wayside shrine / grotto / religious statue) -- inappropriate tag - not historic - propose a new one 
+	amenity=grotto [0x2c10 resolution 21]
+	historic=wayside_cross [0x2c10 resolution 21]					# http://wiki.openstreetmap.org/wiki/Tag:historic%3Dwayside_cross
+	historic=wayside_shrine [0x2c10 resolution 21]					# http://en.wikipedia.org/wiki/Wayside_shrine
 
 # 2c0b	Nuvi: Place of Worship (Roman Catholic)	# Keep this line below Protestant etc.
 	denomination=catholic | denomination=roman_catholic [0x2c0b resolution 21]
@@ -913,7 +918,7 @@ highway=services [0x2702 resolution 19]
 	man_made=dam [0x6407 resolution 16]
 	waterway=dam [0x6407 resolution 16]
 
-	man_made=lighthouse [0x1707 resolution 21]		#must be searchable under landmark
+	
 	man_made=tower [0x6411 resolution 21]
 # 	man_made=mast [0x6411 resolution 21]
 
