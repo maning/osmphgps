@@ -408,9 +408,10 @@ place=island [0x650c resolution 19]
 
 # 2b05
 # GarminPC:Shopping:Pharmacy/Chemist 0x2b05 (Mercury Watsons and small drug stores) <rally:Rx Icon>
-	amenity=pharmacy & operating_hours='24/7' {name'${name} (24h) ${branch}' | name'${name} (24h)'} [0x2e05 resolution 23]
-	amenity=pharmacy {name'${name} - ${branch}' | name'${name}'} [0x2e05 resolution 23]
+	amenity=pharmacy & operating_hours='24/7' { name '${name} (24h) ${branch}' | '${name} (24h)'} [0x2e05 resolution 23]
+	amenity=pharmacy { name '${name} - ${branch}' | '${name}'} [0x2e05 resolution 23]
 	shop=chemist [0x2e05 resolution 23]
+
 
 #amenity=atm { name '${name} - ${branch}' | '${name}' | '${operator}' }
 
