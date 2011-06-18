@@ -170,7 +170,6 @@ highway=trunk & g_name='GSO' 				{name '${g_name|highway-symbol:box}';}
 (highway=trunk | highway=primary) & g_name='GOV'  	{name '${g_name|highway-symbol:box}';}
 
 
-
 # -------------------------------------------------------------------
 
 # Set (remaining) highway names, to include the reference if there is one 
