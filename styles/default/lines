@@ -87,7 +87,7 @@ aeroway=taxiway [0x06 resolution 19]
 
 
 # SUPPRESS all ref 'numbers' on 'highways symbols'
-ref=1 | ref=3 | ref=5 | ref=13 | ref=17 | ref=19 | ref=21 | ref=25 | ref=412 { delete ref }
+ref=1 | ref=3 | ref=5 | ref=7 | ref=13 | ref=17 | ref=19 | ref=21 | ref=25 | ref=412 { delete ref }
 
 
 # ---------------------------------------------------------------------
@@ -169,16 +169,6 @@ highway=trunk & g_name='GSO' 				{name '${g_name|highway-symbol:box}';}
 (highway=trunk | highway=primary) & g_name='MER' 	{name '${g_name|highway-symbol:box}';}
 (highway=trunk | highway=primary) & g_name='GOV'  	{name '${g_name|highway-symbol:box}';}
 
-
-
-#EXCEPTION: primary roads that needs to be seen together with the trunk roads (to fill the visual gaps when zoomed out)
-#pending discussion to convert the entire Halsema Highway connecting Baguio to Banaue and back to trunk
-#(highway=trunk | highway=primary) & name='La Trinidad Road'	[0x03 road_class=3 road_speed=4 resolution 16]
-#(highway=trunk | highway=primary) & name='Bokawkan Road'	[0x03 road_class=3 road_speed=4 resolution 16]
-#(highway=trunk | highway=primary) & name='Saytan - Pugo Road'	[0x03 road_class=3 road_speed=4 resolution 16]
-#(highway=trunk | highway=primary) & name='Lagawe - Banaue'	[0x03 road_class=3 road_speed=4 resolution 16]
-#(highway=trunk | highway=primary) & name='Lamut - Lagawe'	[0x03 road_class=3 road_speed=4 resolution 16]
-#(highway=trunk | highway=primary) & name='Bagabag - Lamut'	[0x03 road_class=3 road_speed=4 resolution 16]
 
 
 # -------------------------------------------------------------------
