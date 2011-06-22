@@ -14,7 +14,8 @@
 #
 #############################################################################
 
-# Prerequisites                                                                             
+# Prerequisites
+# symbolic links shoud be within the directory of this script.                                                                             
 # Symlink mkgmap.jar from your downloaded mkgmap.jar                                                                         
 # Symlink gmapi-builder from your gmapi-builder python script                                                                 
 
@@ -50,7 +51,7 @@ python gmapi-builder -t for_mapsource/40000001.tdb -b for_mapsource/40000001.img
 
 ls -al
 zip -r osmph_macroadtrip_latest.zip OSM_PHIL.gmapi
-mv osmph_macroadtrip_latest.zip /home/maning/Downloads/osm/routable_garmin/data/latest/
+mv osmph_macroadtrip_latest.zip /home/maning/osm/routable_garmin/data/latest/
 rm -rf OSM_PHIL.gmapi
 
 cd for_mapsource
@@ -59,7 +60,7 @@ ls -al
 
 # Win Mapsource installer
 makensis osmph_mapsource_installer.nsi
-mv osmph_winmapsource_latest.exe /home/maning/Downloads/osm/routable_garmin/data/latest/
+mv osmph_winmapsource_latest.exe /home/maning/osm/routable_garmin/data/latest/
 rm *.img 
 rm *.mdx 
 rm *.tdb 
@@ -68,20 +69,15 @@ cd ..
 rm *.img 
 rm *.tdb
 rm *.mdx
-# rm philippines.osm
 
 rm -rf OSM_PHIL.gmapi
-mv mkgmap.log.0 /home/maning/Downloads/osm/routable_garmin/data/latest/mkgmap.log.0.txt
+mv mkgmap.log.0 /home/maning/osm/routable_garmin/data/latest/mkgmap.log.0.txt
 date > latest/log.txt
 
 # Miscellaneous
-# sawtooth script
-cd ~/Downloads/osm/sawtooth
-./sawtooth.sh
-
 cd ~/Downloads/osm/routable_garmin/data
 
 # archiving downloaded philippine osm file
 tar -cjvf "philippines_$(date +%Y%m%d).tar.bz2" philippines.osm
 mv philippines_$(date +%Y%m%d).tar.bz2 archive/philippines_$(date +%Y%m%d).tar.bz2
-rm philippines.osm
+#rm philippines.osm

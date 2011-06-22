@@ -11,7 +11,7 @@ family-name=OSM_PHIL
 overview-mapname=40000001
 series-name=OSM_PHIL
 description=OSM Philippines
-style-file=/home/maning/Downloads/osm/routable_garmin/git/osmphgps/styles/default
+style-file=/home/maning/osm/routable_garmin/git/osmphgps/styles/default
 generate-sea=polygons,extend-sea-sectors,close-gaps=1000
 index
 adjust-turn-headings
