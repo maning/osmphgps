@@ -14,53 +14,59 @@
 #
 #############################################################################
 
-# Prerequisites
-# symbolic links shoud be within the directory of this script.                                                                             
-# Symlink mkgmap.jar from your downloaded mkgmap.jar                                                                         
-# Symlink gmapi-builder from your gmapi-builder python script                                                                 
+#Set these directory paths
 
-# Set paths
-download_dir=~/Downloads/osm/routable_garmin/data/
-echo ${download_dir}
+download_dir=------
+output_dir=------
+split_dir=------
+download_link=---
+
+
+#Nothing to change below
+#===========
 cd ${download_dir}
 
-# Get latest extract from geofabrik
-wget -c http://download.geofabrik.de/osm/asia/philippines.osm.bz2
-bunzip2 philippines.osm.bz2
-cd  ${download_dir}
+# Download from geofabrik site
+wget -c ${download_link}
+ls -al
+
+# Split the file using splitter.jar
+java -jar splitter.jar --max-nodes=1000000  philippines.osm.pbf --output-dir=${split_dir}
+
+ls -al
 
 # compile map with logging properties report
-time java -Dlog.config=logging.properties -Xmx1512m -jar mkgmap.jar --read-config=args.list philippines.osm
+#time java -Dlog.config=logging.properties -Xmx2012m -jar mkgmap.jar --read-config=args.list ${output_dir} 
+time java -Xmx2012m -jar mkgmap.jar --read-config=args.list --series-name="OSM Philippines $(date +%Y%m%d)" --description="OSM Philippines $(date +%Y%m%d)" --output-dir=${output_dir} ~/osm/routable_garmin/dev/split/*.osm.pbf
 
-mv *.img for_mapsource/
-mv *.mdx for_mapsource/
-mv *.tdb for_mapsource/
 
 # gmapsupp.img generation
-time java -Xmx1512m -jar mkgmap.jar --read-config=args2.list philippines.osm MINIMAL.TYP
+time java -Xmx2012m -jar mkgmap.jar --read-config=args2.list ~/osm/routable_garmin/dev/split/*.osm.pbf ~/osm/routable_garmin/dev/MINIMAL.TYP
 
 ls -al
 
-zip osmph_img_latest.zip gmapsupp.img
-mv osmph_img_latest.zip /home/maning/Downloads/osm/routable_garmin/data/latest/
+zip osmph_img_latest_dev.zip gmapsupp.img
+
+
+# Gmapi for Mac Roadtrip installer
+python gmapi-builder -t ${output_dir}/40000001.tdb -b ${output_dir}/40000001.img -s ${output_dir}/MINIMAL.TYP -i ${output_dir}/40000001.mdx -m ${output_dir}/40000001_mdr.img ${output_dir}/*.img
 
 ls -al
+zip -r osmph_macroadtrip_latest_dev.zip "OSM Philippines $(date +%Y%m%d).gmapi"
+#mv osmph_macroadtrip_latest_dev.zip /home/maning/osm/routable_garmin/dev/
+rm -rf "OSM Philippines $(date +%Y%m%d).gmapi"
 
-# Mac Roadtrip installer
-python gmapi-builder -t for_mapsource/40000001.tdb -b for_mapsource/40000001.img for_mapsource/*.img -s for_mapsource/MINIMAL.TYP -i for_mapsource/40000001.mdx -m for_mapsource/40000001_mdr.img
-
-ls -al
-zip -r osmph_macroadtrip_latest.zip OSM_PHIL.gmapi
-mv osmph_macroadtrip_latest.zip /home/maning/osm/routable_garmin/data/latest/
-rm -rf OSM_PHIL.gmapi
-
-cd for_mapsource
+cd ${output_dir}
 
 ls -al
 
 # Win Mapsource installer
-makensis osmph_mapsource_installer.nsi
-mv osmph_winmapsource_latest.exe /home/maning/osm/routable_garmin/data/latest/
+makensis osmph_mapsource_installer_.nsi
+mv osmph_winmapsource_latest_.exe /home/maning/osm/routable_garmin/dev/osmph_winmapsource_latest_dev.exe
+
+#temporary mv
+#mv osmph_winmapsource_latest_.exe /home/maning/Downloads/osm/routable_garmin/data/
+
 rm *.img 
 rm *.mdx 
 rm *.tdb 
@@ -70,14 +76,13 @@ rm *.img
 rm *.tdb
 rm *.mdx
 
-rm -rf OSM_PHIL.gmapi
-mv mkgmap.log.0 /home/maning/osm/routable_garmin/data/latest/mkgmap.log.0.txt
-date > latest/log.txt
+date > log.txt
 
-# Miscellaneous
-cd ~/Downloads/osm/routable_garmin/data
+#Miscellaneous
 
+cd ${download_dir}
+
+# upload to server
 # archiving downloaded philippine osm file
-tar -cjvf "philippines_$(date +%Y%m%d).tar.bz2" philippines.osm
-mv philippines_$(date +%Y%m%d).tar.bz2 archive/philippines_$(date +%Y%m%d).tar.bz2
-#rm philippines.osm
+mv philippines.osm.pbf archive/philippines_$(date +%Y%m%d).osm.pbf
+
