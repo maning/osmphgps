@@ -84,6 +84,7 @@
 #
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
+
 # Reducing road speed when approaching traffic signals and other barriers, this applies to road way where the node is included
 highway=traffic_signals { add mkgmap:road-speed = '-2'; add mkgmap:road-speed-min = '1' }
 highway=crossing { add mkgmap:road-speed = '-1'; add mkgmap:road-speed-min = '1' }
@@ -125,9 +126,9 @@ barrier=gate { add mkgmap:road-speed = '-1'; add mkgmap:road-speed-min = '1' }
 # ---------------
 # Fault Tolerant for Spanish Characters:Commonly mispelled city-name in both format (for place & none-place POI's) 
 # Karlsruhe schema: this only concerns searchability of Barangays/Purok/Subd and Amenity-POI, not cities) 
-	addr:city='Paranaque' {set addr:city='Parañaque'}	is_in:city='Paranaque' {set is_in:city='Parañaque'}
-	addr:city='Las Pinas' {set addr:city='Las Piñas'} 	is_in:city='Las Pinas' {set is_in:city='Las Piñas'}
-	addr:city='Dasmarinas' {set addr:city='Dasmariñas'}	is_in:city='Dasmarinas' {set is_in:city='Dasmariñas'}
+	addr:city='Paranaque' {set addr:city='ParaÃ±aque'}	is_in:city='Paranaque' {set is_in:city='ParaÃ±aque'}
+	addr:city='Las Pinas' {set addr:city='Las PiÃ±as'} 	is_in:city='Las Pinas' {set is_in:city='Las PiÃ±as'}
+	addr:city='Dasmarinas' {set addr:city='DasmariÃ±as'}	is_in:city='Dasmarinas' {set is_in:city='DasmariÃ±as'}
 
 # CITY/TOWN POI
 ( place=city | (place=town & capital=true)) & name!=Manila [0x0400 resolution 16]		#   BIG BOLD FONT search-able (city or capital)
