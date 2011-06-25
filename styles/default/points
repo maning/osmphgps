@@ -84,6 +84,13 @@
 #
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
+# Reducing road speed when approaching traffic signals and other barriers, this applies to road way where the node is included
+highway=traffic_signals { add mkgmap:road-speed = '-2'; add mkgmap:road-speed-min = '1' }
+highway=crossing { add mkgmap:road-speed = '-1'; add mkgmap:road-speed-min = '1' }
+highway=stop { add mkgmap:road-speed = '-2'; add mkgmap:road-speed-min = '1' }
+traffic_calming=* { add mkgmap:road-speed = '-2'; add mkgmap:road-speed-min = '1' }
+barrier=toll_booth { add mkgmap:road-speed = '-2'; add mkgmap:road-speed-min = '1' }
+barrier=gate { add mkgmap:road-speed = '-1'; add mkgmap:road-speed-min = '1' }
 
 
 # Assume all POI's are in the Philippines. Set "is_in:country" to Philippines (by Maning)
