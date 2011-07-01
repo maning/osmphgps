@@ -273,10 +273,10 @@ highway=path {add access = no; add bicycle = yes; add foot = yes} [0x16 road_cla
 highway=steps {add access = no; add foot = yes} [0x16 road_class=0 road_speed=0 resolution 21]
 
 # 4x4 trailroads or uncompacted/muddy roads/remote unpaved road leading to mountain peaks & villages
-highway=track [0x0f road_class=0 road_speed=1 resolution 20]
+highway=track [0x0f road_class=0 road_speed=1 resolution 21]
 
 # unpaved city/rural road
-highway=unsurfaced [0x0a road_class=0 road_speed=1 resolution 20]
+highway=unsurfaced [0x0a road_class=0 road_speed=1 resolution 21]
 
 # other highways that are not routable
 highway=road {add access = no; add name = fixme} [0x0d resolution 22]
