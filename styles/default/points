@@ -1916,4 +1916,6 @@ amenity=fast_food
 # DO NOT PLACE ANY "CUISINE" or "RESTAURANT" TAG BELOW THIS LINE !!!!
 
 
+#address points for non-POI address data
+addr:housenumber=* { name '${addr:housenumber} ${addr:street}' | '${addre:housename}' | '${addr:street}' } [0x660f resolution 24]
 
