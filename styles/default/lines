@@ -243,11 +243,11 @@ highway=construction | highway=* & construction=* {add access = no; add bicycle 
 highway=* & disused=yes [0x07 road_class=0 road_speed=1 resolution 22]
 
 # assign highway=*_links with bridge as ramp
-highway=motorway_link & bridge=yes {add oneway = yes; add bicycle = no; add foot = no } [0x09 road_class=3 road_speed=2 resolution 14]
-highway=trunk_link & bridge=yes {add bicycle = no; add foot = no} [0x08 road_class=3 road_speed=2 resolution 18]
-highway=primary_link & bridge=yes [0x08 road_class=3 road_speed=1 resolution 18]
-highway=secondary_link & bridge=yes [0x08 road_class=2 road_speed=1 resolution 20]
-highway=tertiary_link &	bridge=yes [0x08 road_class=1 road_speed=1 resolution 20]
+(highway=motorway_link & bridge=yes) | (highway=motorway_link & bridge=yes & oneway=yes) {add oneway = yes; add bicycle = no; add foot = no } [0x09 road_class=3 road_speed=2 resolution 14]
+(highway=trunk_link & bridge=yes) | (highway=trunk_link & bridge=yes & oneway=yes) {add bicycle = no; add foot = no} [0x08 road_class=3 road_speed=2 resolution 18]
+(highway=primary_link & bridge=yes) | (highway=primary_link & bridge=yes & oneway=yes) [0x08 road_class=3 road_speed=1 resolution 18]
+(highway=secondary_link & bridge=yes) | (highway=tertiary_link & bridge=yes & oneway=yes) [0x08 road_class=2 road_speed=1 resolution 20]
+(highway=tertiary_link & bridge=yes) | (highway=tertiary_link & bridge=yes & oneway=yes) [0x08 road_class=1 road_speed=1 resolution 20]
 
 # Ways sorted roughly by descending order of class
 highway=motorway & area!=yes {add oneway = yes; add bicycle = no; add foot = no } [0x01 road_class=4 road_speed=5 resolution 14]
