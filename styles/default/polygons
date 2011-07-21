@@ -169,4 +169,9 @@ amenity=townhall | amenity=public_building  {add public=yes} [0x13 resolution 22
 # Process 2nd: (all else remaining) NONE-GOVERNMENT structures including Museum, Public Market etc 
 building=* [0x13 resolution 24]		
 
+# Dump all polygons in this temp poly hex to enable search as POI
+place=* | landuse=residential | man_made=* | leisure=* | tourism=* | amenity=* [0x10 resolution 23-18]
+
+
+
 
