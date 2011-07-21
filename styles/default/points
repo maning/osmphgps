@@ -140,11 +140,11 @@ barrier=gate { add mkgmap:road-speed = '-1'; add mkgmap:road-speed-min = '1' }
 ( place=village | place:ph=barangay ) [0x640a resolution 18 continue] 	#   SMALL FONT - NO ICON {searchable} - Barangays 
 ( place=suburb | place=locality ) [0x640a resolution 23 continue]	#   SMALL FONT - NO ICON {searchable} - Districts & none-LGU units & none 
 ( place=hamlet | place=subdivision | place:ph=purok | place=purok | 
-  place:ph=sitio | place=sitio ) { set addr:city='${is_in:city}'} 
+  place:ph=sitio | place=sitio | landuse=residential ) { set addr:city='${is_in:city}'} 
   [0x640a resolution 21 continue]        				#   SMALL FONT - NO ICON {searchable} - Purok / Sub-Barangay / Subdivisions
 									#   640a (locale) is searchable but invisible with brown font
 ( place=village | place:ph=barangay | place=suburb | place=locality |  
-  place=hamlet | place=subdivision | place:ph=purok | place=purok | place:ph=sitio | place=sitio )
+  place=hamlet | place=subdivision | place:ph=purok | place=purok | place:ph=sitio | place=sitio | landuse=residential )
 { set addr:city='${is_in:city}'} [0x2c12 resolution 23]			#   2c12 has no category - temporary color is pink dot (pedestrian gate)
 
 # AMENITY POI fault tolerance - convert is_in:city to Karlsruhe Schema (eg: old POI entries from jklinc)
