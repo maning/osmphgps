@@ -11,6 +11,12 @@ Download maps here (choose one):
 
 Changes and updates:
 
+20110626
+ - mkgmap city-region-index-r1992
+ - split the whole country to 3 tiles
+ - re-organized POIs
+ - improved TYP
+
 20110331
  - mkgmap version 1867
  - using the pbf data format
