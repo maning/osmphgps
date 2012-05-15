@@ -9,7 +9,7 @@ family-name=OSM_PHIL
 overview-mapname=40000001
 series-name=OSM_PHIL
 description=OSM Philippines
-style-file=../../styles/default
+style-file=../styles/default
 generate-sea=polygons,extend-sea-sectors,close-gaps=1000
 #make-poi-index
 adjust-turn-headings

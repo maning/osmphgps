@@ -3,7 +3,6 @@ tdbfile
 latin1
 country-abbr=PHL
 country-name=PHILIPPINES
-remove-short-arcs=5
 route
 add-pois-to-areas
 family-id=639
@@ -11,7 +10,7 @@ family-name=OSM_PHIL
 overview-mapname=40000001
 series-name=OSM_PHIL
 description=OSM Philippines
-style-file=/home/maning/osm/routable_garmin/git/osmphgps/styles/default
+style-file=../styles/default
 generate-sea=polygons,extend-sea-sectors,close-gaps=1000
 index
 adjust-turn-headings
