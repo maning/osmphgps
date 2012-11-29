@@ -20,4 +20,5 @@ check-roundabout-flares
 report-dead-ends
 ignore-maxspeeds
 link-pois-to-ways
+remove-short-arcs=3
 location-autofill=0

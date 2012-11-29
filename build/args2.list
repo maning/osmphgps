@@ -19,4 +19,5 @@ ignore-maxspeeds
 link-pois-to-ways
 location-autofill=0
 road-name-pois
+remove-short-arcs=3
 gmapsupp
