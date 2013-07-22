@@ -98,7 +98,7 @@ Changes and updates:
  - data is as of 20100116 compiled using mkgmap ver. 1455.  46,000 ++
 kilometers of roads from 400 ++ contributors
 
-2009-11-14
+20091114
  - data as of 20091114, thanks to all the 350 contributors
  - 45,000 ++ kilometers of roads
  - sea polygon
@@ -107,7 +107,7 @@ kilometers of roads from 400 ++ contributors
  - changed codes for some POIs to enable search
  - compiled with mkgmap version 1334
 
-2009-09-12
+20090912
  - data as of 20090912, thanks to all the 292 contributors
  - 42,900 ++ kilometers of roads
  - new map design
@@ -123,12 +123,12 @@ Known bugs:
  - No polygon for sea areas
  - POI icons not visible using 3D mode in some units
 
-2009-07-28
+20090728
  - same data as 20090713
  - fixed magenta routing line under road
  - fixed routing problems along tile edges
 
-2009-07-13
+20090713
  - Data as of 20090713
  - 240 contributors
  - 39,800++ kilometers of roads
@@ -140,7 +140,7 @@ Known bugs:
  - fixed reported routing problems
 
 
-2009-05-13
+20090513
  - Data as of 20090513
  - 195 contributors
  - 38,400 kilometers of roads
@@ -150,7 +150,7 @@ Known bugs:
  - Fixed registry causing install error in MapSource
  - Thank you to all the 190 ++ contributors .
 
-2009-03-25
+20090325
  - 34,000 km of roads
  - more than 10,000 POIs
  - POI names for tagged areas
@@ -158,14 +158,14 @@ Known bugs:
  - Win Mapsource installer
  - Mac RoadTrip installer
  
-2009-02-25
+20090225
  - 33,000 km of roads
  - more POIs
  - improved POI searching for roads and cities 
  - improved road data in Mindanao
  - should work with Garmin Mobile XT
 
-2009-01-14 
+20090114 
 - Routable!
 - More than 30,000 kilometers of roads
 - POIs, provincial boundaries
